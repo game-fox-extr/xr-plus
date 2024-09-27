@@ -4,7 +4,7 @@ export default defineConfig({
     root: "frontend",
     publicDir: "../public",
     build: {
-        outDir: "../dist",
+        outDir: "./dist",
         emptyOutDir: true,
         chunkSizeWarningLimit: 1600,
         rollupOptions: {
