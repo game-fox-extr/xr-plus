@@ -1,4 +1,3 @@
-import * as THREE from "three";
 import { EventEmitter } from "events";
 import Experience from "../Experience.js";
 
@@ -6,8 +5,7 @@ import { Octree } from "three/examples/jsm/math/Octree";
 
 import Player from "./Player/Player.js";
 
-import Westgate from "./Westgate.js";
-import Environment from "./Environment.js";
+import Whiterun from "./Whiterun/Whiterun.js";
 
 export default class World extends EventEmitter {
     constructor() {
@@ -21,14 +19,20 @@ export default class World extends EventEmitter {
 
         this.resources.on("ready", () => {
             if (this.player === null) {
-                this.westgate = new Westgate();
                 this.player = new Player();
-                this.environment = new Environment();
             }
+            this.setWorld();
         });
     }
 
+    setWorld() {
+        this.whiterun = new Whiterun();
+        // this.interior = new Interior();
+    }
+
     update() {
-        if (this.player) this.player.update();
+        if (this.player) {
+            this.player.update();
+        } 
     }
 }

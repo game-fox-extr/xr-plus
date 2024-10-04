@@ -8,7 +8,7 @@ export default class Resources extends EventEmitter {
 
         this.items = {};
         this.assets = assets;
-        this.location = "westgate";
+        this.location = "whiterun";
 
         this.loaders = new Loaders().loaders;
 

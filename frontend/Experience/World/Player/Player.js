@@ -4,7 +4,6 @@ import { Capsule } from "three/examples/jsm/math/Capsule";
 
 import nipplejs from "nipplejs";
 import elements from "../../Utils/functions/elements.js";
-
 import Avatar from "./Avatar.js";
 
 export default class Player {
@@ -225,8 +224,17 @@ export default class Player {
         if (e.code === "KeyD" || e.code === "ArrowRight") {
             this.actions.right = true;
         }
+
         if (!this.actions.run && !this.actions.jump) {
             this.player.animation = "walking";
+        }
+
+        if(e.code === "KeyC") {
+            this.camera.enableThirdPerson();
+            document.exitPointerLock();
+            const canvas = document.querySelector('.experience-canvas');
+            canvas.removeEventListener("pointerdown", this.onPointerDown);
+            canvas.classList.toggle("grab");
         }
 
         if (e.code === "KeyO") {
@@ -257,6 +265,12 @@ export default class Player {
         }
         if (e.code === "KeyD" || e.code === "ArrowRight") {
             this.actions.right = false;
+        }
+        if(e.code === "KeyC") {
+            this.camera.disableThirdPerson();
+            const canvas = document.querySelector('.experience-canvas');
+            canvas.addEventListener("pointerdown", this.onPointerDown);
+            canvas.classList.toggle("grab");
         }
 
         if (e.code === "ShiftLeft") {
@@ -327,7 +341,77 @@ export default class Player {
     addEventListeners() {
         document.addEventListener("keydown", this.onKeyDown);
         document.addEventListener("keyup", this.onKeyUp);
+                const canvas = document.querySelector('.experience-canvas');
+        canvas.addEventListener('pointerdown', this.onPointerDown);
+                canvas.addEventListener("pointermove", (e) => {
+            if(e.pointerType === "touch"){
+                this.onMobileDeviceMove(e);
+            } else {
+                this.onDesktopPointerMove(e)
+            }
+        });
+                canvas.addEventListener('pointerdown', (e) => {
+            if (e.target.closest('.joystick-area')) return;
+            if (e.pointerType === 'touch') {
+                this.firstTouch = true;  
+                this.startX = e.pageX;
+                this.startY = e.pageY;
+                this.isSwiping = false;
+            } });
+
+        canvas.addEventListener('pointerup', (e) => {
+            if (e.pointerType === 'touch') {
+                this.isSwiping = false;
+                this.firstTouch = true;  
+            }
+        });
     }
+
+        onPointerDown = (e) => {
+        document.querySelector('.experience-canvas').requestPointerLock();
+        this.camera.controls.enabled = false;
+    };
+
+        onDesktopPointerMove = (e) => { if (document.pointerLockElement !== document.querySelector('.experience-canvas')) return;
+        console.log('moved');
+        this.player.body.rotation.order = "YXZ"; 
+        this.player.body.rotation.x -= e.movementY / 500;
+        this.player.body.rotation.y -= e.movementX / 500;
+        
+        this.player.body.rotation.x = THREE.MathUtils.clamp(
+            this.player.body.rotation.x,
+            -Math.PI / 2, Math.PI / 2
+        );
+    };
+
+        onMobileDeviceMove(e) {
+        if (e.target.closest('.joystick-area')) return; 
+
+    if (this.firstTouch) {
+      this.startX = e.pageX;
+      this.startY = e.pageY;
+      this.firstTouch = false;
+    } else {
+      const diffX = e.pageX - this.startX;
+      const diffY = e.pageY - this.startY;
+
+      this.player.body.rotation.order = this.player.rotation.order;
+      this.player.body.rotation.y -= diffX / 200;
+      this.player.body.rotation.x -= diffY / 200;
+
+      this.player.body.rotation.x = THREE.MathUtils.clamp(
+        this.player.body.rotation.x,
+        -Math.PI / 2,
+        Math.PI / 2
+      );
+
+      this.startX = e.pageX;
+      this.startY = e.pageY;
+
+      this.isSwiping = true;
+    }
+  }
+
 
     resize() {}
 

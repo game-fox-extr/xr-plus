@@ -1,22 +1,101 @@
 .experience-wrapper {
-    position: absolute;
-    height: 100vh;
-    width: 100vw;
-    z-index: -1;
-    top: 0;
-    left: 0;
-    overflow: hidden;
-    touch-action: none;
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  touch-action: none;
 }
 
 .experience-canvas {
-    height: 100%;
-    width: 100%;
-    touch-action: none;
-    overflow: hidden;
-    cursor: grab;
+  height: 100%;
+  width: 100%;
+  touch-action: none;
+  overflow: hidden;
+  // cursor: grab;
 }
 
 canvas {
-    overflow: hidden;
+  overflow: hidden;
+}
+
+#lensImage {
+  width: min(10vw, 10vh);
+  height: auto;
+  position: fixed;
+  top: min(1vw, 1vh);
+  right: min(1vw, 1vh);
+}
+
+#lensImage:hover {
+  cursor: pointer;
+}
+
+.powered-by {
+  width: auto;
+  height: min(6vw, 6vh);
+  position: fixed;
+  bottom: min(2vw, 2vh);
+  right: min(2vw, 2vh);
+}
+
+.powered-by-loader {
+  position: absolute; /* Position it absolutely within the loader container */
+  bottom: 20%; /* Adjust as needed */
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Shift left by half its width for centering */
+  width: 15%; /* Adjust the width as needed */
+  /* Optional: add any other styling like margins or opacity */
+}
+
+#chatbotImage {
+  width: min(10vw, 10vh);
+  height: auto;
+  position: fixed;
+  top: min(12vw, 12vh);
+  right: min(1vw, 1vh);
+}
+
+#chatbotImage:hover {
+  cursor: pointer;
+}
+
+#chatWithOtherImage {
+  width: min(10vw, 10vh);
+  height: auto;
+  position: fixed;
+  top: min(23vw, 23vh);
+  right: min(1vw, 1vh);
+}
+
+#chatWithOtherImage:hover {
+  cursor: pointer;
+}
+
+#speakerIcon:hover {
+  cursor: pointer;
+}
+
+#speakerIcon {
+  width: min(10vw, 10vh);
+  height: auto;
+  position: fixed;
+  top: min(34vw, 34vh);
+  right: min(1vw, 1vh);
+  display: "flex";
+}
+
+#speakerDisableIcon {
+  width: min(10vw, 10vh);
+  height: auto;
+  position: fixed;
+  top: min(34vw, 34vh);
+  right: min(1vw, 1vh);
+  display: none;
+}
+
+#speakerDisableIcon:hover {
+  cursor: pointer;
 }
