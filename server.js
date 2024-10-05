@@ -424,6 +424,41 @@ io.on("connection", (socket) => {
     });
   });
 
+  socket.on("audioStream", async (audioData) => {
+    if (currentRoom) {
+      // Broadcast the raw audio to other users in the room
+      socket.to(currentRoom).emit("audioStream", audioData);
+
+      // Convert the audio data to text using Google Cloud Speech-to-Text
+      try {
+        const audioBytes = audioData.split(",")[1]; // Strip out data URL metadata and base64 encode the raw audio
+        const request = {
+          audio: {
+            content: audioBytes,
+          },
+          config: {
+            encoding: "LINEAR16", // Assuming the audio stream is PCM
+            sampleRateHertz: 16000, // Adjust this based on your audio stream sample rate
+            languageCode: "en-US", // Change to the language you want to support
+          },
+        };
+
+        // Use Google Cloud Speech-to-Text to transcribe the audio
+        const [response] = await speechClient.recognize(request);
+        const transcription = response.results
+          .map((result) => result.alternatives[0].transcript)
+          .join("\n");
+
+        console.log(`Transcription: ${transcription}`);
+
+        // Send the transcription to other users in the room
+        socket.to(currentRoom).emit("transcription", transcription);
+      } catch (error) {
+        console.error("Error with speech-to-text:", error);
+      }
+    }
+  });
+
   // Handle disconnection
   socket.on("disconnect", () => {
     console.log(`User disconnected: ${socket.id}`);
