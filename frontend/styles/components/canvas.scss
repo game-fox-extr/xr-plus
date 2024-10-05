@@ -79,20 +79,20 @@ canvas {
 }
 
 #speakerIcon {
-  width: min(10vw, 10vh);
+  width: min(5vw, 5vh);
   height: auto;
   position: fixed;
-  top: min(34vw, 34vh);
-  right: min(1vw, 1vh);
+  top: min(35vw, 35vh);
+  left: min(1vw, 1vh);
   display: "flex";
 }
 
 #speakerDisableIcon {
-  width: min(10vw, 10vh);
+  width: min(5vw,5vh);
   height: auto;
   position: fixed;
-  top: min(34vw, 34vh);
-  right: min(1vw, 1vh);
+  top: min(35vw, 35vh);
+  left: min(1vw, 1vh);
   display: none;
 }
 
