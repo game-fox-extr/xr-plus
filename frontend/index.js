@@ -25,6 +25,7 @@ const socket = io(socketUrl.toString());
 const chatSocket = io(socketUrl.toString() + "chat");
 const updateSocket = io(socketUrl.toString() + "update");
 let userName = "";
+let isRecording;
 
 // Experience ----------------------------------
 
@@ -226,12 +227,14 @@ window.addEventListener("click", (event) => {
 speakerIcon.addEventListener("click", () => {
   speakerDisableIcon.style.display = "flex";
   speakerIcon.style.display = "none";
+  stopRecording(); // Stop capturing audio when the speaker is disabled
 });
 
 // Displaying the speaker Disable Icon
 speakerDisableIcon.addEventListener("click", () => {
   speakerIcon.style.display = "flex";
   speakerDisableIcon.style.display = "none";
+  startRecording(); // Start capturing audio again when the speaker is enabled
 });
 
 // Send message in Chat with Others modal
@@ -404,25 +407,65 @@ form.addEventListener("submit", (event) => {
   sendMessage();
 });
 
-function isAnyModalOpen() {
-  return (
-    domElements.chatbotModal.style.display === "flex" ||
-    domElements.chatWithOtherModal.style.display === "flex"
-  );
-}
+socket.on("connect", () => {
+  navigator.mediaDevices
+    .getUserMedia({ audio: true, video: false })
+    .then((stream) => {
+      madiaRecorder = new MediaRecorder(stream);
 
-document.addEventListener("click", (event) => {
-  if (!isAnyModalOpen()) {
-    domElements.canvas.requestPointerLock();
-  }
+      madiaRecorder.addEventListener("dataavailable", function (event) {
+        audioChunks.push(event.data);
+      });
+
+      madiaRecorder.addEventListener("stop", function () {
+        if (audioChunks.length > 0) {
+          var audioBlob = new Blob(audioChunks);
+          audioChunks = [];
+          var fileReader = new FileReader();
+          fileReader.readAsDataURL(audioBlob);
+          fileReader.onloadend = function () {
+            var base64String = fileReader.result;
+            socket.emit("audioStream", base64String);
+          };
+        }
+      });
+
+      startRecording();
+    })
+    .catch((error) => {
+      console.error("Error capturing audio.", error);
+    });
 });
 
-document.addEventListener("keydown", (event) => {
-  if (isAnyModalOpen()) {
-    // Prevent player movement with "W", "A", "S", "D" when modal is open
-    const blockedKeys = ["KeyW", "KeyA", "KeyS", "KeyD"];
-    if (blockedKeys.includes(event.code)) {
-      event.preventDefault();
+function startRecording() {
+  madiaRecorder.start();
+  isRecording = true;
+
+  // Automatically stop and start recording every second
+  setTimeout(() => {
+    if (isRecording) {
+      madiaRecorder.stop();
+      setTimeout(startRecording, 1000); // Restart recording after 1 second
     }
+  }, 1000);
+}
+
+function stopRecording() {
+  isRecording = false;
+  if (madiaRecorder && madiaRecorder.state !== "inactive") {
+    madiaRecorder.stop();
   }
+}
+
+socket.on("audioStream", (audioData) => {
+  console.log(audioData);
+  var newData = audioData.split(";");
+  newData[0] = "data:audio/ogg;";
+  newData = newData[0] + newData[1];
+
+  var audio = new Audio(newData);
+  if (!audio || document.hidden) {
+    return;
+  }
+  audio.play();
 });
