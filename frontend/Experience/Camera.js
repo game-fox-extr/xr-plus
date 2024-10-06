@@ -20,6 +20,7 @@ export default class Camera {
         this.storedRotation = new THREE.Vector3(0, Math.PI/2, 0);
         this.thirdPersonOffset = new THREE.Vector3(17.8838, 1.2 + 10, -3.72508);
         this.thirdPerson = false;
+        this.controls.enabled = false;
     }
 
     setPerspectiveCamera() {
