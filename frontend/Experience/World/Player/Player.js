@@ -66,12 +66,11 @@ export default class Player {
       0.35
     );
 
+
     this.otherPlayers = {};
 
     this.socket.emit("setID");
     this.socket.emit("initPlayer", this.player);
-    this.immoblizePlayer = this.immoblizePlayer.bind(this);
-    document.addEventListener("visibilitychange", this.immoblizePlayer);
   }
 
   initControls() {
@@ -97,11 +96,10 @@ export default class Player {
   }
 
   immoblizePlayer() {
-    console.log("Hey Guys!");
+    console.log("unfocused");
+    this.player.animation = "idle";
     const actions = Object.keys(this.actions);
-    console.log(actions);
     for (let action of actions){
-      console.log(action);
       this.actions[action] = false;
     }
   }
@@ -434,6 +432,10 @@ export default class Player {
         this.firstTouch = true;
       }
     });
+    this.immoblizePlayer = this.immoblizePlayer.bind(this);
+    this.mobilizePlayer = this.mobilizePlayer.bind(this);
+    window.addEventListener("blur", this.immoblizePlayer);
+    window.addEventListener("focus", this.mobilizePlayer);
   }
 
   onPointerDown = (e) => {
@@ -457,6 +459,10 @@ export default class Player {
       Math.PI / 2
     );
   };
+
+  mobilizePlayer() {
+    console.log("Focused");
+  }
 
   onMobileDeviceMove(e) {
     if (e.target.closest(".joystick-area")) return;
@@ -567,6 +573,7 @@ export default class Player {
     this.player.body.updateMatrixWorld();
 
     if (this.player.body.position.y < -20) {
+      console.log(`Spswning: ${this.player.body.position.y}`);
       this.spawnPlayerOutOfBounds();
     }
   }
@@ -886,7 +893,7 @@ export default class Player {
   }
 
   update() {
-    if (this.avatar) {
+    if (this.avatar && this.time.delta < 0.1) {
       this.updateColliderMovement();
       this.updateAvatarPosition();
       this.updateAvatarRotation();
