@@ -21,6 +21,7 @@ export default class Camera {
         this.thirdPersonOffset = new THREE.Vector3(17.8838, 1.2 + 10, -3.72508);
         this.thirdPerson = false;
         this.controls.enabled = false;
+        this.togglable = true;
     }
 
     setPerspectiveCamera() {

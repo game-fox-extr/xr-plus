@@ -1,6 +1,6 @@
 import "./index.scss";
 import AgoraRTC from "agora-rtc-sdk-ng";
-
+AgoraRTC.setLogLevel(4);
 const appid = "712c5072d38945d2873615fc424a3bd4";
 const token = null;
 const rtcUid = Math.floor(Math.random() * 2032);

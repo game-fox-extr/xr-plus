@@ -70,10 +70,21 @@ export default class Player {
 
     this.socket.emit("setID");
     this.socket.emit("initPlayer", this.player);
+    this.immoblizePlayer = this.immoblizePlayer.bind(this);
+    document.addEventListener("visibilitychange", this.immoblizePlayer);
   }
 
   initControls() {
-    this.actions = {};
+    this.actions = {
+      forward: false,
+      backward: false,
+      left: false,
+      right: false,
+      jump: false,
+      run: false,
+      dance: false,
+      movingJoyStick: false,
+    };
 
     this.coords = {
       previousX: 0,
@@ -83,6 +94,16 @@ export default class Player {
     };
 
     this.joystickVector = new THREE.Vector3();
+  }
+
+  immoblizePlayer() {
+    console.log("Hey Guys!");
+    const actions = Object.keys(this.actions);
+    console.log(actions);
+    for (let action of actions){
+      console.log(action);
+      this.actions[action] = false;
+    }
   }
 
   setJoyStick() {
@@ -232,11 +253,20 @@ export default class Player {
         break;
 
       case "KeyC":
-        this.camera.enableThirdPerson();
-        document.exitPointerLock();
-        const canvas = document.querySelector(".experience-canvas");
-        canvas.removeEventListener("pointerdown", this.onPointerDown);
-        canvas.classList.toggle("grab");
+        if(!this.camera.togglable) return;
+        if (!this.camera.thirdPerson) {
+          this.camera.enableThirdPerson();
+          document.exitPointerLock();
+          const canvas = document.querySelector(".experience-canvas");
+          canvas.removeEventListener("pointerdown", this.onPointerDown);
+          canvas.classList.toggle("grab");
+        } else {
+          this.camera.disableThirdPerson();
+          const canvas = document.querySelector(".experience-canvas");
+          canvas.addEventListener("pointerdown", this.onPointerDown);
+          canvas.classList.toggle("grab");
+        }
+        this.camera.togglable = false;
         return;
         break;
 
@@ -302,10 +332,7 @@ export default class Player {
         break;
 
       case "KeyC":
-        this.camera.disableThirdPerson();
-        const canvas = document.querySelector(".experience-canvas");
-        canvas.addEventListener("pointerdown", this.onPointerDown);
-        canvas.classList.toggle("grab");
+        this.camera.togglable = true;
         break;
 
       case "ShiftLeft":
@@ -843,11 +870,12 @@ export default class Player {
       this.player.animation !== "idle" &&
       this.player.animation !== "dancing"
     ) {
-      const cameraAngleFromPlayer = ((this.camera.thirdPerson) ? Math.atan2(
-        this.player.body.position.x - this.avatar.avatar.position.x,
-        this.player.body.position.z - this.avatar.avatar.position.z
-      ) : this.camera.perspectiveCamera.rotation.y);
-
+      const cameraAngleFromPlayer = this.camera.thirdPerson
+        ? Math.atan2(
+            this.player.body.position.x - this.avatar.avatar.position.x,
+            this.player.body.position.z - this.avatar.avatar.position.z
+          )
+        : this.camera.perspectiveCamera.rotation.y;
 
       this.targetRotation.setFromAxisAngle(
         this.upVector,
