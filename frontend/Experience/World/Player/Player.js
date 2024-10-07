@@ -115,10 +115,12 @@ export default class Player {
       this.actions.movingJoyStick = true;
       this.joystickVector.z = -data.vector.y;
       this.joystickVector.x = data.vector.x;
+      this.player.animation = 'walking';
     });
 
     this.joystick.on("end", () => {
       this.actions.movingJoyStick = false;
+      this.player.animation = 'idle';
     });
   }
 
@@ -648,6 +650,11 @@ export default class Player {
   }
 
   updateAvatarRotation() {
+
+    if(this.actions.movingJoyStick) {
+      this.player.directionOffset = Math.atan2(this.joystickVector.x, this.joystickVector.z);
+    }
+
     if (this.actions.forward) {
       this.player.directionOffset = Math.PI;
     }
