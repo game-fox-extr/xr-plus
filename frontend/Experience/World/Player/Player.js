@@ -206,69 +206,119 @@ export default class Player {
   onKeyDown = (e) => {
     if (document.activeElement === this.domElements.messageInput) return;
 
-    if (e.code === "KeyW" || e.code === "ArrowUp") {
-      this.actions.forward = true;
-    }
-    if (e.code === "KeyS" || e.code === "ArrowDown") {
-      this.actions.backward = true;
-    }
-    if (e.code === "KeyA" || e.code === "ArrowLeft") {
-      this.actions.left = true;
-    }
-    if (e.code === "KeyD" || e.code === "ArrowRight") {
-      this.actions.right = true;
-    }
+    switch (e.code) {
+      case "KeyW":
+      case "ArrowUp":
+        this.actions.forward = true;
+        this.actions.dance = false;
+        break;
 
-    if (!this.actions.run && !this.actions.jump) {
-      this.player.animation = "walking";
-    }
+      case "KeyS":
+      case "ArrowDown":
+        this.actions.backward = true;
+        this.actions.dance = false;
+        break;
 
-    if (e.code === "KeyC") {
-      this.camera.enableThirdPerson();
-      document.exitPointerLock();
-      const canvas = document.querySelector(".experience-canvas");
-      canvas.removeEventListener("pointerdown", this.onPointerDown);
-      canvas.classList.toggle("grab");
-    }
+      case "KeyA":
+      case "ArrowLeft":
+        this.actions.left = true;
+        this.actions.dance = false;
+        break;
 
-    if (e.code === "KeyO") {
+      case "KeyD":
+      case "ArrowRight":
+        this.actions.right = true;
+        this.actions.dance = false;
+        break;
+
+      case "KeyC":
+        this.camera.enableThirdPerson();
+        document.exitPointerLock();
+        const canvas = document.querySelector(".experience-canvas");
+        canvas.removeEventListener("pointerdown", this.onPointerDown);
+        canvas.classList.toggle("grab");
+        return;
+        break;
+
+      case "KeyO":
+        this.actions.dance = true;
+        break;
+
+      case "ShiftLeft":
+        this.actions.run = true;
+        this.player.animation = "running";
+        break;
+
+      case "Space":
+        if (!this.actions.jump && this.player.onFloor) {
+          this.actions.jump = true;
+          this.player.animation = "jumping";
+          this.jumpOnce = true;
+          this.actions.dance = false;
+        }
+        break;
+
+      default:
+        return;
+        break;
+    }
+    if (
+      !(
+        this.actions.forward ||
+        this.actions.backward ||
+        this.actions.left ||
+        this.actions.right ||
+        (this.actions.jump && !this.jumpOnce)
+      ) &&
+      this.actions.dance
+    )
       this.player.animation = "dancing";
-    }
 
-    if (e.code === "ShiftLeft") {
-      this.actions.run = true;
-      this.player.animation = "running";
-    }
-
-    if (e.code === "Space" && !this.actions.jump && this.player.onFloor) {
-      this.actions.jump = true;
-      this.player.animation = "jumping";
-      this.jumpOnce = true;
+    if (!this.actions.run && !this.actions.jump && !this.actions.dance) {
+      this.player.animation = "walking";
     }
   };
 
   onKeyUp = (e) => {
-    if (e.code === "KeyW" || e.code === "ArrowUp") {
-      this.actions.forward = false;
-    }
-    if (e.code === "KeyS" || e.code === "ArrowDown") {
-      this.actions.backward = false;
-    }
-    if (e.code === "KeyA" || e.code === "ArrowLeft") {
-      this.actions.left = false;
-    }
-    if (e.code === "KeyD" || e.code === "ArrowRight") {
-      this.actions.right = false;
-    }
-    if (e.code === "KeyC") {
-      this.camera.disableThirdPerson();
-      const canvas = document.querySelector(".experience-canvas");
-      canvas.addEventListener("pointerdown", this.onPointerDown);
-      canvas.classList.toggle("grab");
-    }
+    switch (e.code) {
+      case "KeyW":
+      case "ArrowUp":
+        this.actions.forward = false;
+        break;
 
-    if (e.code === "ShiftLeft") {
-      this.actions.run = false;
+      case "KeyS":
+      case "ArrowDown":
+        this.actions.backward = false;
+        break;
+
+      case "KeyA":
+      case "ArrowLeft":
+        this.actions.left = false;
+        break;
+
+      case "KeyD":
+      case "ArrowRight":
+        this.actions.right = false;
+        break;
+
+      case "KeyC":
+        this.camera.disableThirdPerson();
+        const canvas = document.querySelector(".experience-canvas");
+        canvas.addEventListener("pointerdown", this.onPointerDown);
+        canvas.classList.toggle("grab");
+        break;
+
+      case "ShiftLeft":
+        this.actions.run = false;
+        break;
+
+      case "Space":
+        this.actions.jump = false;
+        break;
+
+      default:
+        return;
+        break;
     }
 
     if (this.player.onFloor) {
@@ -284,10 +334,6 @@ export default class Player {
       } else {
         this.player.animation = "idle";
       }
-    }
-
-    if (e.code === "Space") {
-      this.actions.jump = false;
     }
   };
 
@@ -797,10 +843,11 @@ export default class Player {
       this.player.animation !== "idle" &&
       this.player.animation !== "dancing"
     ) {
-      const cameraAngleFromPlayer = Math.atan2(
+      const cameraAngleFromPlayer = ((this.camera.thirdPerson) ? Math.atan2(
         this.player.body.position.x - this.avatar.avatar.position.x,
         this.player.body.position.z - this.avatar.avatar.position.z
-      );
+      ) : this.camera.perspectiveCamera.rotation.y);
+
 
       this.targetRotation.setFromAxisAngle(
         this.upVector,
