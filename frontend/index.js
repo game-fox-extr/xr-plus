@@ -237,20 +237,6 @@ window.addEventListener("click", (event) => {
   }
 });
 
-// Displaying the speaker Disable Icon
-speakerIcon.addEventListener("click", () => {
-  speakerDisableIcon.style.display = "flex";
-  speakerIcon.style.display = "none";
-  stopRecording(mediaRecorder); // Stop capturing audio when the speaker is disabled
-});
-
-// Displaying the speaker Disable Icon
-speakerDisableIcon.addEventListener("click", () => {
-  speakerIcon.style.display = "flex";
-  speakerDisableIcon.style.display = "none";
-  startRecording(); // Start capturing audio again when the speaker is enabled
-});
-
 // Send message in Chat with Others modal
 async function sendChatWithOtherMessage() {
   const userMessage = chatWithOtherInput.value.trim();
@@ -420,68 +406,4 @@ async function sendMessage() {
 form.addEventListener("submit", (event) => {
   event.preventDefault();
   sendMessage();
-});
-
-socket.on("connect", () => {
-  navigator.mediaDevices
-    .getUserMedia({ audio: true, video: false })
-    .then((stream) => {
-      const mediaRecorder = new MediaRecorder(stream);
-      let audioChunks = [];
-
-      mediaRecorder.addEventListener("dataavailable", function (event) {
-        audioChunks.push(event.data);
-      });
-
-      mediaRecorder.addEventListener("stop", function () {
-        if (audioChunks.length > 0) {
-          let audioBlob = new Blob(audioChunks);
-          audioChunks = [];
-          let fileReader = new FileReader();
-          fileReader.readAsDataURL(audioBlob);
-          fileReader.onloadend = function () {
-            let base64String = fileReader.result;
-            socket.emit("audioStream", base64String);
-          };
-        }
-      });
-
-      startRecording(mediaRecorder);
-    })
-    .catch((error) => {
-      console.error("Error capturing audio.", error);
-    });
-});
-
-function startRecording(mediaRecorder) {
-  mediaRecorder.start();
-  isRecording = true;
-
-  // Automatically stop and start recording every second
-  setTimeout(() => {
-    if (isRecording) {
-      mediaRecorder.stop();
-      setTimeout(startRecording, 1000); // Restart recording after 1 second
-    }
-  }, 1000);
-}
-
-function stopRecording(mediaRecorder) {
-  isRecording = false;
-  if (mediaRecorder && mediaRecorder.state !== "inactive") {
-    mediaRecorder.stop();
-  }
-}
-
-socket.on("audioStream", (audioData) => {
-  console.log(audioData);
-  let newData = audioData.split(";");
-  newData[0] = "data:audio/ogg;";
-  newData = newData[0] + newData[1];
-
-  let audio = new Audio(newData);
-  if (!audio || document.hidden) {
-    return;
-  }
-  audio.play();
 });
