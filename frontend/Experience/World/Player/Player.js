@@ -398,7 +398,7 @@ export default class Player {
 
     returnVector.applyQuaternion(this.camera.perspectiveCamera.quaternion);
     returnVector.y = 0;
-    // returnVector.multiplyScalar(1.5);
+    returnVector.multiplyScalar(1.5);
 
     return returnVector;
   }

@@ -1,6 +1,23 @@
 import express from "express";
 import path from "path";
 import http from "http";
+import https from "https";
+import fs from "fs";
+
+
+// Load your SSL certificate and key
+const options = {
+  key: fs.readFileSync('ssl/server.key'),
+  cert: fs.readFileSync('ssl/server.crt')
+};
+
+// Create an HTTPS server
+
+// Listen on port 443 (standard port for HTTPS)
+
+
+
+
 import { Server } from "socket.io";
 import {
   GoogleGenerativeAI,
@@ -13,7 +30,14 @@ const port = process.env.PORT || 3000;
 
 const app = express();
 const server = http.createServer(app);
+const httpsServer = https.createServer(options,app);
 const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: "*",
+  },
+});
+const httpsIo = new Server(httpsServer, {
   cors: {
     origin: "*",
     methods: "*",
@@ -304,6 +328,32 @@ chatNameSpace.on("connection", (socket) => {
   });
 });
 
+const httpsChatNameSpace = httpsIo.of("/chat");
+
+httpsChatNameSpace.on("connection", (socket) => {
+  socket.userData = {
+    name: "",
+  };
+  console.log(`${socket.id} has connected to chat namespace`);
+
+  socket.on("disconnect", () => {
+    console.log(`${socket.id} has disconnected`);
+  });
+
+  socket.on("setName", (name) => {
+    socket.userData.name = name;
+  });
+
+  socket.on("send-message", (message, time) => {
+    socket.broadcast.emit(
+      "recieved-message",
+      socket.userData.name,
+      message,
+      time
+    );
+  });
+});
+
 // Update Name Space ----------------------------------------
 const updateNameSpace = io.of("/update");
 
@@ -384,12 +434,138 @@ updateNameSpace.on("connection", (socket) => {
   }, 20);
 });
 
+
+const httpsUpdateNameSpace = httpsIo.of("/update");
+
+
+httpsUpdateNameSpace.on("connection", (socket) => {
+  socket.userData = {
+    position: { x: 0, y: -500, z: -500 },
+    quaternion: { x: 0, y: 0, z: 0, w: 0 },
+    animation: "idle",
+    name: "",
+    avatarSkin: "",
+  };
+  connectedSockets.set(socket.id, socket);
+
+  console.log(`${socket.id} has connected to https update namespace`);
+
+  socket.on("setID", () => {
+    httpsUpdateNameSpace.emit("setID", socket.id);
+  });
+
+  socket.on("setName", (name) => {
+    socket.userData.name = name;
+  });
+
+  socket.on("setAvatar", (avatarSkin) => {
+    // console.log("setting avatar " + avatarSkin);
+    httpsUpdateNameSpace.emit("setAvatarSkin", avatarSkin, socket.id);
+  });
+
+  socket.on("disconnect", () => {
+    console.log(`${socket.id} has disconnected`);
+    connectedSockets.delete(socket.id);
+    httpsUpdateNameSpace.emit("removePlayer", socket.id);
+  });
+
+  socket.on("initPlayer", (player) => {
+    // console.log(player);
+  });
+
+  socket.on("updatePlayer", (player) => {
+    socket.userData.position.x = player.position.x;
+    socket.userData.position.y = player.position.y;
+    socket.userData.position.z = player.position.z;
+    socket.userData.quaternion.x = player.quaternion[0];
+    socket.userData.quaternion.y = player.quaternion[1];
+    socket.userData.quaternion.z = player.quaternion[2];
+    socket.userData.quaternion.w = player.quaternion[3];
+    socket.userData.animation = player.animation;
+    socket.userData.avatarSkin = player.avatarSkin;
+  });
+
+  setInterval(() => {
+    const playerData = [];
+    for (const socket of connectedSockets.values()) {
+      if (socket.userData.name !== "" && socket.userData.avatarSkin !== "") {
+        playerData.push({
+          id: socket.id,
+          name: socket.userData.name,
+          position_x: socket.userData.position.x,
+          position_y: socket.userData.position.y,
+          position_z: socket.userData.position.z,
+          quaternion_x: socket.userData.quaternion.x,
+          quaternion_y: socket.userData.quaternion.y,
+          quaternion_z: socket.userData.quaternion.z,
+          quaternion_w: socket.userData.quaternion.w,
+          animation: socket.userData.animation,
+          avatarSkin: socket.userData.avatarSkin,
+        });
+      }
+    }
+
+    if (socket.userData.name === "" || socket.userData.avatarSkin === "") {
+      return;
+    } else {
+      httpsUpdateNameSpace.emit("playerData", playerData);
+    }
+  }, 20);
+});
+
 server.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
 
+httpsServer.listen(8080, ()=> {
+  console.log("Server listening on 8080");
+});
+
 io.on("connection", (socket) => {
   console.log(`New user connected: ${socket.id}`);
+
+  // Store the current room for the socket
+  let currentRoom = null;
+
+  // Listen for a user joining a room
+  socket.on("joinRoom", (roomName) => {
+    if (currentRoom) {
+      // If the user is already in a room, leave that room first
+      socket.leave(currentRoom);
+      console.log(`${socket.id} left room: ${currentRoom}`);
+    }
+
+    // Join the new room
+    socket.join(roomName);
+    currentRoom = roomName;
+    console.log(`${socket.id} joined room: ${roomName}`);
+
+    // Notify others in the room that a new user has joined
+    socket
+      .to(roomName)
+      .emit("message", `User ${socket.id.slice(0, 5)} has joined the room`);
+  });
+
+  // Listen for incoming messages from clients
+  socket.on("sendMessage", ({ message, roomName }) => {
+    console.log(`Message from ${socket.id} in room ${roomName}: ${message}`);
+
+    // Broadcast the message to the room
+    socket.to(roomName).emit("broadcastMessage", {
+      message,
+      id: socket.id, // Include the socket ID to identify the sender
+    });
+  });
+
+  // Handle disconnection
+  socket.on("disconnect", () => {
+    console.log(`User disconnected: ${socket.id}`);
+  });
+});
+
+
+httpsIo.on("connection", (socket) => {
+  console.log(`New user connected to the https NameSpace: ${socket.id}`);
 
   // Store the current room for the socket
   let currentRoom = null;

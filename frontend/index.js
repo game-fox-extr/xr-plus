@@ -193,8 +193,8 @@ const speakerDisableIcon = document.getElementById("speakerDisableIcon");
 let currentRoom = "";
 
 function closeAllModals() {
-  domElements.chatbotModal.style.display = "none";
-  domElements.chatWithOtherModal.style.display = "none";
+  chatbotModal.style.display = "none";
+  chatWithOtherModal.style.display = "none";
 }
 
 // Open the Chatbot Modal
