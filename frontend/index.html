@@ -1,75 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="icon" type="image/svg+xml" href="/media/sflogo.svg" />
+    <meta name="author" content="GameFox XR" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Multiplayer Game Fox</title>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <link rel="icon" type="image/svg+xml" href="/media/sflogo.svg" />
-  <meta name="author" content="GameFox XR" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Multiplayer Game Fox</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/media/sflogo.svg" />
+    <link
+      rel="icon"
+      type="image/svgLogo"
+      sizes="32x32"
+      href="/media/sflogo.svg"
+    />
+    <link
+      rel="icon"
+      type="image/svgLogo"
+      sizes="16x16"
+      href="/media/sflogo.svg"
+    />
+    <link rel="manifest" href="/media/site.webmanifest" />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="theme-color" content="#ffffff" />
+  </head>
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/media/sflogo.svg" />
-  <link rel="icon" type="image/svgLogo" sizes="32x32" href="/media/sflogo.svg" />
-  <link rel="icon" type="image/svgLogo" sizes="16x16" href="/media/sflogo.svg" />
-  <link rel="manifest" href="/media/site.webmanifest" />
-  <meta name="msapplication-TileColor" content="#da532c" />
-  <meta name="theme-color" content="#ffffff" />
-</head>
+  <body>
+    <!-- song -->
+    <audio id="myAudio" style="display: none" src="/media/music.mp3"></audio>
 
-<body>
-  <!-- song -->
-  <audio id="myAudio" style="display: none" src="/media/music.mp3"></audio>
-
-  <!-- Preloader -->
-  <div class="preloader">
-    <div class="preloader-wrapper">
-      <img src="fox-logo.jpg" width="118" height="129" viewBox="0 0 118 129" fill="none" class="svgLogo"
-        alt="MainFoxLogo" />
-      <div class="progress-bar-container">
-        <div class="progress-bar"></div>
+    <!-- Preloader -->
+    <div class="preloader">
+      <div class="preloader-wrapper">
+        <img
+          src="fox-logo.jpg"
+          width="118"
+          height="129"
+          viewBox="0 0 118 129"
+          fill="none"
+          class="svgLogo"
+          alt="MainFoxLogo"
+        />
+        <div class="progress-bar-container">
+          <div class="progress-bar"></div>
+        </div>
       </div>
-    </div>
-    <div class="progress-wrapper">
-      <div class="percent preloader-percentage1">0</div>
-      <div class="percent preloader-percentage2">0</div>
-      <div class="percent symbol">%</div>
-    </div>
-    <h1 class="preloader-title fade-in-out">Your XR experience is loading</h1>
-    <div class="description">
-      This is a personlised walkthrough experience created by Strategy Fox,
-      feel free to roam around and explore. Get your friend to play with you.
-      Welcome to next generation WebXR
-    </div>
+      <div class="progress-wrapper">
+        <div class="percent preloader-percentage1">0</div>
+        <div class="percent preloader-percentage2">0</div>
+        <div class="percent symbol">%</div>
+      </div>
+      <h1 class="preloader-title fade-in-out">Your XR experience is loading</h1>
+      <div class="description">
+        This is a personlised walkthrough experience created by Strategy Fox,
+        feel free to roam around and explore. Get your friend to play with you.
+        Welcome to next generation WebXR
+      </div>
 
-    <!-- Name Enter Screen -->
-    <div class="welcome-title">Welcome to Game Fox</div>
-    <div class="name-form">
-      <input type="text" placeholder="What should we call you?" id="name-input" required />
-    </div>
-    <button id="name-input-button">Continue</button>
+      <!-- Name Enter Screen -->
+      <div class="welcome-title">Welcome to Game Fox</div>
+      <div class="name-form">
+        <input
+          type="text"
+          placeholder="What should we call you?"
+          id="name-input"
+          required
+        />
+      </div>
+      <button id="name-input-button">Continue</button>
 
-    <!-- Ready Player Me Interaction -->
-    <div class="character-select-title">Who you wanna be today?</div>
-    <div class="avatar-img-wrapper">
-      <img src="/images/asian_male_head.png" alt="" class="avatar-img avatar-left" />
-      <img src="/images/asian_female_head.png" alt="" class="avatar-img avatar-right" />
-    </div>
-    <div class="customize-character-btn">
-      Controls: WASD to move | SHIFT to run | SPACE to jump | ENTER to chat |
-      Click/Drag to pan | Middle Mouse to zoom | o to dance
-    </div>
-    <!-- <iframe
+      <!-- Ready Player Me Interaction -->
+      <div class="character-select-title">Who you wanna be today?</div>
+      <div class="avatar-img-wrapper">
+        <img
+          src="/images/asian_male_head.png"
+          alt=""
+          class="avatar-img avatar-left"
+        />
+        <img
+          src="/images/asian_female_head.png"
+          alt=""
+          class="avatar-img avatar-right"
+        />
+      </div>
+      <div class="customize-character-btn">
+        Controls: WASD to move | SHIFT to run | SPACE to jump | ENTER to chat |
+        Click/Drag to pan | Middle Mouse to zoom | o to dance
+      </div>
+      <!-- <iframe
             id="frame"
             class="frame"
             allow="camera *; microphone *; clipboard-write"
         ></iframe> -->
-  </div>
+    </div>
 
-  <!-- Mobile Controls -->
-  <div class="joystick-area"></div>
-  <div class="control-overlay hidden"></div>
-  <!-- <button class="mobile-chat-button">
+    <!-- Mobile Controls -->
+    <div class="joystick-area"></div>
+    <div class="control-overlay hidden"></div>
+    <!-- <button class="mobile-chat-button">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 height="40"
@@ -82,11 +111,11 @@
             </svg>
         </button> -->
 
-  <!-- Logo -->
-  <!-- <div class="logo-wrapper"></div> -->
+    <!-- Logo -->
+    <!-- <div class="logo-wrapper"></div> -->
 
-  <!-- Menu -->
-  <!-- <button class="menu-button">
+    <!-- Menu -->
+    <!-- <button class="menu-button">
             <div class="menu-content">
                 <span class="menu-circle"></span>
                 <div class="menu-bar-wrapper">
@@ -97,12 +126,12 @@
             </div>
         </button> -->
 
-  <!-- Other Ui -->
+    <!-- Other Ui -->
 
-  <!-- <button class="switch-camera-view"></button> -->
+    <!-- <button class="switch-camera-view"></button> -->
 
-  <!-- Chat Box -->
-  <!-- <div class="chat-box">
+    <!-- Chat Box -->
+    <!-- <div class="chat-box">
       <div class="chat-container"></div>
       <div class="form">
         <label for="chat-message-input"></label>
@@ -120,78 +149,167 @@
       </div>
     </div> -->
 
-  <!-- Experience -->
-  <div class="experience-wrapper" id="experienceWrapper">
-    <canvas class="experience-canvas"></canvas>
-    <div class="crosshair"></div>
-    <img id="lensImage" src="Ar Icon.svg" alt="Lens Icon" class="lens-icon" />
-    <img src="Bot Icon.svg" alt="Chatbot Icon" class="chatbot-icon" id="chatbotImage" />
-    <img src="ChatWithOthers.svg" alt="Chat With other icon" class="chat-with-other-icon" id="chatWithOtherImage" />
-    <img src="Unmute.svg" alt="Speaker Icon" class="speaker-icon" id="speakerIcon" />
-    <img src="Mute.svg" alt="Speaker Disbale Icon" class="speaker-disable-icon" id="speakerDisableIcon" />
-    <img id="powered-by" src="logo.avif" alt="Powered By Strategy Fox" class="powered-by" />
-  </div>
-
-  <!-- First Modal: Chat with Others -->
-  <div id="chatWithOtherModal" class="chatWithOther-modal">
-    <div class="chatWithOther-header">
-      <div style="
+    <!-- Experience -->
+    <div class="experience-wrapper" id="experienceWrapper">
+      <canvas class="experience-canvas"></canvas>
+      <div class="crosshair"></div>
+      <img id="lensImage" src="Ar Icon.svg" alt="Lens Icon" class="lens-icon" />
+      <img
+        src="Bot Icon.svg"
+        alt="Chatbot Icon"
+        class="chatbot-icon"
+        id="chatbotImage"
+      />
+      <img
+        src="ChatWithOthers.svg"
+        alt="Chat With other icon"
+        class="chat-with-other-icon"
+        id="chatWithOtherImage"
+      />
+      <img
+        src="Unmute.svg"
+        alt="Speaker Icon"
+        class="speaker-icon"
+        id="speakerIcon"
+      />
+      <img
+        src="Mute.svg"
+        alt="Speaker Disbale Icon"
+        class="speaker-disable-icon"
+        id="speakerDisableIcon"
+      />
+      <img
+        id="powered-by"
+        src="logo.avif"
+        alt="Powered By Strategy Fox"
+        class="powered-by"
+      />
+    </div>
+    <div id="modalBackdrop"></div>
+    <div id="modal" class="modal-container">
+      <div class="modal-backdrop" id="modalBackdrop"></div>
+      <div class="button-wrapper">
+        <div class="viewBtn">
+          <button id="viewPhoto" class="toggle-btn">Photos</button>
+          <button id="view3dModel" class="toggle-btn">3D View</button>
+        </div>
+        <div class="closeBtn">
+          <button id="xCloseBtn" class="toggle-btn">X</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-image" id="productImageContainer">
+          <!-- Loaded from product.js -->
+        </div>
+        <div class="product-details" id="productDetails">
+          <div class="sticky-header">
+            <h2 class="product-title" id="product-title">-</h2>
+            <div class="quantity-selector">
+              <label for="quantity">Quantity:</label>
+              <select id="quantity">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+            </div>
+            <div class="size-options">
+              <!-- Load dynamically in ShopifyBuy -->
+              >
+            </div>
+          </div>
+          <h3 class="description-title">Description</h3>
+          <p id="product-description">
+            <!-- loaded in ShopifyBuy -->
+            -
+          </p>
+          <div class="buttons-holder">
+            <button id="add-to-cart">Add to cart</button>
+            <button id="checkout-btn">Checkout</button>
+          </div>
+        </div>
+      </div>
+      <!-- <button id="closeModal" class="close-btn">Close</button> -->
+    </div>
+    <!-- First Modal: Chat with Others -->
+    <div id="chatWithOtherModal" class="chatWithOther-modal">
+      <div class="chatWithOther-header">
+        <div
+          style="
             display: flex;
             flex-direction: row;
             justify-content: flex-start;
             margin-left: 0.5rem;
-          ">
-        <img src="fox-logo.jpg" alt="foxlogo" style="height: 30px; padding-right: 1rem" />
-        <h1>CHAT WITH OTHERS</h1>
+          "
+        >
+          <img
+            src="fox-logo.jpg"
+            alt="foxlogo"
+            style="height: 30px; padding-right: 1rem"
+          />
+          <h1>CHAT WITH OTHERS</h1>
+        </div>
+        <button id="closeChatWithOtherModal" class="close-chatWithOther-btn">
+          ×
+        </button>
       </div>
-      <button id="closeChatWithOtherModal" class="close-chatWithOther-btn">
-        ×
-      </button>
+      <form id="chatWithOtherRoomForm">
+        <input
+          type="text"
+          id="chatWithOtherRoomInput"
+          placeholder="Enter room name"
+        />
+        <button type="submit" id="joinRoomButton">Join</button>
+      </form>
+      <div id="chatWithOtherHistory"></div>
+      <!-- Separate chat history -->
+      <form id="chatWithOtherForm">
+        <input
+          type="text"
+          id="chatWithOtherInput"
+          placeholder="Enter your message"
+        />
+        <button type="button">Send</button>
+      </form>
+      <div id="chatWithOtherLoader">
+        <img src="loader.gif" width="150px" alt="Loading..." />
+      </div>
     </div>
-    <form id="chatWithOtherRoomForm">
-      <input type="text" id="chatWithOtherRoomInput" placeholder="Enter room name" />
-      <button type="submit" id="joinRoomButton">Join</button>
-    </form>
-    <div id="chatWithOtherHistory"></div>
-    <!-- Separate chat history -->
-    <form id="chatWithOtherForm">
-      <input type="text" id="chatWithOtherInput" placeholder="Enter your message" />
-      <button type="button">Send</button>
-    </form>
-    <div id="chatWithOtherLoader">
-      <img src="loader.gif" width="150px" alt="Loading..." />
-    </div>
-  </div>
 
-  <!-- Second Modal: Chat with Fox -->
-  <div id="chatbotModal" class="chatbot-modal">
-    <div class="chatbot-header">
-      <div style="
+    <!-- Second Modal: Chat with Fox -->
+    <div id="chatbotModal" class="chatbot-modal">
+      <div class="chatbot-header">
+        <div
+          style="
             display: flex;
             flex-direction: row;
             justify-content: flex-start;
             margin-left: 0.5rem;
-          ">
-        <img src="fox-logo.jpg" alt="foxlogo" style="height: 30px; padding-right: 1rem" />
-        <h1>CHAT WITH FOX</h1>
+          "
+        >
+          <img
+            src="fox-logo.jpg"
+            alt="foxlogo"
+            style="height: 30px; padding-right: 1rem"
+          />
+          <h1>CHAT WITH FOX</h1>
+        </div>
+        <button id="closeChatbotModal" class="close-chatbot-btn">×</button>
       </div>
-      <button id="closeChatbotModal" class="close-chatbot-btn">×</button>
+      <div id="chat-history"></div>
+      <form id="chat-form">
+        <input type="text" id="user-input" placeholder="Enter your message" />
+        <button type="button">Send</button>
+      </form>
+      <div id="loader">
+        <img src="loader.gif" width="150px" alt="Loading..." />
+      </div>
     </div>
-    <div id="chat-history"></div>
-    <form id="chat-form">
-      <input type="text" id="user-input" placeholder="Enter your message" />
-      <button type="button">Send</button>
-    </form>
-    <div id="loader">
-      <img src="loader.gif" width="150px" alt="Loading..." />
-    </div>
-  </div>
 
     <script type="module" src="/index.js"></script>
     <script type="module" src="/realtimeaudio.js"></script>
->>>>>>> 80368869323088e64016625b6d0eeaa53938c630
-
-  <!-- <script type="module" src="/chat.js"></script> -->
-</body>
-
+    <script type="module" src="/chatbot.js"></script>
+    <script type="module" src="/product.js"></script>
+  </body>
 </html>
