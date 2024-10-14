@@ -75,7 +75,7 @@ function handleChatClick() {
 }
 
 function handleNameSubmit() {
-  userName = domElements.nameInput.value;
+  const userName = domElements.nameInput.value;
   chatSocket.emit("setName", userName);
   updateSocket.emit("setName", userName);
 }
