@@ -47,7 +47,7 @@ export default class Player {
     };
 
     this.player.raycaster = new THREE.Raycaster();
-    this.player.raycaster.far = 5;
+    this.player.raycaster.far = 10;
 
     this.player.height = 1.2;
     this.player.speedMultiplier = 0.35;
@@ -66,11 +66,11 @@ export default class Player {
       0.35
     );
 
-
     this.otherPlayers = {};
 
     this.socket.emit("setID");
     this.socket.emit("initPlayer", this.player);
+    this.lastRaycast = this.time.current;
   }
 
   initControls() {
@@ -99,7 +99,7 @@ export default class Player {
     console.log("unfocused");
     this.player.animation = "idle";
     const actions = Object.keys(this.actions);
-    for (let action of actions){
+    for (let action of actions) {
       this.actions[action] = false;
     }
   }
@@ -115,12 +115,12 @@ export default class Player {
       this.actions.movingJoyStick = true;
       this.joystickVector.z = -data.vector.y;
       this.joystickVector.x = data.vector.x;
-      this.player.animation = 'walking';
+      this.player.animation = "walking";
     });
 
     this.joystick.on("end", () => {
       this.actions.movingJoyStick = false;
-      this.player.animation = 'idle';
+      this.player.animation = "idle";
     });
   }
 
@@ -253,7 +253,7 @@ export default class Player {
         break;
 
       case "KeyC":
-        if(!this.camera.togglable) return;
+        if (!this.camera.togglable) return;
         if (!this.camera.thirdPerson) {
           this.camera.enableThirdPerson();
           document.exitPointerLock();
@@ -441,7 +441,14 @@ export default class Player {
   }
 
   onPointerDown = (e) => {
+    const timeElapsed = this.time.current - this.lastRaycast;
+    const RAYCAST_COOLDOWN = 1000;
     document.querySelector(".experience-canvas").requestPointerLock();
+
+    if (timeElapsed > RAYCAST_COOLDOWN) {
+      this.current = this.lastRaycast;
+      this.raycast();
+    }
   };
 
   onDesktopPointerMove = (e) => {
@@ -589,27 +596,136 @@ export default class Player {
     return direction.applyQuaternion(this.camera.perspectiveCamera.quaternion);
   }
 
-  updateRaycaster() {
-    this.player.raycaster.ray.origin.copy(
-      this.camera.perspectiveCamera.position
+  // updateRaycaster() {
+  //   this.player.raycaster.ray.origin.copy(
+  //     this.camera.perspectiveCamera.position
+  //   );
+
+  //   this.player.raycaster.ray.direction.copy(
+  //     this.getgetCameraLookAtDirectionalVector()
+  //   );
+
+  //   const intersects = this.player.raycaster.intersectObjects(
+  //     this.player.interactionObjects.children
+  //   );
+
+  //   if (intersects.length === 0) {
+  //     this.currentIntersectObject = "";
+  //   } else {
+  //     this.currentIntersectObject = intersects[0].object.name;
+  //   }
+
+  //   if (this.currentIntersectObject !== this.previousIntersectObject) {
+  //     this.previousIntersectObject = this.currentIntersectObject;
+  //   }
+  // }
+
+  raycast() {
+    // Set raycaster from the camera
+    this.player.raycaster.setFromCamera(
+      { x: 0, y: 0 },
+      this.camera.perspectiveCamera
     );
 
-    this.player.raycaster.ray.direction.copy(
-      this.getgetCameraLookAtDirectionalVector()
-    );
-
+    // Check for intersections with objects in the scene
     const intersects = this.player.raycaster.intersectObjects(
-      this.player.interactionObjects.children
+      this.experience.scene.children,
+      true
     );
 
-    if (intersects.length === 0) {
-      this.currentIntersectObject = "";
-    } else {
-      this.currentIntersectObject = intersects[0].object.name;
-    }
+    console.log(intersects[0]);
+    // UUID and name to match
+    const targetObjects = [
+      {
+        uuid: "47676f83-ba31-4804-8b94-89e1512e32cc",
+        name: "Dress_F2_0",
+        productId: 8637689462996,
+      },
+      {
+        uuid: "f700d2b0-54bb-4006-9ea3-387911127477",
+        name: "Pattern2D_15970001_D1_0",
+        productId: 8637689462996,
+      },
+      {
+        uuid: "ed238f4e-d667-4385-a492-c4d9346c1646",
+        name: "D1_MD1_0",
+        productId: 8637689462996,
+      },
+      {
+        uuid: "e919308a-3b4e-4550-a58e-8ca8b58d5522",
+        name: "jeans",
+        productId: 8629642002644,
+      },
+      {
+        uuid: "e919308a-3b4e-4550-a58e-8ca8b58d5522",
+        name: "MANEQUIM_1",
+        productId: 8629642002644,
+      },
+    ];
 
-    if (this.currentIntersectObject !== this.previousIntersectObject) {
-      this.previousIntersectObject = this.currentIntersectObject;
+    const sauseObjects = [
+      {
+        uuid: null,
+        name: "BluOrngSunsetA001",
+        url: "https://lens.snap.com/experience/6174e772-1d93-478f-bd13-fd4da3823b6f",
+      },
+      {
+        uuid: null,
+        name: "Hoodie_MD",
+        url: "https://lens.snap.com/experience/abb21f5b-1163-40df-80df-90542fc8310f",
+      },
+    ];
+
+    for (let i = 0; i < intersects.length; i++) {
+      console.log(intersects[i]);
+      const object = intersects[i].object;
+
+      const isTargetObject = targetObjects.some(
+        (target) => object.name === target.name
+      );
+
+      const targetSauseObject = sauseObjects.find(
+        (target) => object.name === target.name
+      );
+
+      if (isTargetObject) {
+        // Find the product id of target with the same name as object
+        var productId = "";
+        targetObjects.forEach((target) => {
+          if (target.name === object.name) {
+            productId = target.productId;
+            return;
+          }
+        });
+        if (productId != null) showModal(productId);
+        break; // Exit loop after first match
+      }
+
+      if (targetSauseObject) {
+        // Check if the object is the hoodie and if it's at the specific position
+        if (object.name === "Hoodie_MD") {
+          // Open modal
+          showModal(8629642002644);
+        } else if (object.name === "BluOrngSunsetA001") {
+          showModal(8629583904980);
+        } else {
+          // Update the UUID in sauseObjects if it's null
+          if (!targetSauseObject.uuid) {
+            targetSauseObject.uuid = object.uuid;
+          }
+
+          // Release pointer lock
+          document.exitPointerLock();
+
+          // Show an alert
+          alert("You are being redirected to a new page.");
+
+          // Redirect to the URL after alert is acknowledged
+          window.location = targetSauseObject.url;
+        }
+
+        break; // Exit loop after first match
+      }
     }
   }
 
@@ -650,9 +766,11 @@ export default class Player {
   }
 
   updateAvatarRotation() {
-
-    if(this.actions.movingJoyStick) {
-      this.player.directionOffset = Math.atan2(this.joystickVector.x, this.joystickVector.z);
+    if (this.actions.movingJoyStick) {
+      this.player.directionOffset = Math.atan2(
+        this.joystickVector.x,
+        this.joystickVector.z
+      );
     }
 
     if (this.actions.forward) {
