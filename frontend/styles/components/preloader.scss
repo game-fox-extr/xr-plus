@@ -192,6 +192,31 @@
     }
 }
 
+.create-or-join-wrapper {
+    @extend %center;
+    @extend %cover;
+    gap: 64px;
+    opacity: 0;
+    z-index: -50;
+}
+
+.create-button, .join-button {
+    @extend #name-input-button;
+    font-size: xx-large;
+    font-weight: bold;
+    opacity: 0;
+    z-index: -50;
+}
+
+.center-text {
+    font-size: 48px;
+    opacity: 0;
+    color: $color-base-medium-blue;
+    font-weight: 200;
+    opacity: 0;
+    z-index: -50;
+}
+
 // Character Selection Screen -----------------------
 .character-select-title {
     @extend %center;

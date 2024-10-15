@@ -13,6 +13,8 @@ const domElements = elements({
   inputWrapper: ".message-input-wrapper",
   nameInputButton: "#name-input-button",
   nameInput: "#name-input",
+  nameInputButton: "#room-input-button",
+  roomInput: "#room-input",
   avatarLeftImg: ".avatar-left",
   avatarRightImg: ".avatar-right",
 });

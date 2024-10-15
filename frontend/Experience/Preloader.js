@@ -39,6 +39,9 @@ export default class Preloader {
             avatarRightImg: ".avatar-right",
             customizeButton: ".customize-character-btn",
             description: ".description",
+            createOrJoinWrapper: ".create-or-join-wrapper",
+            createButton: ".create-button",
+            joinButton: ".join-button",
         });
 
         // **** This is for updating a percentage ****
@@ -150,7 +153,7 @@ export default class Preloader {
                         ease: "power4.out",
                         onComplete: () => {
                             // this.domElements.preloader.remove();
-                            resolve;
+                            resolve();
                         },
                     },
                     "-=1"
@@ -264,6 +267,8 @@ export default class Preloader {
             "click",
             this.onCharacterSelect
         );
+        this.domElements.joinButton.addEventListener("click", this.onJoin);
+        this.domElements.createButton.addEventListener("click", this.onCreate);
         this.domElements.avatarRightImg.addEventListener(
             "click",
             this.onCharacterSelect

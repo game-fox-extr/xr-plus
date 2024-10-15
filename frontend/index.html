@@ -49,15 +49,24 @@
     </div>
     <button id="name-input-button">Continue</button>
 
+    <div class="create-or-join-wrapper">
+      <button class="create-button">Create</button>
+      <div class="center-text">Or <br> A Room</div>
+      <div class="join-wrapper">
+        <input type="text" name="room-input" id="room-input" minlength="6" maxlength="6" autocapitalize="characters" pattern="[A-Z]+">
+        <button id="room-input-button">Join</button>
+      </div>
+    </div>
+
     <!-- Ready Player Me Interaction -->
-    <div class="character-select-title">Who you wanna be today?</div>
+    <div class="character-select-title">Choose your avatar: </div>
     <div class="avatar-img-wrapper">
       <img src="/images/asian_male_head.png" alt="" class="avatar-img avatar-left" />
       <img src="/images/asian_female_head.png" alt="" class="avatar-img avatar-right" />
     </div>
     <div class="customize-character-btn">
       Controls: WASD to move | SHIFT to run | SPACE to jump | ENTER to chat |
-      Click/Drag to pan | Middle Mouse to zoom | o to dance
+      Click/Drag to pan | Middle Mouse to zoom | O to dance | C to switch view |
     </div>
     <!-- <iframe
             id="frame"
@@ -189,7 +198,6 @@
 
     <script type="module" src="/index.js"></script>
     <script type="module" src="/realtimeaudio.js"></script>
->>>>>>> 80368869323088e64016625b6d0eeaa53938c630
 
   <!-- <script type="module" src="/chat.js"></script> -->
 </body>
