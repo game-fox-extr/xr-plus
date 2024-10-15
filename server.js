@@ -152,8 +152,13 @@ updateNameSpace.on("connection", (socket) => {
   });
 
   socket.on("joinRoom", (roomCode) => {
+    if (!gameRooms.has(roomCode)) {
+      return;
+    }
     socket.userData.roomCode = roomCode;
     gameRooms.get(roomCode).addPlayer(socket);
+    socket.join(roomCode);
+    updateNameSpace.emit("generateCode", roomCode, socket.id);
   });
 
   socket.on("createRoom", () => {
@@ -162,17 +167,21 @@ updateNameSpace.on("connection", (socket) => {
       newCode = generateRoomCode(ROOM_CODE_LENGTH);
     }
     socket.userData.roomCode = newCode;
-    gameRooms.set(newCode, new GameRoom());
+    gameRooms.set(newCode, new GameRoom(newCode));
     gameRooms.get(newCode).addPlayer(socket);
+    socket.join(newCode);
     updateNameSpace.emit("generateCode", newCode, socket.id);
   });
 
   socket.on("disconnect", () => {
     console.log(`${socket.id} has disconnected`);
-    const room = gameRooms.get(socket.playerData.roomCode);
-    room.removePlayer(socket);
-    if (room.numPlayers === 0) gameRooms.delete(room.roomCode);
     updateNameSpace.emit("removePlayer", socket.id);
+    // const roomCode = socket.playerData.roomCode;
+    // if(roomCode){
+    //   const room = gameRooms.get(roomCode);
+    //   room.removePlayer(socket);
+    //   if (room.numPlayers === 0) gameRooms.delete(room.roomCode);
+    // }
   });
 
   socket.on("initPlayer", (player) => {

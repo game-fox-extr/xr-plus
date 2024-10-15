@@ -21,6 +21,8 @@
   <!-- song -->
   <audio id="myAudio" style="display: none" src="/media/music.mp3"></audio>
 
+  <div class="room-code"></div>
+
   <!-- Preloader -->
   <div class="preloader">
     <div class="preloader-wrapper">
@@ -51,9 +53,9 @@
 
     <div class="create-or-join-wrapper">
       <button class="create-button">Create</button>
-      <div class="center-text">Or <br> A Room</div>
+      <div class="center-text">Or</div>
       <div class="join-wrapper">
-        <input type="text" name="room-input" id="room-input" minlength="6" maxlength="6" autocapitalize="characters" pattern="[A-Z]+">
+        <input type="text" name="room-input" id="room-input" minlength="6" maxlength="6" autocapitalize="characters" pattern="[A-Z]+" placeholder="Enter Room Code">
         <button id="room-input-button">Join</button>
       </div>
     </div>

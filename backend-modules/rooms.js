@@ -20,6 +20,7 @@ class GameRoom {
     addPlayer(playerSocket) {
         this.playerSockets.set(playerSocket.id, playerSocket);
         this.numPlayers++;
+        console.log(`${this.roomCode} added ${playerSocket.id}`);
     }
 
     removePlayer(playerSocket) {

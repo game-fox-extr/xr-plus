@@ -5,14 +5,15 @@ import lerp from "./Utils/functions/lerp.js";
 import elements from "./Utils/functions/elements.js";
 
 import gsap from "gsap";
+import { io } from "socket.io-client";
+
 
 export default class Preloader {
     constructor() {
         this.experience = new Experience();
         this.resources = this.experience.resources;
-
         this.matchmedia = gsap.matchMedia();
-
+        this.socket = this.experience.socket;
         this.loaded = 0;
         this.queue = 0;
 
@@ -41,7 +42,9 @@ export default class Preloader {
             description: ".description",
             createOrJoinWrapper: ".create-or-join-wrapper",
             createButton: ".create-button",
-            joinButton: ".join-button",
+            joinWrapper: ".join-wrapper",
+            joinInput: "#room-input",
+            centerText: ".center-text",
         });
 
         // **** This is for updating a percentage ****
@@ -166,6 +169,10 @@ export default class Preloader {
         this.nameInputOutro();
     };
 
+    onJoin = () => {
+        this.roomOutro();
+    }
+
     onCharacterSelect = () => {
         this.preloaderOutro();
     };
@@ -201,6 +208,88 @@ export default class Preloader {
                             this.domElements.welcomeTitle.remove();
                             this.domElements.nameForm.remove();
                             this.domElements.nameInputButton.remove();
+                        },
+                    },
+                    "-=1.05"
+                )
+                .to(
+                    this.domElements.createOrJoinWrapper,
+                    {
+                        opacity: 1,
+                        duration: 1.2,
+                        ease: "power4.out",
+                    },
+                    "-=1.05"
+                )
+                .to(
+                    this.domElements.createButton,
+                    {
+                        opacity: 1,
+                        duration: 1.2,
+                        ease: "power4.out",
+                    },
+                    "-=1.05"
+                )
+                .to(
+                    this.domElements.centerText,
+                    {
+                        opacity: 1,
+                        duration: 1.2,
+                        ease: "power4.out",
+                    },
+                    "-=1.05"
+                )
+                .to(
+                    this.domElements.joinWrapper,
+                    {
+                        opacity: 1,
+                        duration: 1.2,
+                        ease: "power4.out",
+                        onComplete: () => {
+                            this.domElements.joinInput.focus();
+                        }
+                    },
+                    "-=1.05"
+                )
+        });
+    }
+
+    async roomOutro() {
+        return new Promise((resolve) => {
+            this.timeline3 = new gsap.timeline();
+            this.timeline3
+                .to(this.domElements.createOrJoinWrapper, {
+                    opacity: 0,
+                    duration: 1.2,
+                    ease: "power4.out",
+                })
+                .to(
+                    this.domElements.createButton,
+                    {
+                        opacity: 0,
+                        duration: 1.2,
+                        ease: "power4.out",
+                    },
+                    "-=1.05"
+                )
+                .to(
+                    this.domElements.centerText,
+                    {
+                        opacity: 0,
+                        duration: 1.2,
+                        ease: "power4.out",
+                    },
+                    "-=1.05",
+                )
+                .to(
+                    this.domElements.joinWrapper,
+                    {
+                        opacity: 0,
+                        duration: 1.2,
+                        ease: "power4.out",
+                        onComplete: () =>  { this.domElements.joinWrapper.remove();
+                            this.domElements.createButton.remove();
+                            this.domElements.createOrJoinWrapper.remove();
                             this.domElements.avatarLeftImg.style.pointerEvents =
                                 "auto";
                             this.domElements.avatarRightImg.style.pointerEvents =
@@ -244,8 +333,8 @@ export default class Preloader {
 
     async preloaderOutro() {
         return new Promise((resolve) => {
-            this.timeline3 = new gsap.timeline();
-            this.timeline3.to(this.domElements.preloader, {
+            this.timeline4 = new gsap.timeline();
+            this.timeline4.to(this.domElements.preloader, {
                 duration: 1.7,
                 // top: "-150%",
                 opacity: 0,
@@ -267,8 +356,10 @@ export default class Preloader {
             "click",
             this.onCharacterSelect
         );
-        this.domElements.joinButton.addEventListener("click", this.onJoin);
-        this.domElements.createButton.addEventListener("click", this.onCreate);
+        this.socket.on("generateCode", (roomCode, id) => {
+            if(id !== this.socket.id) return;
+            this.onJoin();
+        });
         this.domElements.avatarRightImg.addEventListener(
             "click",
             this.onCharacterSelect

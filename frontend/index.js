@@ -13,8 +13,11 @@ const domElements = elements({
   inputWrapper: ".message-input-wrapper",
   nameInputButton: "#name-input-button",
   nameInput: "#name-input",
-  nameInputButton: "#room-input-button",
+  nameInputButton: "#name-input-button",
   roomInput: "#room-input",
+  roomInputButton: '#room-input-button',
+  createButton: '.create-button',
+  roomCodeDiv: '.room-code',
   avatarLeftImg: ".avatar-left",
   avatarRightImg: ".avatar-right",
 });
@@ -53,6 +56,12 @@ chatSocket.on("connect", () => {
 });
 // domElements.canvas.addEventListener("click", () => document.querySelector('.experience-canvas').requestPointerLock());
 
+updateSocket.on("generateCode", (roomCode, id) => {
+  if(updateSocket.id !== id) return;
+  domElements.roomCodeDiv.textContent = roomCode;
+});
+
+
 // domElements.messageSubmitButton.addEventListener("click", handleMessageSubmit);
 domElements.nameInputButton.addEventListener("click", handleNameSubmit);
 // domElements.chatContainer.addEventListener("click", handleChatClick);
@@ -64,7 +73,10 @@ domElements.avatarRightImg.addEventListener(
   "click",
   handleCharacterSelectionRight
 );
+
+domElements.roomInputButton.addEventListener("click", handleJoin);
 // document.addEventListener("keydown", handleMessageSubmit);
+domElements.createButton.addEventListener('click', handleCreate);
 
 document.getElementById("lensImage").addEventListener("click", function () {
   alert("Proceed with Lens Experience!");
@@ -73,6 +85,7 @@ document.getElementById("lensImage").addEventListener("click", function () {
     "_blank"
   );
 });
+
 
 function handleChatClick() {
   if (domElements.inputWrapper.classList.contains("hidden"))
@@ -83,6 +96,15 @@ function handleNameSubmit() {
   userName = domElements.nameInput.value;
   chatSocket.emit("setName", userName);
   updateSocket.emit("setName", userName);
+}
+
+function handleJoin() {
+  const roomCode = domElements.roomInput.value;
+  updateSocket.emit("joinRoom", roomCode);
+}
+
+function handleCreate() {
+  updateSocket.emit("createRoom");
 }
 
 function handleCharacterSelectionLeft() {
