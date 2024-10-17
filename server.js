@@ -8,10 +8,10 @@ import { GameRoom, generateRoomCode } from "./backend-modules/rooms.js";
 
 const ROOM_CODE_LENGTH = 6;
 // Load your SSL certificate and key
-const options = {
-  key: fs.readFileSync("ssl/server.key"),
-  cert: fs.readFileSync("ssl/server.crt"),
-};
+// const options = {
+//   key: fs.readFileSync("ssl/server.key"),
+//   cert: fs.readFileSync("ssl/server.crt"),
+// };
 
 // Create an HTTPS server
 
@@ -24,7 +24,7 @@ const port = process.env.PORT || 3000;
 
 const app = express();
 const server = http.createServer(app);
-const httpsServer = https.createServer(options, app);
+// const httpsServer = https.createServer(options, app);
 const io = new Server(server, {
   cors: {
     origin: "*",
