@@ -30,7 +30,11 @@
   <!-- song -->
   <audio id="myAudio" style="display: none" src="/media/music.mp3"></audio>
 
-  <div class="room-code"></div>
+  <div class="room-code-wrapper">
+    Room:
+    <div class="room-code"></div>
+  </div>
+  
 
     <!-- Preloader -->
     <div class="preloader">
@@ -252,14 +256,6 @@
           ×
         </button>
       </div>
-      <form id="chatWithOtherRoomForm">
-        <input
-          type="text"
-          id="chatWithOtherRoomInput"
-          placeholder="Enter room name"
-        />
-        <button type="submit" id="joinRoomButton">Join</button>
-      </form>
       <div id="chatWithOtherHistory"></div>
       <!-- Separate chat history -->
       <form id="chatWithOtherForm">
@@ -268,7 +264,7 @@
           id="chatWithOtherInput"
           placeholder="Enter your message"
         />
-        <button type="button">Send</button>
+        <button type="button" id="chatWithOtherButton">Send</button>
       </form>
       <div id="chatWithOtherLoader">
         <img src="loader.gif" width="150px" alt="Loading..." />

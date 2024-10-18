@@ -14,7 +14,7 @@ import World from "./World/World.js";
 export default class Experience {
     static instance;
 
-    constructor(canvas, socket) {
+    constructor(canvas, socket, chatSocket) {
         if (Experience.instance) {
             return Experience.instance;
         }
@@ -23,6 +23,7 @@ export default class Experience {
 
         this.canvas = canvas;
         this.socket = socket;
+        this.chatSocket = chatSocket;
         this.sizes = new Sizes();
         this.time = new Time();
 

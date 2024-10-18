@@ -45,7 +45,7 @@ const updateSocket = io(socketUrl.toString() + "update");
 
 // Experience ----------------------------------
 
-const experience = new Experience(domElements.canvas, updateSocket);
+const experience = new Experience(domElements.canvas, updateSocket, chatSocket);
 // Sockets ----------------------------------
 
 chatSocket.on("connect", () => {
@@ -55,6 +55,7 @@ chatSocket.on("connect", () => {
 
 updateSocket.on("generateCode", (roomCode, id) => {
   if(updateSocket.id !== id) return;
+  chatSocket.emit("generateCode", roomCode);
   domElements.roomCodeDiv.textContent = roomCode;
 });
 
@@ -82,12 +83,6 @@ document.getElementById("lensImage").addEventListener("click", function () {
     "_blank"
   );
 });
-
-
-function handleChatClick() {
-  if (domElements.inputWrapper.classList.contains("hidden"))
-    domElements.inputWrapper.classList.remove("hidden");
-}
 
 function handleNameSubmit() {
   const userName = domElements.nameInput.value;
@@ -121,43 +116,12 @@ function handleCharacterSelectionRight() {
   );
 }
 
-function handleMessageSubmit(event) {
-  if (event.type === "click" || event.key === "Enter") {
-    domElements.inputWrapper.classList.toggle("hidden");
-    domElements.messageInput.focus();
-
-    if (domElements.messageInput.value === "") return;
-    displayMessage(
-      userName,
-      domElements.messageInput.value.substring(0, 500),
-      getTime()
-    );
-    chatSocket.emit(
-      "send-message",
-      domElements.messageInput.value.substring(0, 500),
-      getTime()
-    );
-    domElements.messageInput.value = "";
-  }
-}
-
 function getTime() {
   const currentDate = new Date();
   const hours = currentDate.getHours().toString().padStart(2, "0");
   const minutes = currentDate.getMinutes().toString().padStart(2, "0");
   const time = `${hours}:${minutes}`;
   return time;
-}
-
-function displayMessage(name, message, time) {
-  const messageDiv = document.createElement("div");
-  const messageSpan = document.createElement("span");
-  messageSpan.classList.add("different-color");
-  messageSpan.textContent = `[${time}] ${name}:`;
-  messageDiv.appendChild(messageSpan);
-  messageDiv.appendChild(document.createTextNode(` ${message}`));
-  domElements.chatContainer.append(messageDiv);
-  domElements.chatContainer.scrollTop = domElements.chatContainer.scrollHeight;
 }
 
 // Get data from server ----------------------------------

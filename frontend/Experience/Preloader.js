@@ -5,7 +5,6 @@ import lerp from "./Utils/functions/lerp.js";
 import elements from "./Utils/functions/elements.js";
 
 import gsap from "gsap";
-import { io } from "socket.io-client";
 
 
 export default class Preloader {

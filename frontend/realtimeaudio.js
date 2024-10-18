@@ -1,3 +1,4 @@
+import Experience from "./Experience/Experience";
 import "./index.scss";
 import AgoraRTC from "agora-rtc-sdk-ng";
 AgoraRTC.setLogLevel(4);
@@ -6,8 +7,13 @@ const token = null;
 const rtcUid = Math.floor(Math.random() * 2032);
 const speakerIcon = document.getElementById("speakerIcon");
 const speakerDisableIcon = document.getElementById("speakerDisableIcon");
-
-let roomid = "main";
+const socket = new Experience().socket;
+let roomCode = "none"; 
+let initialized = false;
+socket.on("generateCode", (audioRoomCode, id) => {
+  if(socket.id !== id) return;
+  roomCode = audioRoomCode;
+});
 
 let audioTracks = {
   localAudioTrack: null,
@@ -16,14 +22,14 @@ let audioTracks = {
 
 let rtcClient;
 
-let micMuted = false;
+let micMuted = true;
 
 let initRtc = async () => {
   rtcClient = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
   rtcClient.on("user-joined", handleUserJoined);
   rtcClient.on("user-published", handleUserPublished);
   rtcClient.on("user-left", handleUserLeft);
-  await rtcClient.join(appid, roomid, token, rtcUid);
+  await rtcClient.join(appid, roomCode, token, rtcUid);
   audioTracks.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
   audioTracks.localAudioTrack.setMuted(micMuted);
   rtcClient.publish(audioTracks.localAudioTrack);
@@ -55,11 +61,13 @@ speakerIcon.addEventListener("click", () => {
 });
 
 // Displaying the speaker Disable Icon
-speakerDisableIcon.addEventListener("click", () => {
+speakerDisableIcon.addEventListener("click", async () => {
+  if(!initialized) {
+    await initRtc();
+    initialized = true;
+  }
   speakerIcon.style.display = "flex";
   speakerDisableIcon.style.display = "none";
   micMuted = false;
   audioTracks.localAudioTrack.setMuted(micMuted);
 });
-
-initRtc();

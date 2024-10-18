@@ -114,20 +114,6 @@ button:disabled {
   transform: translate(-50%, -50%);
 }
 
-#chatWithOtherRoomForm {
-  display: flex;
-  padding: 10px;
-  border-bottom: 2px solid #ddd;
-}
-
-#chatWithOtherRoomInput {
-  flex: 1;
-  margin-right: 10px;
-  padding: 10px;
-  font-size: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
 
 #joinRoomButton {
   font-family: "Poppins", sans-serif;

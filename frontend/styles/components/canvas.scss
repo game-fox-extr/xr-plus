@@ -84,7 +84,7 @@ canvas {
   position: fixed;
   top: min(35vw, 35vh);
   left: min(1vw, 1vh);
-  display: "flex";
+  display: none;
 }
 
 #speakerDisableIcon {
@@ -93,7 +93,7 @@ canvas {
   position: fixed;
   top: min(35vw, 35vh);
   left: min(1vw, 1vh);
-  display: none;
+  display: "flex";
 }
 
 #speakerDisableIcon:hover {
