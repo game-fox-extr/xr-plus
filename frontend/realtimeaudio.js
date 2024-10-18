@@ -63,8 +63,15 @@ speakerIcon.addEventListener("click", () => {
 // Displaying the speaker Disable Icon
 speakerDisableIcon.addEventListener("click", async () => {
   if(!initialized) {
-    await initRtc();
-    initialized = true;
+    try{
+      await navigator.mediaDevices.getUserMedia({ audio: true });
+      await initRtc();
+      initialized = true;
+    } catch(error){
+      console.error("Microphone access denied or error:", error);
+      alert("Microphone access is required to use voice chat");
+      return;
+    }
   }
   speakerIcon.style.display = "flex";
   speakerDisableIcon.style.display = "none";
