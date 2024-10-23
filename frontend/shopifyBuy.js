@@ -3,12 +3,12 @@ import Client from "shopify-buy";
 import Swal from "sweetalert2";
 // Initialize Shopify Client
 const client = Client.buildClient({
-  domain: "6696b8-78.myshopify.com", // Store domain
-  storefrontAccessToken: "6cb2be504abda01d0e0a4efcc38342ac", // Storefront access token
+  domain: "gsv01y-gx.myshopify.com", // Store domain
+  storefrontAccessToken: "b148c0911287ca8a6f23a6d7bab23110", // Storefront access token
 });
 
 var checkout = null;
-const default_product_id = 8629642002644; // hoodie
+const default_product_id = 9658662650149; // hoodie
 
 class ShopifyBuy {
   constructor() {
@@ -101,11 +101,11 @@ class ShopifyBuy {
 
   view3dModel() {
     let src =
-      "https://cdn.shopify.com/3d/models/o/711e92d33971a568/chinese_Half_hand_shirt.glb";
+      "https://cdn.shopify.com/3d/models/o/8d4edf0f746458b9/chinese_Half_hand_shirt.glb";
     console.log("Product Id: " + this.product.id);
-    if (this.product.id === "gid://shopify/Product/8629642002644") {
+    if (this.product.id === "gid://shopify/Product/9658662650149") {
       src = "models/Sause Hoodie.glb";
-    } else if (this.product.id === "gid://shopify/Product/8629583904980") {
+    } else if (this.product.id === "gid://shopify/Product/9658662682917") {
       src = "models/Sause Tshirt New.glb";
     }
     document.getElementById("productImageContainer").innerHTML = `

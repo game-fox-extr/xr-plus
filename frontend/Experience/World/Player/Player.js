@@ -639,27 +639,27 @@ export default class Player {
       {
         uuid: "47676f83-ba31-4804-8b94-89e1512e32cc",
         name: "Dress_F2_0",
-        productId: 8637689462996,
+        productId: 9658662682917,
       },
       {
         uuid: "f700d2b0-54bb-4006-9ea3-387911127477",
         name: "Pattern2D_15970001_D1_0",
-        productId: 8637689462996,
+        productId: 9658662682917,
       },
       {
         uuid: "ed238f4e-d667-4385-a492-c4d9346c1646",
         name: "D1_MD1_0",
-        productId: 8637689462996,
+        productId: 9658662682917,
       },
       {
         uuid: "e919308a-3b4e-4550-a58e-8ca8b58d5522",
         name: "jeans",
-        productId: 8629642002644,
+        productId: 9658662650149,
       },
       {
         uuid: "e919308a-3b4e-4550-a58e-8ca8b58d5522",
         name: "MANEQUIM_1",
-        productId: 8629642002644,
+        productId: 9658662519077,
       },
     ];
 
@@ -705,9 +705,9 @@ export default class Player {
         // Check if the object is the hoodie and if it's at the specific position
         if (object.name === "Hoodie_MD") {
           // Open modal
-          showModal(8629642002644);
+          showModal(9658662650149);
         } else if (object.name === "BluOrngSunsetA001") {
-          showModal(8629583904980);
+          showModal(9658662682917);
         } else {
           // Update the UUID in sauseObjects if it's null
           if (!targetSauseObject.uuid) {
