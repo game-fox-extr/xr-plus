@@ -121,6 +121,8 @@ updateNameSpace.on("connection", (socket) => {
 
   socket.on("joinRoom", (roomCode) => {
     if (!gameRooms.has(roomCode)) {
+      socket.emit("invalidRoomCode", "Not a valid room code.");
+      console.log(`Invalid room code entered: ${roomCode}`); // Log for debugging
       return;
     }
     socket.userData.roomCode = roomCode;
