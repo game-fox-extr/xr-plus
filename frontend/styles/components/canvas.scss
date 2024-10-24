@@ -74,6 +74,18 @@ canvas {
   cursor: pointer;
 }
 
+#changeViewIcon {
+  width: min(10vw, 10vh);
+  height: auto;
+  position: fixed;
+  top: min(34vw, 34vh);
+  right: min(1vw, 1vh);
+}
+
+#changeViewIcon:hover {
+  cursor: pointer;
+}
+
 #speakerIcon:hover {
   cursor: pointer;
 }
