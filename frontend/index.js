@@ -20,6 +20,7 @@ const domElements = elements({
   roomCodeDiv: '.room-code',
   avatarLeftImg: ".avatar-left",
   avatarRightImg: ".avatar-right",
+  changeViewIcon: "#changeViewIcon",
 });
 
 
@@ -93,6 +94,11 @@ domElements.avatarRightImg.addEventListener(
   handleCharacterSelectionRight
 );
 
+domElements.changeViewIcon.addEventListener(
+  "click",
+  handleViewChange
+);
+
 domElements.roomInputButton.addEventListener("click", handleJoin);
 // document.addEventListener("keydown", handleMessageSubmit);
 domElements.createButton.addEventListener('click', handleCreate);
@@ -135,6 +141,23 @@ function handleCharacterSelectionRight() {
     "click",
     handleCharacterSelectionRight
   );
+}
+
+function handleViewChange() {
+  const camera = experience?.camera;
+  if(!camera.togglable) return;
+  const onPointerDown = experience.world.player.onPointerDown;
+  if (!camera.thirdPerson) {
+    camera.enableThirdPerson();
+    const canvas = document.querySelector(".experience-canvas");
+    canvas.removeEventListener("pointerdown", onPointerDown);
+    canvas.classList.toggle("grab");
+  } else {
+    camera.disableThirdPerson();
+    const canvas = document.querySelector(".experience-canvas");
+    canvas.addEventListener("pointerdown", onPointerDown);
+    canvas.classList.toggle("grab");
+  }
 }
 
 function getTime() {
