@@ -53,4 +53,35 @@
   font-size: medium;
   color: black;
   text-align: center; /* Center text */
+  cursor: pointer;
+}
+
+.tooltip {
+  opacity: 0 ;
+  background-color: black;
+  width: 50%;
+  left: 25%;
+  color: white;
+  text-align: center;
+  vertical-align: middle;
+  padding: 5px 0;
+  border-radius: 10%;
+  position: absolute;
+  z-index: 100;
+  transition: opacity 0.5s;
+}
+
+.tooltip::after {
+  content: " ";
+  position: absolute;
+  left: 50%;
+  bottom: 100%; 
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent black transparent;
+}
+
+.room-code:hover+.tooltip{
+  opacity: 1;
 }
