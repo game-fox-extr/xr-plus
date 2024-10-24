@@ -81,6 +81,27 @@ updateSocket.on("generateCode", (roomCode, id) => {
   domElements.roomCodeDiv.textContent = roomCode;
 });
 
+updateSocket.on("invalidRoomCode", (message) => {
+  console.log("Received invalidRoomCode event with message:", message); // Log for debugging
+  Swal.fire({
+    title: "Oops... Invalid room code",
+    text: message || "Please check the room code and try again",
+    icon: "error",
+    toast: true, // Make it a small toast-style alert
+    position: "top-end", // Position it at the top-right corner
+    showConfirmButton: false, // Remove the confirmation button
+    timer: 3000, // Auto-dismiss after 3 seconds
+    timerProgressBar: true, // Show a progress bar during the countdown
+    didOpen: () => {
+      // Adjust z-index dynamically if needed
+      const swalContainer = document.querySelector('.swal2-container');
+      if (swalContainer) {
+        swalContainer.style.zIndex = '999999999999999999';
+      }
+    }
+  });
+});
+
 
 // domElements.messageSubmitButton.addEventListener("click", handleMessageSubmit);
 domElements.nameInputButton.addEventListener("click", handleNameSubmit);
