@@ -2,7 +2,7 @@ import "./index.scss";
 import { io } from "socket.io-client";
 import Experience from "./Experience/Experience.js";
 import elements from "./Experience/Utils/functions/elements.js";
-
+import Swal from "sweetalert2";
 // Dom Elements ----------------------------------
 
 const domElements = elements({
@@ -21,6 +21,27 @@ const domElements = elements({
   avatarLeftImg: ".avatar-left",
   avatarRightImg: ".avatar-right",
 });
+
+
+function copyToClipboard() {
+  const roomCode = domElements.roomCodeDiv.textContent;
+  navigator.clipboard.writeText(roomCode).then(() => {
+    Swal.fire({
+      icon: 'success',
+      title: 'Copied to clipboard!',
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 4500,
+      timerProgressBar: true,
+    });
+  }).catch(err => {
+    console.error('Failed to copy: ', err);
+  });
+}
+
+// Add event listener for room code copy
+domElements.roomCodeDiv.addEventListener('click', copyToClipboard);
 
 window.mobileAndTabletCheck = function () {
   let check = false;

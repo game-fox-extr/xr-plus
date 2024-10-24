@@ -41,14 +41,16 @@
   left: min(1vw, 1vh);
   top: min(1vw, 1vh);
   background: rgba(255, 255, 255, 0.5);
-  border-radius: 25%;
+  border-radius: 15%;
   border: solid white 1px;
   font-size: large;
   color: black;
+  text-align: center; /* Center text */
   padding: 1rem;
 }
 
 .room-code {
   font-size: medium;
   color: black;
+  text-align: center; /* Center text */
 }
