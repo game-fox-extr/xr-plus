@@ -167,16 +167,16 @@ function handleCharacterSelectionRight() {
 function handleViewChange() {
   const camera = experience?.camera;
   if(!camera.togglable) return;
-  const onPointerDown = experience.world.player.onPointerDown;
+  const requestPointerLock = experience.world.player.requestPointerLock;
   if (!camera.thirdPerson) {
     camera.enableThirdPerson();
     const canvas = document.querySelector(".experience-canvas");
-    canvas.removeEventListener("pointerdown", onPointerDown);
+    canvas.removeEventListener("pointerdown", requestPointerLock);
     canvas.classList.toggle("grab");
   } else {
     camera.disableThirdPerson();
     const canvas = document.querySelector(".experience-canvas");
-    canvas.addEventListener("pointerdown", onPointerDown);
+    canvas.addEventListener("pointerdown", requestPointerLock);
     canvas.classList.toggle("grab");
   }
 }

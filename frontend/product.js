@@ -7,7 +7,8 @@ const viewPhoto = document.getElementById("viewPhoto");
 const view3dModel = document.getElementById("view3dModel");
 const crosshair = document.querySelector(".crosshair");
 const productImageContainer = document.getElementById("productImageContainer");
-var carousel, carouselInner, prevSlide, nextSlide;
+const pointerPreviouslyLocked = false;
+let carousel, carouselInner, prevSlide, nextSlide;
 
 function initializeCarousel() {
   productImageContainer.innerHTML = `
@@ -51,6 +52,7 @@ document.addEventListener("pointerlockchange", onPointerLockChange, false);
 
 function showModal(productId) {
   if (document.pointerLockElement) {
+    pointerPreviouslyLocked = true;
     document.exitPointerLock();
   }
   shopifyBuy.fetchProduct("gid://shopify/Product/" + productId);
@@ -72,8 +74,9 @@ function onCloseModal() {
   crosshair.classList.remove("hidden");
   onViewPhoto();
   // Request pointer lock if not on mobile
-  if (!window.mobileAndTabletCheck()) {
+  if (!window.mobileAndTabletCheck() && pointerPreviouslyLocked) {
     document.querySelector(".experience-canvas").requestPointerLock();
+    pointerPreviouslyLocked = false;
   } else {
     // Ensure the joystick is visible on mobile
     const gamepad = document.querySelector("#gamepad-overlay");

@@ -15,6 +15,10 @@ export default class Player {
     this.octree = this.experience.world.octree;
     this.resources = this.experience.resources;
     this.socket = this.experience.socket;
+    this.pointer = {
+      x: -1,
+      y: -1
+    }
 
     this.domElements = elements({
       joystickArea: ".joystick-area",
@@ -258,12 +262,12 @@ export default class Player {
           this.camera.enableThirdPerson();
           document.exitPointerLock();
           const canvas = document.querySelector(".experience-canvas");
-          canvas.removeEventListener("pointerdown", this.onPointerDown);
+          canvas.removeEventListener("pointerdown", this.requestPointerLock);
           canvas.classList.toggle("grab");
         } else {
           this.camera.disableThirdPerson();
           const canvas = document.querySelector(".experience-canvas");
-          canvas.addEventListener("pointerdown", this.onPointerDown);
+          canvas.addEventListener("pointerdown", this.requestPointerLock);
           canvas.classList.toggle("grab");
         }
         this.camera.togglable = false;
@@ -410,7 +414,7 @@ export default class Player {
     document.addEventListener("keyup", this.onKeyUp);
     const canvas = document.querySelector(".experience-canvas");
     if (!window.mobileAndTabletCheck())
-      canvas.addEventListener("pointerdown", this.onPointerDown);
+      canvas.addEventListener("pointerdown", this.requestPointerLock);
     canvas.addEventListener("pointermove", (e) => {
       if (e.pointerType === "touch") {
         this.onMobileDeviceMove(e);
@@ -418,6 +422,8 @@ export default class Player {
         this.onDesktopPointerMove(e);
       }
     });
+    canvas.addEventListener("pointerdown", this.raycastLight)
+    canvas.addEventListener("pointermove", this.updatePointerPosition);
     canvas.addEventListener("pointerdown", (e) => {
       if (e.target.closest(".joystick-area")) return;
       if (e.pointerType === "touch") {
@@ -440,14 +446,25 @@ export default class Player {
     window.addEventListener("focus", this.mobilizePlayer);
   }
 
-  onPointerDown = (e) => {
+  updatePointerPosition = (event) => {
+    this.pointer = {
+      x: (event.clientX / window.innerWidth) * 2 - 1,
+      y: -((event.clientY / window.innerHeight) * 2 - 1),
+    }
+  }
+
+  requestPointerLock = (event) => {
+    const canvas = document.querySelector(".experience-canvas");
+    canvas.requestPointerLock();
+  }
+
+  raycastLight = (e) => {
     const timeElapsed = this.time.current - this.lastRaycast;
     const RAYCAST_COOLDOWN = 1000;
-    document.querySelector(".experience-canvas").requestPointerLock();
 
     if (timeElapsed > RAYCAST_COOLDOWN) {
       this.current = this.lastRaycast;
-      this.raycast();
+      this.raycast(this.camera.thirdPerson);
     }
   };
 
@@ -620,12 +637,22 @@ export default class Player {
   //   }
   // }
 
-  raycast() {
+  raycast(isThirdPerson) {
+    const firstPersonRaycastPosition = { x: 0, y: 0 };
     // Set raycaster from the camera
+    if(isThirdPerson){
+      console.log(this.pointer);
+      this.player.raycaster.setFromCamera(
+        this.pointer,
+        this.camera.perspectiveCamera
+      );
+    }else {
+
     this.player.raycaster.setFromCamera(
-      { x: 0, y: 0 },
+      firstPersonRaycastPosition,
       this.camera.perspectiveCamera
     );
+  }
 
     // Check for intersections with objects in the scene
     const intersects = this.player.raycaster.intersectObjects(
