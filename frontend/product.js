@@ -1,4 +1,6 @@
 import { shopifyBuy } from "/shopifyBuy.js";
+import Experience from "./Experience/Experience";
+
 import "/index.scss";
 const modal = document.getElementById("modal");
 const modalBackdrop = document.getElementById("modalBackdrop");
@@ -7,7 +9,8 @@ const viewPhoto = document.getElementById("viewPhoto");
 const view3dModel = document.getElementById("view3dModel");
 const crosshair = document.querySelector(".crosshair");
 const productImageContainer = document.getElementById("productImageContainer");
-const pointerPreviouslyLocked = false;
+const experience = new Experience();
+let pointerPreviouslyLocked = false;
 let carousel, carouselInner, prevSlide, nextSlide;
 
 function initializeCarousel() {
@@ -53,6 +56,7 @@ document.addEventListener("pointerlockchange", onPointerLockChange, false);
 function showModal(productId) {
   if (document.pointerLockElement) {
     pointerPreviouslyLocked = true;
+    console.log('here');
     document.exitPointerLock();
   }
   shopifyBuy.fetchProduct("gid://shopify/Product/" + productId);
@@ -71,7 +75,7 @@ function onCloseModal() {
   modal.style.display = "none";
   modalBackdrop.style.display = "none";
   document.body.classList.remove("modal-open");
-  crosshair.classList.remove("hidden");
+  if(!experience.camera.thirdPerson) crosshair.classList.remove("hidden");
   onViewPhoto();
   // Request pointer lock if not on mobile
   if (!window.mobileAndTabletCheck() && pointerPreviouslyLocked) {
