@@ -30,25 +30,20 @@ export default [
         {
           name: "interactions1",
           type: "glbModel",
-          path: "/models/inter_elem.glb",
+          path: "/models/women.glb",
         },
         {
           name: "interactions2",
           type: "glbModel",
-          path: "/models/Sause Tshirt New.glb",
+          path: "/models/men.glb",
         },
         {
           name: "interactions3",
           type: "glbModel",
-          path: "/models/Sause Hoodie Man.glb",
-        },
-        {
-          name: "interactions4",
-          type: "glbModel",
           path: "/models/Sause Hoodie.glb",
         },
         {
-          name: "interactions5",
+          name: "interactions4",
           type: "glbModel",
           path: "/models/Sause Tshirt.glb",
         },
