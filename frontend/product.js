@@ -77,7 +77,7 @@ function onCloseModal() {
   if (!window.mobileAndTabletCheck() && pointerPreviouslyLocked) {
     document.querySelector(".experience-canvas").requestPointerLock();
     pointerPreviouslyLocked = false;
-  } else {
+  } else if (window.mobileAndTabletCheck()){
     // Ensure the joystick is visible on mobile
     const gamepad = document.querySelector("#gamepad-overlay");
     gamepad.style.display = "block";
