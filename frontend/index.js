@@ -3,6 +3,7 @@ import { io } from "socket.io-client";
 import Experience from "./Experience/Experience.js";
 import elements from "./Experience/Utils/functions/elements.js";
 import Swal from "sweetalert2";
+import uiChange from "./Experience/World/Player/changeView.js"
 // Dom Elements ----------------------------------
 
 const domElements = elements({
@@ -168,17 +169,8 @@ function handleViewChange() {
   const camera = experience?.camera;
   if(!camera.togglable) return;
   const requestPointerLock = experience.world.player.requestPointerLock;
-  if (!camera.thirdPerson) {
-    camera.enableThirdPerson();
-    const canvas = document.querySelector(".experience-canvas");
-    canvas.removeEventListener("pointerdown", requestPointerLock);
-    canvas.classList.toggle("grab");
-  } else {
-    camera.disableThirdPerson();
-    const canvas = document.querySelector(".experience-canvas");
-    canvas.addEventListener("pointerdown", requestPointerLock);
-    canvas.classList.toggle("grab");
-  }
+  uiChange(camera.thirdPerson, requestPointerLock);
+  camera.thirdPerson ? camera.disableThirdPerson() : camera.enableThirdPerson();
 }
 
 function getTime() {

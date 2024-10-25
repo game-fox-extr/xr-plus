@@ -1,10 +1,11 @@
 import * as THREE from "three";
 import Experience from "../../Experience.js";
 import { Capsule } from "three/examples/jsm/math/Capsule";
-
+import uiChange from "./changeView.js" 
 import nipplejs from "nipplejs";
 import elements from "../../Utils/functions/elements.js";
 import Avatar from "./Avatar.js";
+import changeView from "./changeView.js";
 
 export default class Player {
   constructor() {
@@ -258,18 +259,8 @@ export default class Player {
 
       case "KeyC":
         if (!this.camera.togglable) return;
-        if (!this.camera.thirdPerson) {
-          this.camera.enableThirdPerson();
-          document.exitPointerLock();
-          const canvas = document.querySelector(".experience-canvas");
-          canvas.removeEventListener("pointerdown", this.requestPointerLock);
-          canvas.classList.toggle("grab");
-        } else {
-          this.camera.disableThirdPerson();
-          const canvas = document.querySelector(".experience-canvas");
-          canvas.addEventListener("pointerdown", this.requestPointerLock);
-          canvas.classList.toggle("grab");
-        }
+        uiChange(this.camera.thirdPerson, this.requestPointerLock);
+        this.camera.thirdPerson ? this.camera.disableThirdPerson() : this.camera.enableThirdPerson();
         this.camera.togglable = false;
         return;
         break;
