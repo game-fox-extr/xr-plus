@@ -121,8 +121,7 @@
 
 .description {
     @extend %center;
-    font-size: 12px;
-    // opacity: 0;
+    font-size: 16px;
     color: $color-base-medium-blue;
     font-weight: 300;
     position: absolute;
@@ -130,6 +129,7 @@
     width: 500px;
     left: 50%;
     transform: translate(-50%, -50%);
+    text-align: center;
     letter-spacing: 2px;
     font-family: 'SF Pro Display', 'Helvetica', sans-serif;
 }
