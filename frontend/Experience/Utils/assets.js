@@ -58,6 +58,11 @@ export default [
           path: "/textures/buildings.webp",
         },
         {
+          name: "mobile_buildings_texture",
+          type: "imageTexture",
+          path: "/textures/mobile_textures/buildings.webp",
+        },
+        {
           name: "items_texture",
           type: "imageTexture",
           path: "/textures/items.webp",
@@ -71,6 +76,11 @@ export default [
           name: "walls_texture",
           type: "imageTexture",
           path: "/textures/walls_baked.webp",
+        },
+        {
+          name: "mobile_walls_texture",
+          type: "imageTexture",
+          path: "/textures/mobile_textures/walls_baked.webp",
         },
         {
           name: "skyBoxTexture",
