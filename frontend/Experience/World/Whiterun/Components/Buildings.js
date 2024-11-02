@@ -14,9 +14,9 @@ export default class Buildings {
     init() {
         this.buildings = this.resources.items.buildings.scene;
         if (window.mobileAndTabletCheck()) {
-            this.buildings_texture = this.resources.items.whiterun.mobile_buildings_texture; // mobile texture
+            this.buildings_texture = this.resources.items.mobile_buildings_texture; // mobile texture
         } else {
-            this.buildings_texture = this.resources.items.whiterun.buildings_texture; // desktop texture
+            this.buildings_texture = this.resources.items.buildings_texture; // desktop texture
         }
     }
 

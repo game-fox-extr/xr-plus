@@ -14,9 +14,9 @@ export default class Walls {
     init() {
         this.walls = this.resources.items.walls.scene;
         if (window.mobileAndTabletCheck()) {
-            this.walls_texture = this.resources.items.whiterun.mobile_walls_texture; // mobile texture
+            this.walls_texture = this.resources.items.mobile_walls_texture; // mobile texture
         } else {
-            this.walls_texture = this.resources.items.whiterun.walls_texture; // desktop texture
+            this.walls_texture = this.resources.items.walls_texture; // desktop texture
         }
     }
 
