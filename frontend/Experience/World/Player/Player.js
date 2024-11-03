@@ -31,7 +31,10 @@ export default class Player {
     this.initPlayer();
     this.initControls();
     this.setPlayerSocket();
-    this.setJoyStick();
+
+    if(window.mobileAndTabletCheck())
+      this.setJoyStick();
+
     this.addEventListeners();
   }
 
@@ -112,7 +115,12 @@ export default class Player {
   setJoyStick() {
     this.options = {
       zone: this.domElements.joystickArea,
-      mode: "dynamic",
+      mode: "static",
+      dynamicPage: true,
+      restOpacity: 1,
+      position: { left: '50px', bottom: '50px'},
+      color: 'rgb(200,200,200)',
+      size: 120,
     };
     this.joystick = nipplejs.create(this.options);
 
