@@ -67,10 +67,10 @@ export default class Preloader {
             this.timeline = new gsap.timeline();
             this.timeline
                 .to(this.domElements.svgLogo, {
-                    opacity: 0,
+                    opacity: 1,
                     duration: 1.2,
                     delay: 2.2,
-                    top: "-120%",
+                    top: "-180%",
                     ease: "power4.out",
                 })
                 .to(
@@ -117,11 +117,11 @@ export default class Preloader {
                         },
 
                         onComplete: () => {
-                            this.domElements.svgLogo.remove();
+                            // this.domElements.svgLogo.remove();
                             this.domElements.progressBarContainer.remove();
                             this.domElements.progressWrapper.remove();
                             this.domElements.preloaderTitle.remove();
-                            this.domElements.preloaderWrapper.remove();
+                            // this.domElements.preloaderWrapper.remove();
                         },
                     },
                     "-=1.05"
@@ -351,6 +351,12 @@ export default class Preloader {
             "click",
             this.onNameInput
         );
+        document.addEventListener("keydown", (event) => {
+            if(event.key == "Enter"){
+                this.onNameInput();
+            }
+        });
+
         this.domElements.avatarLeftImg.addEventListener(
             "click",
             this.onCharacterSelect

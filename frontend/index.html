@@ -20,6 +20,8 @@
 <body>
   <!-- song -->
   <audio id="myAudio" style="display: none" src="/media/music.mp3"></audio>
+  <!-- To hide the screen till all css is loaded -->
+  <div id="load-hider" style="display:block; width: 100vh; height: 100vw; z-index: 100;  background-color: white; margin: 0;"></div>
 
   <div class="room-code-wrapper">
     Room Code
@@ -27,7 +29,6 @@
     </div>
     <span class="tooltip">Copy Code</span>
   </div>
-
 
   <!-- Preloader -->
   <div class="preloader">
@@ -45,8 +46,8 @@
     </div>
     <h1 class="preloader-title fade-in-out">Your XR experience is loading</h1>
     <div class="description">
-      This is a personlised walkthrough experience created by Strategy Fox,
-      feel free to roam around and explore. Get your friend to play with you.
+      This is a personlised walkthrough experience created by Strategy Fox.
+      Feel free to roam around and explore. Get your friend to play with you.
       <br></br>
       Welcome to next generation WebXR
     </div>
@@ -62,9 +63,9 @@
       <button class="create-button">Create</button>
       <div class="center-text">Or</div>
       <div class="join-wrapper">
+        <button id="room-input-button">Join</button>
         <input type="text" name="room-input" id="room-input" minlength="6" maxlength="6" autocapitalize="characters"
           pattern="[A-Z]+" placeholder="Enter Room Code">
-        <button id="room-input-button">Join</button>
       </div>
     </div>
 
