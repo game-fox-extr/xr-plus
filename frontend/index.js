@@ -61,6 +61,33 @@ window.mobileAndTabletCheck = function () {
   return check;
 };
 
+
+window.addEventListener("DOMContentLoaded", function () {
+  // Check if the device is desktop
+  if (!window.mobileAndTabletCheck()) {
+    // Create the image element
+    const lensIcon = document.createElement("img");
+    lensIcon.id = "lensImage";
+    lensIcon.src = "Ar Icon.svg";
+    lensIcon.alt = "Lens Icon";
+    lensIcon.className = "lens-icon";
+    
+    // Append the image to a specific container or directly to the body
+    document.body.appendChild(lensIcon);
+
+    // Add click event to enter fullscreen mode
+    lensIcon.addEventListener("click", function () {
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen();
+      } else if (document.documentElement.webkitRequestFullscreen) { // Safari
+        document.documentElement.webkitRequestFullscreen();
+      } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+        document.documentElement.msRequestFullscreen();
+      }
+    });
+  }
+});
+
 // Frontend Server ----------------------------------
 const socketUrl = new URL("/", window.location.href);
 const chatSocket = io(socketUrl.toString() + "chat");
@@ -131,13 +158,24 @@ domElements.roomInputButton.addEventListener("click", handleJoin);
 // document.addEventListener("keydown", handleMessageSubmit);
 domElements.createButton.addEventListener('click', handleCreate);
 
+// document.getElementById("lensImage").addEventListener("click", function () {
+//   alert("Proceed with Lens Experience!");
+//   window.open(
+//     "https://lens.snap.com/experience/6174e772-1d93-478f-bd13-fd4da3823b6f",
+//     "_blank"
+//   );
+// });
+
 document.getElementById("lensImage").addEventListener("click", function () {
-  alert("Proceed with Lens Experience!");
-  window.open(
-    "https://lens.snap.com/experience/6174e772-1d93-478f-bd13-fd4da3823b6f",
-    "_blank"
-  );
+  if (document.documentElement.requestFullscreen) {
+    document.documentElement.requestFullscreen();
+  } else if (document.documentElement.webkitRequestFullscreen) { // Safari
+    document.documentElement.webkitRequestFullscreen();
+  } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+    document.documentElement.msRequestFullscreen();
+  }
 });
+
 
 function handleNameSubmit() {
   const userName = domElements.nameInput.value;
