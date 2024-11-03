@@ -20,8 +20,6 @@
 <body>
   <!-- song -->
   <audio id="myAudio" style="display: none" src="/media/music.mp3"></audio>
-  <!-- To hide the screen till all css is loaded -->
-  <div id="load-hider" style="display:block; width: 100vh; height: 100vw; z-index: 100;  background-color: white; margin: 0;"></div>
 
   <div class="room-code-wrapper">
     Room Code
@@ -61,11 +59,11 @@
 
     <div class="create-or-join-wrapper">
       <button class="create-button">Create</button>
-      <div class="center-text">Or</div>
+      <div class="center-text">OR</div>
       <div class="join-wrapper">
-        <button id="room-input-button">Join</button>
+        <button id="room-input-button">JOIN</button>
         <input type="text" name="room-input" id="room-input" minlength="6" maxlength="6" autocapitalize="characters"
-          pattern="[A-Z]+" placeholder="Enter Room Code">
+          pattern="[A-Z]+" placeholder="Room Code">
       </div>
     </div>
 

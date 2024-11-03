@@ -67,7 +67,7 @@ export default class Preloader {
             this.timeline = new gsap.timeline();
             this.timeline
                 .to(this.domElements.svgLogo, {
-                    opacity: 1,
+                    opacity: 0,
                     duration: 1.2,
                     delay: 2.2,
                     top: "-180%",
@@ -117,11 +117,11 @@ export default class Preloader {
                         },
 
                         onComplete: () => {
-                            // this.domElements.svgLogo.remove();
+                            this.domElements.svgLogo.remove();
                             this.domElements.progressBarContainer.remove();
                             this.domElements.progressWrapper.remove();
                             this.domElements.preloaderTitle.remove();
-                            // this.domElements.preloaderWrapper.remove();
+                            this.domElements.preloaderWrapper.remove();
                         },
                     },
                     "-=1.05"

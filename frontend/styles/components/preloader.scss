@@ -1,6 +1,3 @@
-#load-hider{
-    display: none;
-}
 
 .preloader {
     @extend %center;
@@ -226,14 +223,23 @@
 #room-input-button {
     width: 40%; height: 100%;
     opacity: 1;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#room-input-button:hover{
+    background-color: #d9421c;
 }
 
 #room-input {
-    width: 60%;
+    width: 55%;
+    color: rgb(74, 74, 74);
+    font-weight: lighter;
+    font-size: 20px;
 }
 
 #room-input:focus{
-    border-style: none;
+    outline: none;
 }
 
 .create-button, .join-wrapper {
@@ -243,16 +249,18 @@
 .join-wrapper{
     display: flex;
     flex-direction: row;
+    gap: 4%;
     z-index: -1000;
     height: 60px;
-    border-style: none;
+    border: 1px solid #e4451e;
+    border-radius: 5px;
 }
 
 .center-text {
     font-size: 48px;
     opacity: 0;
     color: $color-base-medium-blue;
-    font-weight: 200;
+    font-weight: bold;
     opacity: 0;
     z-index: -50;
 }
