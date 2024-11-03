@@ -70,7 +70,7 @@
     background-color: $color-base-light-gray;
     border-radius: 7px;
     position: absolute;
-    top: 50%;
+    top: 0;
 }
 
 .progress-bar {
@@ -82,7 +82,7 @@
 
 .svgLogo {
     position: absolute;
-    top: -100%;
+    top: -150%;
 }
 
 .fade-in-out {
@@ -125,12 +125,12 @@
     color: $color-base-medium-blue;
     font-weight: 300;
     position: absolute;
-    bottom: 30%;
-    width: 500px;
+    top: 55%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
     letter-spacing: 2px;
+    line-height: 24px;
     font-family: 'SF Pro Display', 'Helvetica', sans-serif;
 }
 
@@ -156,6 +156,7 @@
         width: 250px;
         font-size: 16px;
     }
+    z-index: 50;
 }
 
 #name-input::placeholder {
@@ -168,6 +169,7 @@
 }
 
 #name-input-button {
+    cursor: pointer;
     padding: 0;
     color: $color-base-dark-blue;
     border: 2px solid $color-base-dark-blue;
@@ -190,7 +192,6 @@
         background-color: $color-base-dark-blue;
         color: white;
         outline: 1px solid $color-base-dark-blue;
-        letter-spacing: 2px;
         transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out,
             letter-spacing 0.2s ease-in-out;
     }
@@ -207,20 +208,42 @@
     }
 }
 
-.create-button, #room-input-button {
+.create-button{
     @extend #name-input-button;
+}
+
+.create-button, .join-wrapper {
     font-size: xx-large;
     font-weight: bold;
     z-index: -50;
     position: static;
-    width: 200px;
+    width: 300px;
     height: 60px;
+    padding: 0;
 }
 
 #room-input-button {
+    width: 40%; height: 100%;
     opacity: 1;
+    font-size: 20px;
+    border-radius: 3px;
+    font-weight: bold;
 }
 
+#room-input-button:hover{
+    background-color: $color-base-dark-blue;
+}
+
+#room-input {
+    width: 55%;
+    color: rgb(74, 74, 74);
+    font-weight: lighter;
+    font-size: 20px;
+}
+
+#room-input:focus{
+    outline: none;
+}
 
 .create-button, .join-wrapper {
     opacity: 0;
@@ -228,17 +251,19 @@
 
 .join-wrapper{
     display: flex;
-    flex-direction: column;
-    gap: 12px;
+    flex-direction: row;
+    gap: 4%;
     z-index: -1000;
-    padding-bottom: 34px;
+    height: 60px;
+    border: 2px solid $color-base-dark-blue;
+    border-radius: 5px;
 }
 
 .center-text {
     font-size: 48px;
     opacity: 0;
-    color: $color-base-medium-blue;
-    font-weight: 200;
+    color: $color-base-dark-blue;
+    font-weight: bold;
     opacity: 0;
     z-index: -50;
 }
@@ -294,4 +319,16 @@
     opacity: 0;
     background-color: transparent;
     z-index: -99;
+}
+
+@media(min-width: 100px){
+    .description{
+        width: 90vw;
+    }
+}
+
+@media(min-width: 800px){
+    .description{
+        width: 750px;
+    }
 }
