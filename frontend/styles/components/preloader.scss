@@ -170,7 +170,7 @@
 #name-input-button {
     padding: 0;
     color: $color-base-dark-blue;
-    outline: 1px solid $color-base-dark-blue;
+    border: 2px solid $color-base-dark-blue;
     background-color: transparent;
     position: absolute;
     width: 100px;
@@ -183,6 +183,7 @@
         letter-spacing 0.2s ease-in-out;
     text-align: center;
     vertical-align: middle;
+    border-radius: 5px;
 
     &:hover {
         background-color: $color-base-dark-blue;

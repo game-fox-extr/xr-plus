@@ -207,6 +207,7 @@ export default class Preloader {
                             this.domElements.welcomeTitle.remove();
                             this.domElements.nameForm.remove();
                             this.domElements.nameInputButton.remove();
+                            this.domElements.description.remove();
                         },
                     },
                     "-=1.05"
