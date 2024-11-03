@@ -7,7 +7,6 @@ class Item{
         this.quantity = quantity;
     }
 }
-
 export class Cart{
     constructor(){
         this.itemList = [];
@@ -32,6 +31,15 @@ export class Cart{
         }
     }
 
+    addToLocalStorage = () => {
+        localStorage.setItem('cart', JSON.stringify(this.itemList)) ;
+    };
+
+    retrieveFromLocalStorage = () => {
+        const localCart = JSON.parse(localStorage.getItem('cart')) || [];
+        this.itemList = localCart;
+    };
+
     async add(productId, variantId, quantity){
         // Check if product variant already exists in itemList
         let index = -1;
@@ -46,6 +54,8 @@ export class Cart{
         else{ // Item already exists
             this.itemList[index].quantity += quantity;
         }
+
+        this.addToLocalStorage();
 
         // Shopify Logic
         let variants = [];

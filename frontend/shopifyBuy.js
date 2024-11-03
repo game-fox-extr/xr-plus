@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 
 const default_product_id = 9658662650149; // hoodie
 
+
 class ShopifyBuy {
   constructor() {
     this.imageUrls = [];
@@ -12,7 +13,7 @@ class ShopifyBuy {
 
     // Create a cart
     this.cart = new Cart();
-
+    this.cart.retrieveFromLocalStorage();
     // Setup event listeners
     this.setupEventListeners();
   }
