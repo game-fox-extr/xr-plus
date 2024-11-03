@@ -26,11 +26,11 @@ canvas {
 }
 
 #lensImage {
-  width: min(10vw, 10vh);
+  width: min(5vw, 5vh);
   height: auto;
   position: fixed;
-  top: min(1vw, 1vh);
-  right: min(1vw, 1vh);
+  top: min(43vw, 43vh);
+  left: min(1vw, 1vh);
 }
 
 #lensImage:hover {
@@ -58,7 +58,7 @@ canvas {
   width: min(10vw, 10vh);
   height: auto;
   position: fixed;
-  top: min(12vw, 12vh);
+  top: min(1vw, 1vh);
   right: min(1vw, 1vh);
 }
 
@@ -70,7 +70,7 @@ canvas {
   width: min(10vw, 10vh);
   height: auto;
   position: fixed;
-  top: min(23vw, 23vh);
+  top: min(12vw, 12vh);
   right: min(1vw, 1vh);
 }
 
@@ -82,7 +82,7 @@ canvas {
   width: min(10vw, 10vh);
   height: auto;
   position: fixed;
-  top: min(34vw, 34vh);
+  top: min(23vw, 23vh);
   right: min(1vw, 1vh);
 }
 
