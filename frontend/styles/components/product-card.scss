@@ -179,15 +179,24 @@ body.modal-open {
   /* Ensure images cover the entire area */
 }
 
+.product-details-outer{
+    max-width: 50%;
+    min-width: 50%;
+    height: 600px;
+    padding: 20px;
+    overflow: hidden;
+    position: static;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
 /* Make the product details scrollable and sticky */
 .product-details {
-  max-width: 50%;
-  min-width: 50%;
-  padding: 20px;
-  overflow-y: auto;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  
+  overflow-y: scroll;
+  
   position: static;
   /* To make sticky positioning work */
 }

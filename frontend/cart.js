@@ -57,9 +57,6 @@ export class Cart{
 
         this.addToLocalStorage();
 
-        // Shopify Logic
-        let variants = [];
-
         // Updated Checkout
         try{
             this.checkout = await this.client.checkout.addLineItems(
@@ -83,5 +80,9 @@ export class Cart{
         catch (error) {
             console.error("Error checking out:", error);
         }
+    }
+
+    displayCart(){
+        c
     }
 }
