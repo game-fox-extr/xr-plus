@@ -1,13 +1,7 @@
 // Import Shopify Buy SDK
-import Client from "shopify-buy";
+import { Cart } from "./cart";
 import Swal from "sweetalert2";
-// Initialize Shopify Client
-const client = Client.buildClient({
-  domain: "gsv01y-gx.myshopify.com", // Store domain
-  storefrontAccessToken: "b148c0911287ca8a6f23a6d7bab23110", // Storefront access token
-});
 
-var checkout = null;
 const default_product_id = 9658662650149; // hoodie
 
 class ShopifyBuy {
@@ -16,53 +10,37 @@ class ShopifyBuy {
     this.product = null;
     this.selectedSize = 0;
 
-    // Create a checkout first
-    this.initializeCheckout()
-      .then(() => {
-        // Now you can add line items once the checkout is initialized
-        this.updatedCheckout = checkout;
+    // Create a cart
+    this.cart = new Cart();
 
-        // // Fetch product details
-        this.fetchProduct("gid://shopify/Product/" + default_product_id);
-      })
-      .catch((error) => {
-        console.error("Error initializing checkout:", error);
-      });
-    this.updatedCheckout = checkout;
+    // Setup event listeners
+    this.setupEventListeners();
+  }
 
+  setupEventListeners(){
     // Add event listeners to add-to-cart & checkout buttons
     document.getElementById("add-to-cart").addEventListener("click", () => {
-      this.addToCart(this.product.variants[this.selectedSize].id);
+    this.addToCart(this.product.variants[this.selectedSize].id);
     });
 
     document.getElementById("checkout-btn").addEventListener("click", () => {
-      this.checkoutCart();
+    this.checkoutCart();
     });
 
     document.getElementById("viewPhoto").addEventListener("click", () => {
-      this.renderImages();
+    this.renderImages();
     });
 
     document.getElementById("view3dModel").addEventListener("click", () => {
-      this.view3dModel();
+    this.view3dModel();
     });
-  }
-
-  // Function to initialize or create a checkout
-  async initializeCheckout() {
-    try {
-      // Create a new checkout
-      checkout = await client.checkout.create();
-    } catch (error) {
-      console.error("Error creating checkout:", error);
-    }
   }
 
   // Function to fetch product details
   async fetchProduct(productUrl) {
     try {
       // Fetch product details by Shopify Product ID
-      this.product = await client.product.fetch(productUrl);
+      this.product = await this.cart.client.product.fetch(productUrl);
 
       // Parse and display the product details
       this.displayProductDetails(this.product);
@@ -151,17 +129,8 @@ class ShopifyBuy {
 
   async addToCart(variantId) {
     try {
-      // Add the product variant to the checkout
-      const lineItemsToAdd = [];
-      lineItemsToAdd.push({
-        variantId: variantId,
-        quantity: parseInt(document.getElementById("quantity").value),
-      });
-
-      this.updatedCheckout = await client.checkout.addLineItems(
-        checkout.id,
-        lineItemsToAdd
-      );
+      let qty = parseInt(document.getElementById("quantity").value);
+      this.cart.add(this.product.id, variantId, qty);
 
       // Use SweetAlert instead of normal alert
       Swal.fire({
@@ -185,13 +154,8 @@ class ShopifyBuy {
   }
 
   async checkoutCart() {
-    try {
-      // Redirect to the checkout page
-      window.location.href = this.updatedCheckout.webUrl;
-    } catch (error) {
-      console.error("Error checking out:", error);
-    }
+    this.cart.checkoutCart();
   }
 }
 
-export const shopifyBuy = new ShopifyBuy(client);
+export const shopifyBuy = new ShopifyBuy();
