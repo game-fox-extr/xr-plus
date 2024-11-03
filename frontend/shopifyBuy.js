@@ -13,7 +13,7 @@ class ShopifyBuy {
 
     // Create a cart
     this.cart = new Cart();
-    this.cart.retrieveFromLocalStorage();
+    
     // Setup event listeners
     this.setupEventListeners();
   }
@@ -131,7 +131,7 @@ class ShopifyBuy {
   async addToCart(variantId) {
     try {
       let qty = parseInt(document.getElementById("quantity").value);
-      this.cart.add(this.product.id, variantId, qty);
+      await this.cart.add(this.product.id, variantId, qty);
 
       // Use SweetAlert instead of normal alert
       Swal.fire({

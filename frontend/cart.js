@@ -19,7 +19,9 @@ export class Cart{
         });
 
         // Create a checkout
-        this.createCheckout();
+        this.createCheckout().then(() => {
+            this.retrieveFromLocalStorage();
+        });
     }
 
     async createCheckout(){
@@ -35,9 +37,17 @@ export class Cart{
         localStorage.setItem('cart', JSON.stringify(this.itemList)) ;
     };
 
-    retrieveFromLocalStorage = () => {
-        const localCart = JSON.parse(localStorage.getItem('cart')) || [];
-        this.itemList = localCart;
+    retrieveFromLocalStorage = async () => {
+        let localCart = JSON.parse(localStorage.getItem('cart')) || [];
+        localCart = Object.values(localCart);
+        for (const item of localCart){
+            if(item.productId && item.variantId && item.quantity)
+            await this.add(item.productId, item.variantId, item.quantity);
+            else{
+                this.itemList = [];
+                break;
+            }
+        }
     };
 
     async add(productId, variantId, quantity){
@@ -83,6 +93,6 @@ export class Cart{
     }
 
     displayCart(){
-        c
+        
     }
 }
