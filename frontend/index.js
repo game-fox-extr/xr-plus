@@ -106,6 +106,12 @@ updateSocket.on("invalidRoomCode", (message) => {
 
 // domElements.messageSubmitButton.addEventListener("click", handleMessageSubmit);
 domElements.nameInputButton.addEventListener("click", handleNameSubmit);
+document.addEventListener("keydown", (event) => {
+    if(event.key == "Enter"){
+        handleNameSubmit();
+    }
+});
+
 // domElements.chatContainer.addEventListener("click", handleChatClick);
 domElements.avatarLeftImg.addEventListener(
   "click",
