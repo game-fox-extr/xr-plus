@@ -226,11 +226,12 @@
     width: 40%; height: 100%;
     opacity: 1;
     font-size: 20px;
+    border-radius: 3px;
     font-weight: bold;
 }
 
 #room-input-button:hover{
-    background-color: #d9421c;
+    background-color: $color-base-dark-blue;
 }
 
 #room-input {
@@ -254,14 +255,14 @@
     gap: 4%;
     z-index: -1000;
     height: 60px;
-    border: 1px solid #e4451e;
+    border: 2px solid $color-base-dark-blue;
     border-radius: 5px;
 }
 
 .center-text {
     font-size: 48px;
     opacity: 0;
-    color: $color-base-medium-blue;
+    color: $color-base-dark-blue;
     font-weight: bold;
     opacity: 0;
     z-index: -50;
