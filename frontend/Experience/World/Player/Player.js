@@ -52,7 +52,7 @@ export default class Player {
     };
 
     this.player.raycaster = new THREE.Raycaster();
-    this.player.raycaster.far = 10;
+    this.player.raycaster.far = 1000;
 
     this.player.height = 1.2;
     this.player.speedMultiplier = 0.35;

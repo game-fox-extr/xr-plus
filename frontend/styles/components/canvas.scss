@@ -90,6 +90,30 @@ canvas {
   cursor: pointer;
 }
 
+#cartIcon {
+    width: min(10vw, 10vh);
+    height: auto;
+    position: fixed;
+    top: min(45vw, 45vh);
+    right: min(1vw, 1vh);
+}
+  
+#cartIcon:hover {
+    cursor: pointer;
+}
+
+#wishlistIcon {
+    width: min(10vw, 10vh);
+    height: auto;
+    position: fixed;
+    top: min(56vw, 56vh);
+    right: min(1vw, 1vh);
+}
+  
+#wishlistIcon:hover {
+    cursor: pointer;
+}
+
 #speakerIcon:hover {
   cursor: pointer;
 }

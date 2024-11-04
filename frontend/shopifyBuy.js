@@ -85,7 +85,7 @@ class ShopifyBuy {
     if (this.product.id === "gid://shopify/Product/9658662650149") {
       src = "models/Sause Hoodie.glb";
     } else if (this.product.id === "gid://shopify/Product/9658662682917") {
-      src = "models/Sause Tshirt New.glb";
+      src = "models/Sause Tshirt.glb";
     }
     document.getElementById("productImageContainer").innerHTML = `
         <model-viewer src="${src}" alt="A 3D model of a product" auto-rotate camera-controls ar ar-modes="scene-viewer webxr quick-look" style="width: 100%; height: 100%;"></model-viewer>
@@ -131,7 +131,7 @@ class ShopifyBuy {
   async addToCart(variantId) {
     try {
       let qty = parseInt(document.getElementById("quantity").value);
-      await this.cart.add(this.product.id, variantId, qty);
+      await this.cart.add(this.product, variantId, qty);
 
       // Use SweetAlert instead of normal alert
       Swal.fire({

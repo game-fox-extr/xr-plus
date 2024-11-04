@@ -149,10 +149,11 @@
     <img src="Unmute.svg" alt="Speaker Icon" class="speaker-icon" id="speakerIcon" />
     <img src="Mute.svg" alt="Speaker Disbale Icon" class="speaker-disable-icon" id="speakerDisableIcon" />
     <img id="powered-by" src="logo.avif" alt="Powered By Strategy Fox" class="powered-by" />
-  </div>
-  <div id="modalBackdrop"></div>
+    <img src="../public/Cart.svg" alt="Cart Icon" class="cart-icon" id="cartIcon">
+    <img src="../public/Wishlist.svg" alt="Wishlist" class="wishlist-icon" id="wishlistIcon">
+</div>
+<div class="modal-backdrop" id="modalBackdrop"></div>
   <div id="modal" class="modal-container">
-    <div class="modal-backdrop" id="modalBackdrop"></div>
     <div class="button-wrapper">
       <div class="viewBtn">
         <button id="viewPhoto" class="toggle-btn">Photos</button>
@@ -196,6 +197,19 @@
       </div>
     </div>
     <!-- <button id="closeModal" class="close-btn">Close</button> -->
+  </div>
+
+  <div class="cart-backdrop" id="cartBackdrop"></div>
+  <div id="cart-container" class="cart-container">
+    <h1 class="cart-title">Your Shopping Cart</h1>
+    <div class="cart-items" id="cartItems">
+        <!-- Dynamic loading -->
+    </div>
+    <div class="checkout-div">
+        <p class="cart-price">Total: Rs.0</p>    
+        <button class="cart-checkout-button" id="cartCheckoutButton">Checkout</button>
+        <button class="cart-close-button" id="cartCloseButton">Close</button>
+    </div>
   </div>
 
   <!-- First Modal: Chat with Others -->
