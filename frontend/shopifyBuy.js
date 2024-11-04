@@ -46,6 +46,15 @@ class ShopifyBuy {
     document.getElementById("view3dModel").addEventListener("click", () => {
       this.view3dModel();
     });
+
+    // Add event listeners for increment and decrement buttons
+    document.getElementById("increment-btn").addEventListener("click", () => {
+      this.incrementQuantity();
+    });
+
+    document.getElementById("decrement-btn").addEventListener("click", () => {
+      this.decrementQuantity();
+    });
   }
 
   // Function to initialize or create a checkout
@@ -73,10 +82,12 @@ class ShopifyBuy {
 
   // Function to display product details in HTML
   displayProductDetails(product) {
+    console.log(product);
     // Get the product title, description, and price, and images
     const title = product.title;
     const description = product.description;
-    const price = product.variants[0].price; // Assuming the first variant for simplicity
+    const price = product.variants[0].price.amount; // Assuming the first variant for simplicity
+    const stockBool = product.availableForSale;
     this.imageUrls = [];
     product.images.forEach((image) => {
       this.imageUrls.push(image.src);
@@ -86,6 +97,14 @@ class ShopifyBuy {
     // Inject the data into the HTML
     document.getElementById("product-title").textContent = title;
     document.getElementById("product-description").textContent = description;
+    document.getElementById("product-price").textContent = `₹${price}`;
+    if (stockBool) {
+      document.getElementById("product-stock").textContent = "In Stock";
+      document.getElementById("product-stock").color = "SpringGreen";
+    } else {
+      document.getElementById("product-stock").textContent = "Out Of Stock";
+      document.getElementById("product-stock").color = "Tomato";
+    }
 
     // Get the available sizes from the product's variants
     const availableSizes = [];
@@ -147,6 +166,22 @@ class ShopifyBuy {
         this.selectedSize = sizeBtn.value;
       });
     });
+  }
+
+  // Function to increment quantity
+  incrementQuantity() {
+    if (this.quantity < 5) {
+      this.quantity += 1;
+      document.getElementById("quantity-display").textContent = this.quantity;
+    }
+  }
+
+  // Function to decrement quantity
+  decrementQuantity() {
+    if (this.quantity > 0) {
+      this.quantity -= 1;
+      document.getElementById("quantity-display").textContent = this.quantity;
+    }
   }
 
   async addToCart(variantId) {
