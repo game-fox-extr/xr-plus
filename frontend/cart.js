@@ -96,69 +96,6 @@ export class Cart{
     };
 
     displayCart(){
-        // // Make cart visible
-        // const cart = document.getElementById("cart-container");
-        // const cartBackdrop = document.getElementById("cartBackdrop");
-        // cart.style.display = "flex";
-        // cartBackdrop.style.display = "block";
-
-        // // Load the cart items
-        // const cartItems = document.getElementById("cartItems");
-        // cartItems.innerHTML = "";
-        
-        // for (const index in this.itemList) {
-        //     // Product and variant
-        //     const item = this.itemList[index];
-        //     const product = item.product;
-        //     let productVariant = null;
-        //     product.variants.forEach((variant) => {
-        //         if(variant.id === item.variantId){
-        //             productVariant = variant;
-        //         }
-        //     });
-
-        //     const imageURL = product.images[0].src;
-        //     const productName = product.title;
-        //     const variantSize = productVariant.selectedOptions.find(
-        //         (option) => option.name.toLowerCase() === "size"
-        //     ).value;
-        //     const qty = item.quantity;
-        //     const price = item.quantity * productVariant.price.amount;
-            
-        //     console.log("Variant: ", productVariant);
-            
-        //     cartItems.innerHTML += `
-        //         <div class="cart-item">
-        //             <img src="${imageURL}" alt="Product Image" class="cart-item-image">
-        //             <div class="cart-details">
-        //                 <p class="product-name">${productName}</p>
-        //                 <p class="variant-size">${variantSize}</p>
-        //                 <div class="qty-modifier">
-        //                     <p class="minus-button" id="minus-button-${index}">-</p>
-        //                     <p class="qty" id="qty-${index}">${qty}</p>
-        //                     <p class="add-button" id="add-button-${index}">+</p>
-        //                 </div>
-        //                 <p class="total-product-price">Rs. ${price}</p>
-        //             </div>
-        //         </div>
-        //     `;
-
-        //     document.getElementById(`minus-button-${index}`).addEventListener("click", () => {
-        //         const qtyElement = document.getElementById(`qty-${index}`);
-        //         if(item.quantity > 0){
-        //             item.quantity -= 1;
-        //             qtyElement.textContent = `${item.quantity}`;
-        //         }
-        //     });
-
-        //     document.getElementById(`add-button-${index}`).addEventListener("click", () => {
-        //         const qtyElement = document.getElementById(`qty-${index}`);
-        //         item.quantity += 1;
-        //         qtyElement.textContent = `${item.quantity}`;
-        //     });
-
-        // }
-
         // Clear the cart items
         const cartItems = document.getElementById("cartItems");
         cartItems.innerHTML = "";
@@ -190,7 +127,7 @@ export class Cart{
                         <p class="qty" id="qty-${index}">${qty}</p>
                         <p class="add-button" data-index=${index}>+</p>
                     </div>
-                    <p class="total-product-price">Rs. ${price}</p>
+                    <p class="total-product-price" id="total-product-price-${index}">Rs. ${price}</p>
                 </div>
             `;
         }
@@ -199,17 +136,36 @@ export class Cart{
         cartItems.addEventListener("click", (event) => {
             if(event.target.classList.contains("add-button")){
                 const i = event.target.getAttribute("data-index");
-                this.itemList[i].quantity += 1;
-                document.getElementById(`qty-${i}`).textContent = parseInt(this.itemList[i].quantity);
+                const item = this.itemList[i];
+
+                // Update quantity
+                item.quantity += 1;
+                document.getElementById(`qty-${i}`).textContent = this.itemList[i].quantity;
+
+                // Update price
+                const price = item.product.variants.find((variant) => {return variant.id === item.variantId}).price.amount;
+                document.getElementById(`total-product-price-${i}`).textContent = `Rs. ${price * item.quantity}`;
+            
+                this.recomputeCartPrice();
             }
             else if(event.target.classList.contains("minus-button")){
                 const i = event.target.getAttribute("data-index");
+                const item = this.itemList[i];
+
                 if(this.itemList[i].quantity > 0){
-                    this.itemList[i].quantity -= 1;
-                    document.getElementById(`qty-${i}`).textContent = parseInt(this.itemList[i].quantity);
+                    // Update quantity
+                    item.quantity -= 1;
+                    document.getElementById(`qty-${i}`).textContent = this.itemList[i].quantity;
+
+                    // Update price
+                    const price = item.product.variants.find((variant) => {return variant.id === item.variantId}).price.amount;
+                    document.getElementById(`total-product-price-${i}`).textContent = `Rs. ${price * item.quantity}`;
+                    
+                    this.recomputeCartPrice();
                 }
             }
         });
+        this.recomputeCartPrice();
 
         // Make the cart visible
         document.getElementById("cart-container").style.display = "flex";
@@ -249,5 +205,16 @@ export class Cart{
             await this.add(item.product, item.variantId, item.quantity);
             console.log("Product: ", item.product.title, "Quantity: ", item.quantity);
         }
+    }
+
+    recomputeCartPrice(){
+        // Recompute total price
+        let totalPrice = 0;
+        for(let index = 0; index < this.itemList.length; index++){
+            const item = this.itemList[index];
+            const price = item.product.variants.find((variant) => {return variant.id === item.variantId}).price.amount;
+            totalPrice += price * item.quantity;
+        }
+        document.getElementById("cartPrice").textContent = `Total: Rs. ${totalPrice}`;
     }
 }
