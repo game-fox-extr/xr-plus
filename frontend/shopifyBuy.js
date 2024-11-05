@@ -9,6 +9,7 @@ class ShopifyBuy {
     this.imageUrls = [];
     this.product = null;
     this.selectedSize = 0;
+    this.quantity = 0;
 
     // Create a cart
     this.cart = new Cart();
@@ -37,10 +38,12 @@ class ShopifyBuy {
 
     // Add event listeners for increment and decrement buttons
     document.getElementById("increment-btn").addEventListener("click", () => {
+      console.log("Increment Function Called");
       this.incrementQuantity();
     });
 
     document.getElementById("decrement-btn").addEventListener("click", () => {
+      console.log("Decrement Function Called");
       this.decrementQuantity();
     });
   }
@@ -150,7 +153,7 @@ class ShopifyBuy {
   incrementQuantity() {
     if (this.quantity < 5) {
       this.quantity += 1;
-      document.getElementById("quantity-display").textContent = this.quantity;
+      document.getElementById("quantity").textContent = this.quantity;
     }
   }
 
@@ -158,7 +161,7 @@ class ShopifyBuy {
   decrementQuantity() {
     if (this.quantity > 0) {
       this.quantity -= 1;
-      document.getElementById("quantity-display").textContent = this.quantity;
+      document.getElementById("quantity").textContent = this.quantity;
     }
   }
 
