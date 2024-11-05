@@ -20,29 +20,29 @@ class ShopifyBuy {
   setupEventListeners() {
     // Add event listeners to add-to-cart & checkout buttons
     document.getElementById("add-to-cart").addEventListener("click", () => {
-      this.addToCart(this.product.variants[this.selectedSize].id);
+    this.addToCart(this.product.variants[this.selectedSize].id);
     });
 
     document.getElementById("checkout-btn").addEventListener("click", () => {
-      this.checkoutCart();
+    this.checkoutCart();
     });
 
     document.getElementById("viewPhoto").addEventListener("click", () => {
-      this.renderImages();
+    this.renderImages();
     });
 
     document.getElementById("view3dModel").addEventListener("click", () => {
-      this.view3dModel();
+    this.view3dModel();
     });
 
     // Add event listeners for increment and decrement buttons
     document.getElementById("increment-btn").addEventListener("click", () => {
-      this.incrementQuantity();
-    });
-
-    document.getElementById("decrement-btn").addEventListener("click", () => {
-      this.decrementQuantity();
-    });
+        this.incrementQuantity();
+      });
+  
+      document.getElementById("decrement-btn").addEventListener("click", () => {
+        this.decrementQuantity();
+      });
   }
 
   // Function to fetch product details
@@ -60,7 +60,6 @@ class ShopifyBuy {
 
   // Function to display product details in HTML
   displayProductDetails(product) {
-    console.log(product);
     // Get the product title, description, and price, and images
     const title = product.title;
     const description = product.description;
@@ -70,7 +69,7 @@ class ShopifyBuy {
     product.images.forEach((image) => {
       this.imageUrls.push(image.src);
     });
-    this.view3dModel();
+    this.renderImages();
 
     // Inject the data into the HTML
     document.getElementById("product-title").textContent = title;
@@ -146,22 +145,22 @@ class ShopifyBuy {
     });
   }
 
-  // Function to increment quantity
-  incrementQuantity() {
-    if (this.quantity < 5) {
-      this.quantity += 1;
-      document.getElementById("quantity-display").textContent = this.quantity;
+// Function to increment quantity
+incrementQuantity() {
+    let quantity = parseInt(document.getElementById("quantity").textContent);
+    if (quantity < 5) {
+      document.getElementById("quantity").textContent = String(quantity+1);
     }
   }
 
   // Function to decrement quantity
   decrementQuantity() {
-    if (this.quantity > 0) {
-      this.quantity -= 1;
-      document.getElementById("quantity-display").textContent = this.quantity;
+    let quantity = parseInt(document.getElementById("quantity").textContent);
+    if (quantity > 1) {
+      document.getElementById("quantity").textContent = String(quantity-1);
     }
   }
-
+  
   async addToCart(variantId) {
     try {
       let qty = parseInt(document.getElementById("quantity").value);
@@ -171,9 +170,7 @@ class ShopifyBuy {
       Swal.fire({
         title: "Success!",
         text:
-          "Added " +
-          String(document.getElementById("quantity").value) +
-          " products to cart",
+          "Added " + document.getElementById("quantity").textContent + " products to cart",
         icon: "success",
         button: "OK",
       });
