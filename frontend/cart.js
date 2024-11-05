@@ -64,6 +64,7 @@ export class Cart{
         }
         catch(error){
             console.error("Error Adding to the cart: ", error);
+            throw error;
         }
     }
 
@@ -198,14 +199,18 @@ export class Cart{
         const lineItemIds = checkout.lineItems.map(item => item.id);
         await this.client.checkout.removeLineItems(this.checkout.id, lineItemIds);
         
-        // Add items from items list into checkout
-        let items = Array.from(this.itemList);
-        this.itemList.length = 0;
-        for(let index = 0; index < items.length; index++){
-            const item = items[index];
-            await this.add(item.product, item.variantId, item.quantity);
-            console.log("Product: ", item.product.title, "Quantity: ", item.quantity);
+        // Create a line items array from items list
+        let lineItemsList = [];
+        for(let i = 0; i < this.itemList.length; i++){
+            const item = this.itemList[i];
+            lineItemsList.push({variantId: item.variantId, quantity: item.quantity});
         }
+
+        // Add items from items list into checkout
+        await this.client.checkout.addLineItems(
+            this.checkout.id,
+            lineItemsList
+        );
     }
 
     recomputeCartPrice(){

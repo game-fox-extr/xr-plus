@@ -76,6 +76,7 @@ class ShopifyBuy {
     document.getElementById("product-title").textContent = title;
     document.getElementById("product-description").textContent = description;
     document.getElementById("product-price").textContent = `₹${price}`;
+    document.getElementById("quantity").textContent = "1";
     if (stockBool) {
       document.getElementById("product-stock").textContent = "In Stock";
       document.getElementById("product-stock").color = "SpringGreen";
@@ -164,7 +165,8 @@ incrementQuantity() {
   
   async addToCart(variantId) {
     try {
-      let qty = parseInt(document.getElementById("quantity").value);
+      let qty = parseInt(document.getElementById("quantity").textContent);
+      console.log(this.product, variantId, qty);
       await this.cart.add(this.product, variantId, qty);
 
       // Use SweetAlert instead of normal alert
