@@ -30,7 +30,7 @@ function initializeCarousel() {
   document.getElementById("tryon-btn").addEventListener("click", function () {
     alert("Proceed with Lens Experience!");
     window.open(
-      "https://lens.snap.com/experience/6174e772-1d93-478f-bd13-fd4da3823b6f",
+      "https://lens.snap.com/experience/d8ba48f4-7792-44fd-869f-4a2f915ce47b",
       "_blank"
     );
   });
