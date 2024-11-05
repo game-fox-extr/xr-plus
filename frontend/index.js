@@ -3,7 +3,7 @@ import { io } from "socket.io-client";
 import Experience from "./Experience/Experience.js";
 import elements from "./Experience/Utils/functions/elements.js";
 import Swal from "sweetalert2";
-import uiChange from "./Experience/World/Player/changeView.js"
+import uiChange from "./Experience/World/Player/changeView.js";
 // Dom Elements ----------------------------------
 
 const domElements = elements({
@@ -16,34 +16,36 @@ const domElements = elements({
   nameInput: "#name-input",
   nameInputButton: "#name-input-button",
   roomInput: "#room-input",
-  roomInputButton: '#room-input-button',
-  createButton: '.create-button',
-  roomCodeDiv: '.room-code',
+  roomInputButton: "#room-input-button",
+  createButton: ".create-button",
+  roomCodeDiv: ".room-code",
   avatarLeftImg: ".avatar-left",
   avatarRightImg: ".avatar-right",
   changeViewIcon: "#changeViewIcon",
 });
 
-
 function copyToClipboard() {
   const roomCode = domElements.roomCodeDiv.textContent;
-  navigator.clipboard.writeText(roomCode).then(() => {
-    Swal.fire({
-      icon: 'success',
-      title: 'Copied to clipboard!',
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      timer: 4500,
-      timerProgressBar: true,
+  navigator.clipboard
+    .writeText(roomCode)
+    .then(() => {
+      Swal.fire({
+        icon: "success",
+        title: "Copied to clipboard!",
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 4500,
+        timerProgressBar: true,
+      });
+    })
+    .catch((err) => {
+      console.error("Failed to copy: ", err);
     });
-  }).catch(err => {
-    console.error('Failed to copy: ', err);
-  });
 }
 
 // Add event listener for room code copy
-domElements.roomCodeDiv.addEventListener('click', copyToClipboard);
+domElements.roomCodeDiv.addEventListener("click", copyToClipboard);
 
 window.mobileAndTabletCheck = function () {
   let check = false;
@@ -61,6 +63,34 @@ window.mobileAndTabletCheck = function () {
   return check;
 };
 
+window.addEventListener("DOMContentLoaded", function () {
+  // Check if the device is desktop
+  if (!window.mobileAndTabletCheck()) {
+    // Create the image element
+    const lensIcon = document.createElement("img");
+    lensIcon.id = "lensImage";
+    lensIcon.src = "Ar Icon.svg";
+    lensIcon.alt = "Lens Icon";
+    lensIcon.className = "lens-icon";
+
+    // Append the image to a specific container or directly to the body
+    document.body.appendChild(lensIcon);
+
+    // Add click event to enter fullscreen mode
+    lensIcon.addEventListener("click", function () {
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen();
+      } else if (document.documentElement.webkitRequestFullscreen) {
+        // Safari
+        document.documentElement.webkitRequestFullscreen();
+      } else if (document.documentElement.msRequestFullscreen) {
+        // IE/Edge
+        document.documentElement.msRequestFullscreen();
+      }
+    });
+  }
+});
+
 // Frontend Server ----------------------------------
 const socketUrl = new URL("/", window.location.href);
 const chatSocket = io(socketUrl.toString() + "chat");
@@ -77,7 +107,7 @@ chatSocket.on("connect", () => {
 // domElements.canvas.addEventListener("click", () => document.querySelector('.experience-canvas').requestPointerLock());
 
 updateSocket.on("generateCode", (roomCode, id) => {
-  if(updateSocket.id !== id) return;
+  if (updateSocket.id !== id) return;
   chatSocket.emit("generateCode", roomCode);
   domElements.roomCodeDiv.textContent = roomCode;
 });
@@ -95,21 +125,20 @@ updateSocket.on("invalidRoomCode", (message) => {
     timerProgressBar: true, // Show a progress bar during the countdown
     didOpen: () => {
       // Adjust z-index dynamically if needed
-      const swalContainer = document.querySelector('.swal2-container');
+      const swalContainer = document.querySelector(".swal2-container");
       if (swalContainer) {
-        swalContainer.style.zIndex = '999999999999999999';
+        swalContainer.style.zIndex = "999999999999999999";
       }
-    }
+    },
   });
 });
-
 
 // domElements.messageSubmitButton.addEventListener("click", handleMessageSubmit);
 domElements.nameInputButton.addEventListener("click", handleNameSubmit);
 document.addEventListener("keydown", (event) => {
-    if(event.key == "Enter"){
-        handleNameSubmit();
-    }
+  if (event.key == "Enter") {
+    handleNameSubmit();
+  }
 });
 
 // domElements.chatContainer.addEventListener("click", handleChatClick);
@@ -122,21 +151,30 @@ domElements.avatarRightImg.addEventListener(
   handleCharacterSelectionRight
 );
 
-domElements.changeViewIcon.addEventListener(
-  "click",
-  handleViewChange
-);
+domElements.changeViewIcon.addEventListener("click", handleViewChange);
 
 domElements.roomInputButton.addEventListener("click", handleJoin);
 // document.addEventListener("keydown", handleMessageSubmit);
-domElements.createButton.addEventListener('click', handleCreate);
+domElements.createButton.addEventListener("click", handleCreate);
+
+// document.getElementById("lensImage").addEventListener("click", function () {
+//   alert("Proceed with Lens Experience!");
+//   window.open(
+//     "https://lens.snap.com/experience/6174e772-1d93-478f-bd13-fd4da3823b6f",
+//     "_blank"
+//   );
+// });
 
 document.getElementById("lensImage").addEventListener("click", function () {
-  alert("Proceed with Lens Experience!");
-  window.open(
-    "https://lens.snap.com/experience/6174e772-1d93-478f-bd13-fd4da3823b6f",
-    "_blank"
-  );
+  if (document.documentElement.requestFullscreen) {
+    document.documentElement.requestFullscreen();
+  } else if (document.documentElement.webkitRequestFullscreen) {
+    // Safari
+    document.documentElement.webkitRequestFullscreen();
+  } else if (document.documentElement.msRequestFullscreen) {
+    // IE/Edge
+    document.documentElement.msRequestFullscreen();
+  }
 });
 
 function handleNameSubmit() {
@@ -173,7 +211,7 @@ function handleCharacterSelectionRight() {
 
 function handleViewChange() {
   const camera = experience?.camera;
-  if(!camera.togglable) return;
+  if (!camera.togglable) return;
   const requestPointerLock = experience.world.player.requestPointerLock;
   uiChange(camera.thirdPerson, requestPointerLock);
   camera.thirdPerson ? camera.disableThirdPerson() : camera.enableThirdPerson();

@@ -13,7 +13,11 @@ export default class Walls {
 
     init() {
         this.walls = this.resources.items.walls.scene;
-        this.walls_texture = this.resources.items.walls_texture;
+        if (window.mobileAndTabletCheck()) {
+            this.walls_texture = this.resources.items.mobile_walls_texture; // mobile texture
+        } else {
+            this.walls_texture = this.resources.items.walls_texture; // desktop texture
+        }
     }
 
     setMaterials() {

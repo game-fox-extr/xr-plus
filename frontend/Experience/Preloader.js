@@ -117,11 +117,11 @@ export default class Preloader {
                         },
 
                         onComplete: () => {
-                            // this.domElements.svgLogo.remove();
+                            this.domElements.svgLogo.remove();
                             this.domElements.progressBarContainer.remove();
                             this.domElements.progressWrapper.remove();
                             this.domElements.preloaderTitle.remove();
-                            // this.domElements.preloaderWrapper.remove();
+                            this.domElements.preloaderWrapper.remove();
                         },
                     },
                     "-=1.05"
@@ -207,6 +207,7 @@ export default class Preloader {
                             this.domElements.welcomeTitle.remove();
                             this.domElements.nameForm.remove();
                             this.domElements.nameInputButton.remove();
+                            this.domElements.description.remove();
                         },
                     },
                     "-=1.05"

@@ -11,10 +11,10 @@
   border: 1px solid rgba(255, 255, 255, 0.3);
   /* Subtle border */
   border-radius: 10px;
-  padding: 20px;
+  // padding: 20px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   z-index: 1000;
-  width: 90%;
+  width: 50%;
   max-width: 1200px;
   height: 90%;
   max-height: 800px;
@@ -94,7 +94,7 @@ body.modal-open {
   width: 25vw;
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: center;
 }
 
 .toggle-btn {
@@ -154,7 +154,7 @@ body.modal-open {
 .product-card {
   display: flex;
   flex-direction: row;
-  width: 100%;
+  width: 90%;
   height: 100%;
 }
 
@@ -179,25 +179,27 @@ body.modal-open {
   /* Ensure images cover the entire area */
 }
 
-.product-details-outer{
-    max-width: 50%;
-    min-width: 50%;
-    height: 600px;
-    padding: 20px;
-    overflow: hidden;
-    position: static;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+.product-details-outer {
+  max-width: 50%;
+  min-width: 50%;
+  height: 600px;
+  padding: 20px;
+  overflow: hidden;
+  position: static;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
 /* Make the product details scrollable and sticky */
 .product-details {
   width: 100%;
-  
+  padding: 15px;
   overflow-y: scroll;
-  
+  border-radius: 10px;
   position: static;
+  margin-bottom: 30px;
+  background-color: rgba(255, 255, 255, 0.2);
   /* To make sticky positioning work */
 }
 
@@ -214,14 +216,83 @@ body.modal-open {
   font-style: italic;
 }
 
+.quantity-controls {
+  display: flex;
+  align-items: center;
+}
+
+.quantity-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #534e50; /* Primary color for buttons */
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
+}
+
+#quantity-display {
+  margin: 0 10px;
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+}
+
+.product-price-stock-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: baseline;
+}
+
+.product-stock {
+  background-color: #534e50; // for temporary
+}
+
+.product-price {
+  padding-top: 10px;
+}
+
+.description-div {
+  height: 200px; /* Set a fixed height */
+  overflow-y: auto; /* Enable vertical scrolling */
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for Firefox */
+  scrollbar-width: none; /* Firefox */
+
+  /* Optional: hide scrollbar in Internet Explorer 10+ */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+.tryon-btn {
+  position: absolute;
+  bottom: 5%;
+  left: 2%;
+  background-color: #524c4e;
+}
+
 .product-details .sticky-header {
   position: static;
   top: 0;
   border-radius: 5px;
-  background: rgba(28, 28, 28, 0.737);
   padding: 10px;
   z-index: 1010;
   /* Ensure it's on top of scrollable content */
+}
+
+.product-details h1 {
+  font-size: 32px;
+  font-weight: bold;
 }
 
 .product-details .size-options,
@@ -359,18 +430,18 @@ model-viewer {
 .buttons-holder {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
+  gap: 10px;
   width: 100%;
 }
 
 .buttons-holder button {
-  width: 45%;
-  padding: 10px 40px;
+  width: 35%;
+  padding: 10px;
   border: none;
   border-radius: 10px;
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 15px;
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: background-color 0.2s ease, box-shadow 0.2s ease;
@@ -435,7 +506,17 @@ model-viewer {
 
 @media only screen and (min-width: 320px) and (max-width: 425px) {
   .viewBtn {
+    margin-left: 40px;
     gap: 1rem;
+  }
+
+  .button-wrapper {
+    margin-top: 20px;
+  }
+
+  .tryon-btn {
+    margin-top: 10px;
+    position: sticky;
   }
 
   /* Adjust product card for smaller screens */
@@ -444,12 +525,19 @@ model-viewer {
     font-size: 0.9rem; /* Adjust text size */
   }
 
+  .product-details {
+    margin-top: 20px;
+  }
+
   .product-title {
     font-size: 1rem; /* Adjust title size */
   }
 
   .carousel-image {
     width: 100%; /* Ensure images are responsive */
-    height: auto;
+  }
+
+  #modal {
+    width: 85%;
   }
 }

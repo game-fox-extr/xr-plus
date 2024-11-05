@@ -1,14 +1,11 @@
-#load-hider{
-    display: none;
-}
 
 .preloader {
     @extend %center;
     @extend %cover;
     background: $color-base-white;
     z-index: 9999999999999;
-    width: 100vw;
-    height: 100vh;
+    width: 100vw !important;
+    height: 100vh !important;
     touch-action: none;
     overflow: hidden;
 }
@@ -159,6 +156,7 @@
         width: 250px;
         font-size: 16px;
     }
+    z-index: 50;
 }
 
 #name-input::placeholder {
@@ -174,8 +172,9 @@
     cursor: pointer;
     padding: 0;
     color: $color-base-dark-blue;
-    outline: 1px solid $color-base-dark-blue;
+    border: 2px solid $color-base-dark-blue;
     background-color: transparent;
+    outline: none;
     position: absolute;
     width: 100px;
     height: 30px;
@@ -187,6 +186,7 @@
         letter-spacing 0.2s ease-in-out;
     text-align: center;
     vertical-align: middle;
+    border-radius: 5px;
 
     &:hover {
         background-color: $color-base-dark-blue;
@@ -225,14 +225,24 @@
 #room-input-button {
     width: 40%; height: 100%;
     opacity: 1;
+    font-size: 20px;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+#room-input-button:hover{
+    background-color: $color-base-dark-blue;
 }
 
 #room-input {
-    width: 60%;
+    width: 55%;
+    color: rgb(74, 74, 74);
+    font-weight: lighter;
+    font-size: 20px;
 }
 
 #room-input:focus{
-    border-style: none;
+    outline: none;
 }
 
 .create-button, .join-wrapper {
@@ -242,16 +252,18 @@
 .join-wrapper{
     display: flex;
     flex-direction: row;
+    gap: 4%;
     z-index: -1000;
     height: 60px;
-    border-style: none;
+    border: 2px solid $color-base-dark-blue;
+    border-radius: 5px;
 }
 
 .center-text {
     font-size: 48px;
     opacity: 0;
-    color: $color-base-medium-blue;
-    font-weight: 200;
+    color: $color-base-dark-blue;
+    font-weight: bold;
     opacity: 0;
     z-index: -50;
 }
@@ -304,6 +316,8 @@
 .customize-character-btn {
     position: absolute;
     bottom: 30%;
+    max-width: 80%;
+    text-align: center;
     opacity: 0;
     background-color: transparent;
     z-index: -99;

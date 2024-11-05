@@ -1,273 +1,326 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="icon" type="image/svg+xml" href="/media/sflogo.svg" />
+    <meta name="author" content="GameFox XR" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Multiplayer Game Fox</title>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <link rel="icon" type="image/svg+xml" href="/media/sflogo.svg" />
-  <meta name="author" content="GameFox XR" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Multiplayer Game Fox</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/media/sflogo.svg" />
+    <link
+      rel="icon"
+      type="image/svgLogo"
+      sizes="32x32"
+      href="/media/sflogo.svg"
+    />
+    <link
+      rel="icon"
+      type="image/svgLogo"
+      sizes="16x16"
+      href="/media/sflogo.svg"
+    />
+    <link rel="manifest" href="/media/site.webmanifest" />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="theme-color" content="#ffffff" />
+  </head>
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/media/sflogo.svg" />
-  <link rel="icon" type="image/svgLogo" sizes="32x32" href="/media/sflogo.svg" />
-  <link rel="icon" type="image/svgLogo" sizes="16x16" href="/media/sflogo.svg" />
-  <link rel="manifest" href="/media/site.webmanifest" />
-  <meta name="msapplication-TileColor" content="#da532c" />
-  <meta name="theme-color" content="#ffffff" />
-</head>
+  <body>
+    <!-- song -->
+    <audio id="myAudio" style="display: none" src="/media/music.mp3"></audio>
 
-<body>
-  <!-- song -->
-  <audio id="myAudio" style="display: none" src="/media/music.mp3"></audio>
-
-  <div class="room-code-wrapper">
-    Room Code
-    <div class="room-code">
+    <div class="room-code-wrapper">
+      ROOM CODE
+      <div class="room-code"></div>
+      <span class="tooltip">Copy Code</span>
     </div>
-    <span class="tooltip">Copy Code</span>
-  </div>
 
-  <!-- Preloader -->
-  <div class="preloader">
-    <div class="preloader-wrapper">
-      <img src="Symbol Transparent PNG.png" width="118" height="129" viewBox="0 0 118 129" fill="none" class="svgLogo"
-        alt="MainFoxLogo" />
-      <div class="progress-bar-container">
-        <div class="progress-bar"></div>
+    <!-- Preloader -->
+    <div class="preloader">
+      <div class="preloader-wrapper">
+        <img
+          src="Symbol Transparent PNG.png"
+          width="118"
+          height="129"
+          viewBox="0 0 118 129"
+          fill="none"
+          class="svgLogo"
+          alt="MainFoxLogo"
+        />
+        <div class="progress-bar-container">
+          <div class="progress-bar"></div>
+        </div>
       </div>
-    </div>
-    <div class="progress-wrapper">
-      <div class="percent preloader-percentage1">0</div>
-      <div class="percent preloader-percentage2">0</div>
-      <div class="percent symbol">%</div>
-    </div>
-    <h1 class="preloader-title fade-in-out">Your XR experience is loading</h1>
-    <div class="description">
-      This is a personlised walkthrough experience created by Strategy Fox.
-      Feel free to roam around and explore. Get your friend to play with you.
-      <br></br>
-      Welcome to next generation WebXR
-    </div>
-
-    <!-- Name Enter Screen -->
-    <div class="welcome-title">Welcome to Game Fox</div>
-    <div class="name-form">
-      <input type="text" placeholder="What should we call you?" id="name-input" required />
-    </div>
-    <button id="name-input-button">Continue</button>
-
-    <div class="create-or-join-wrapper">
-      <button class="create-button">Create</button>
-      <div class="center-text">Or</div>
-      <div class="join-wrapper">
-        <button id="room-input-button">Join</button>
-        <input type="text" name="room-input" id="room-input" minlength="6" maxlength="6" autocapitalize="characters"
-          pattern="[A-Z]+" placeholder="Enter Room Code">
+      <div class="progress-wrapper">
+        <div class="percent preloader-percentage1">0</div>
+        <div class="percent preloader-percentage2">0</div>
+        <div class="percent symbol">%</div>
       </div>
-    </div>
+      <h1 class="preloader-title fade-in-out">Your XR experience is loading</h1>
+      <div class="description">
+        Get ready to step into a whole new shopping experience! Invite your
+        friends and dive into our immersive store together!
+      </div>
 
-    <!-- Ready Player Me Interaction -->
-    <div class="character-select-title">Choose your avatar: </div>
-    <div class="avatar-img-wrapper">
-      <img src="/images/asian_male_head.png" alt="" class="avatar-img avatar-left" />
-      <img src="/images/asian_female_head.png" alt="" class="avatar-img avatar-right" />
-    </div>
-    <div class="customize-character-btn">
-      Controls: WASD to move | SHIFT to run | SPACE to jump | ENTER to chat |
-      Click/Drag to pan | Middle Mouse to zoom | O to dance | C to switch view |
-    </div>
-    <!-- <iframe
+      <!-- Name Enter Screen -->
+      <div class="welcome-title">Welcome to Game Fox</div>
+      <div class="name-form">
+        <input
+          type="text"
+          placeholder="What should we call you?"
+          id="name-input"
+          required
+        />
+      </div>
+      <button id="name-input-button">Continue</button>
+
+      <div class="create-or-join-wrapper">
+        <button class="create-button">Create</button>
+        <div class="center-text">OR</div>
+        <div class="join-wrapper">
+          <button id="room-input-button">JOIN</button>
+          <input
+            type="text"
+            name="room-input"
+            id="room-input"
+            minlength="6"
+            maxlength="6"
+            autocapitalize="characters"
+            pattern="[A-Z]+"
+            placeholder="Room Code"
+          />
+        </div>
+      </div>
+
+      <!-- Ready Player Me Interaction -->
+      <div class="character-select-title">Choose your avatar:</div>
+      <div class="avatar-img-wrapper">
+        <img
+          src="/images/asian_male_head.png"
+          alt=""
+          class="avatar-img avatar-left"
+        />
+        <img
+          src="/images/asian_female_head.png"
+          alt=""
+          class="avatar-img avatar-right"
+        />
+      </div>
+      <div class="customize-character-btn">
+        Controls: WASD to move | SHIFT to run | SPACE to jump | ENTER to chat |
+        Click/Drag to pan | Middle Mouse to zoom | O to dance | C to switch view
+        |
+      </div>
+      <!-- <iframe
             id="frame"
             class="frame"
             allow="camera *; microphone *; clipboard-write"
         ></iframe> -->
-  </div>
+    </div>
+    <div class="joystick-area"></div>
 
-  <!-- Mobile Controls -->
-  <div class="joystick-area"></div>
-  <div class="control-overlay hidden"></div>
-  <!-- <button class="mobile-chat-button">
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="40"
-                viewBox="0 96 960 960"
-                width="40"
-            >
-                <path
-                    d="M277.051 644.038h245.462q9.252 0 15.965-6.955 6.714-6.955 6.714-17.27 0-9.877-7.017-16.768-7.017-6.89-16.662-6.89H276.051q-9.82 0-16.512 7.18t-6.692 16.744q0 10.177 6.977 17.068 6.977 6.891 17.227 6.891Zm0-123.923h407.423q9.252 0 15.966-6.955 6.713-6.955 6.713-17.27 0-9.877-7.017-16.768-7.016-6.891-16.662-6.891H276.051q-9.82 0-16.512 7.181-6.692 7.18-6.692 16.743 0 10.178 6.977 17.069 6.977 6.891 17.227 6.891Zm0-123.923h407.423q9.252 0 15.966-6.955 6.713-6.955 6.713-17.27 0-9.877-7.017-16.768-7.016-6.891-16.662-6.891H276.051q-9.82 0-16.512 7.18-6.692 7.181-6.692 16.744 0 10.178 6.977 17.069 6.977 6.891 17.227 6.891ZM104.745 858.383V260.386q0-24.177 17.793-42.146 17.793-17.97 42.314-17.97h630.296q24.168 0 42.138 17.97 17.969 17.969 17.969 42.146v471.228q0 24.177-17.969 42.146-17.97 17.969-42.132 17.969H243.665l-88.087 87.859q-14.321 14.32-32.577 6.609t-18.256-27.814Zm47.883-43.908 70.629-70.629h571.806q5.385 0 8.847-3.461 3.462-3.462 3.462-8.847V260.462q0-5.385-3.462-8.847-3.462-3.461-8.847-3.461H164.937q-5.385 0-8.847 3.461-3.462 3.462-3.462 8.847v554.013Zm0-554.013v-12.308 566.321-554.013Z"
-                />
-            </svg>
-        </button> -->
+    <!-- Mobile Controls -->
+    <div class="control-overlay hidden"></div>
 
-  <!-- Logo -->
-  <!-- <div class="logo-wrapper"></div> -->
-
-  <!-- Menu -->
-  <!-- <button class="menu-button">
-            <div class="menu-content">
-                <span class="menu-circle"></span>
-                <div class="menu-bar-wrapper">
-                    <span class="menu-bar"></span>
-                    <span class="menu-bar"></span>
-                    <span class="menu-bar"></span>
-                </div>
+    <!-- Experience -->
+    <div class="experience-wrapper" id="experienceWrapper">
+      <canvas class="experience-canvas"></canvas>
+      <div class="crosshair"></div>
+      <img id="lensImage" src="Ar Icon.svg" alt="Lens Icon" class="lens-icon" />
+      <img
+        src="Bot Icon.svg"
+        alt="Chatbot Icon"
+        class="chatbot-icon"
+        id="chatbotImage"
+      />
+      <img
+        src="ChatWithOthers.svg"
+        alt="Chat With other icon"
+        class="chat-with-other-icon"
+        id="chatWithOtherImage"
+      />
+      <img
+        src="images/camera.svg"
+        alt="Change View Icon"
+        class="change-view-icon"
+        id="changeViewIcon"
+      />
+      <img
+        src="Unmute.svg"
+        alt="Speaker Icon"
+        class="speaker-icon"
+        id="speakerIcon"
+      />
+      <img
+        src="Mute.svg"
+        alt="Speaker Disbale Icon"
+        class="speaker-disable-icon"
+        id="speakerDisableIcon"
+      />
+      <img
+        id="powered-by"
+        src="logo.avif"
+        alt="Powered By Strategy Fox"
+        class="powered-by"
+      />
+      <img
+        src="../public/Cart.svg"
+        alt="Cart Icon"
+        class="cart-icon"
+        id="cartIcon"
+      />
+      <img
+        src="../public/Wishlist.svg"
+        alt="Wishlist"
+        class="wishlist-icon"
+        id="wishlistIcon"
+      />
+    </div>
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+    <div id="modal" class="modal-container">
+      <div class="button-wrapper">
+        <div class="viewBtn">
+          <button id="viewPhoto" class="toggle-btn">Photos</button>
+          <button id="view3dModel" class="toggle-btn">3D View</button>
+        </div>
+        <div class="closeBtn">
+          <button id="xCloseBtn" class="toggle-btn">X</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-image" id="productImageContainer">
+          <!-- Loaded from product.js -->
+        </div>
+        <div class="product-details" id="productDetails">
+          <div class="sticky-header">
+            <h1 class="product-title" id="product-title">-</h1>
+            <div class="product-price-stock-info">
+              <h2 class="product-price" id="product-price">-</h2>
+              <button type="button" class="product-stock" id="product-stock">
+                -
+              </button>
             </div>
-        </button> -->
-
-  <!-- Other Ui -->
-
-  <!-- <button class="switch-camera-view"></button> -->
-
-  <!-- Chat Box -->
-  <!-- <div class="chat-box">
-      <div class="chat-container"></div>
-      <div class="form">
-        <label for="chat-message-input"></label>
-        <div class="message-input-wrapper hidden">
-          <input type="text" id="chat-message-input" />
-          <button id="chat-message-button">
-            <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
-              <path
-                fill="currentColor"
-                d="M3.45 17.3V6.55q0-.575.488-.9.487-.325 1.037-.1l12.65 5.35q.65.3.65 1.025 0 .725-.65 1.025L4.975 18.3q-.55.225-1.037-.1-.488-.325-.488-.9Zm1.25-.25 12.1-5.15L4.7 6.75v3.925L9.9 11.9l-5.2 1.225Zm0-5.15V6.75v10.3Z"
-              />
-            </svg>
-          </button>
-        </div>
-      </div>
-    </div> -->
-
-  <!-- Experience -->
-  <div class="experience-wrapper" id="experienceWrapper">
-    <canvas class="experience-canvas"></canvas>
-    <div class="crosshair"></div>
-    <img id="lensImage" src="Ar Icon.svg" alt="Lens Icon" class="lens-icon" />
-    <img src="Bot Icon.svg" alt="Chatbot Icon" class="chatbot-icon" id="chatbotImage" />
-    <img src="ChatWithOthers.svg" alt="Chat With other icon" class="chat-with-other-icon" id="chatWithOtherImage" />
-    <img src="images/camera.svg" alt="Change View Icon" class="change-view-icon" id="changeViewIcon">
-    <img src="Unmute.svg" alt="Speaker Icon" class="speaker-icon" id="speakerIcon" />
-    <img src="Mute.svg" alt="Speaker Disbale Icon" class="speaker-disable-icon" id="speakerDisableIcon" />
-    <img id="powered-by" src="logo.avif" alt="Powered By Strategy Fox" class="powered-by" />
-    <img src="../public/Cart.svg" alt="Cart Icon" class="cart-icon" id="cartIcon">
-    <img src="../public/Wishlist.svg" alt="Wishlist" class="wishlist-icon" id="wishlistIcon">
-</div>
-<div class="modal-backdrop" id="modalBackdrop"></div>
-  <div id="modal" class="modal-container">
-    <div class="button-wrapper">
-      <div class="viewBtn">
-        <button id="viewPhoto" class="toggle-btn">Photos</button>
-        <button id="view3dModel" class="toggle-btn">3D View</button>
-      </div>
-      <div class="closeBtn">
-        <button id="xCloseBtn" class="toggle-btn">X</button>
-      </div>
-    </div>
-    <div class="product-card">
-      <div class="product-image" id="productImageContainer">
-        <!-- Loaded from product.js -->
-      </div>
-      <div class="product-details" id="productDetails">
-        <div class="sticky-header">
-          <h2 class="product-title" id="product-title">-</h2>
-          <div class="quantity-selector">
-            <label for="quantity">Quantity:</label>
-            <select id="quantity">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-            </select>
+            <div class="size-options">
+              <!-- Load dynamically in ShopifyBuy -->
+              >
+            </div>
+            <div class="quantity-selector">
+              <label for="quantity">Quantity:</label>
+              <div class="quantity-controls">
+                <button type="button" id="decrement-btn" class="quantity-btn">
+                  -
+                </button>
+                <span id="quantity-display">1</span>
+                <button type="button" id="increment-btn" class="quantity-btn">
+                  +
+                </button>
+              </div>
+            </div>
           </div>
-          <div class="size-options">
-            <!-- Load dynamically in ShopifyBuy -->
-            >
+          <h3 class="description-title">Description</h3>
+          <div class="description-div">
+            <p id="product-description">
+              <!-- loaded in ShopifyBuy -->
+              -
+            </p>
+          </div>
+          <div class="buttons-holder">
+            <button id="add-to-cart">Add to cart</button>
+            <button id="checkout-btn">Checkout</button>
           </div>
         </div>
-        <h3 class="description-title">Description</h3>
-        <p id="product-description">
-          <!-- loaded in ShopifyBuy -->
-          -
-        </p>
-        <div class="buttons-holder">
-          <button id="add-to-cart">Add to cart</button>
-          <button id="checkout-btn">Checkout</button>
-        </div>
       </div>
+      <!-- <button id="closeModal" class="close-btn">Close</button> -->
     </div>
-    <!-- <button id="closeModal" class="close-btn">Close</button> -->
-  </div>
 
-  <div class="cart-backdrop" id="cartBackdrop"></div>
-  <div id="cart-container" class="cart-container">
-    <h1 class="cart-title">Your Shopping Cart</h1>
-    <div class="cart-items" id="cartItems">
+    <div class="cart-backdrop" id="cartBackdrop"></div>
+    <div id="cart-container" class="cart-container">
+      <h1 class="cart-title">Your Shopping Cart</h1>
+      <div class="cart-items" id="cartItems">
         <!-- Dynamic loading -->
     </div>
     <div class="checkout-div">
         <p class="cart-price" id="cartPrice">Total: Rs. 0</p>    
         <button class="cart-checkout-button" id="cartCheckoutButton">Checkout</button>
         <button class="cart-close-button" id="cartCloseButton">Close</button>
+      </div>
     </div>
-  </div>
 
-  <!-- First Modal: Chat with Others -->
-  <div id="chatWithOtherModal" class="chatWithOther-modal">
-    <div class="chatWithOther-header">
-      <div style="
+    <!-- First Modal: Chat with Others -->
+    <div id="chatWithOtherModal" class="chatWithOther-modal">
+      <div class="chatWithOther-header">
+        <div
+          style="
             display: flex;
             flex-direction: row;
             justify-content: flex-start;
             margin-left: 0.5rem;
-          ">
-        <img src="fox-logo.jpg" alt="foxlogo" style="height: 30px; padding-right: 1rem" />
-        <h1>CHAT WITH OTHERS</h1>
+          "
+        >
+          <img
+            src="fox-logo.jpg"
+            alt="foxlogo"
+            style="height: 30px; padding-right: 1rem"
+          />
+          <h1>CHAT WITH OTHERS</h1>
+        </div>
+        <button id="closeChatWithOtherModal" class="close-chatWithOther-btn">
+          ×
+        </button>
       </div>
-      <button id="closeChatWithOtherModal" class="close-chatWithOther-btn">
-        ×
-      </button>
+      <div id="chatWithOtherHistory"></div>
+      <!-- Separate chat history -->
+      <form id="chatWithOtherForm">
+        <input
+          type="text"
+          id="chatWithOtherInput"
+          placeholder="Enter your message"
+        />
+        <button type="button" id="chatWithOtherButton">Send</button>
+      </form>
+      <div id="chatWithOtherLoader">
+        <img src="loader.gif" width="150px" alt="Loading..." />
+      </div>
     </div>
-    <div id="chatWithOtherHistory"></div>
-    <!-- Separate chat history -->
-    <form id="chatWithOtherForm">
-      <input type="text" id="chatWithOtherInput" placeholder="Enter your message" />
-      <button type="button" id="chatWithOtherButton">Send</button>
-    </form>
-    <div id="chatWithOtherLoader">
-      <img src="loader.gif" width="150px" alt="Loading..." />
-    </div>
-  </div>
 
-  <!-- Second Modal: Chat with Fox -->
-  <div id="chatbotModal" class="chatbot-modal">
-    <div class="chatbot-header">
-      <div style="
+    <!-- Second Modal: Chat with Fox -->
+    <div id="chatbotModal" class="chatbot-modal">
+      <div class="chatbot-header">
+        <div
+          style="
             display: flex;
             flex-direction: row;
             justify-content: flex-start;
             margin-left: 0.5rem;
-          ">
-        <img src="fox-logo.jpg" alt="foxlogo" style="height: 30px; padding-right: 1rem" />
-        <h1>CHAT WITH FOX</h1>
+          "
+        >
+          <img
+            src="fox-logo.jpg"
+            alt="foxlogo"
+            style="height: 30px; padding-right: 1rem"
+          />
+          <h1>CHAT WITH FOX</h1>
+        </div>
+        <button id="closeChatbotModal" class="close-chatbot-btn">×</button>
       </div>
-      <button id="closeChatbotModal" class="close-chatbot-btn">×</button>
+      <div id="chat-history"></div>
+      <form id="chat-form">
+        <input type="text" id="user-input" placeholder="Enter your message" />
+        <button type="button">Send</button>
+      </form>
+      <div id="loader">
+        <img src="loader.gif" width="150px" alt="Loading..." />
+      </div>
     </div>
-    <div id="chat-history"></div>
-    <form id="chat-form">
-      <input type="text" id="user-input" placeholder="Enter your message" />
-      <button type="button">Send</button>
-    </form>
-    <div id="loader">
-      <img src="loader.gif" width="150px" alt="Loading..." />
-    </div>
-  </div>
 
-  <script type="module" src="/index.js"></script>
-  <script type="module" src="/realtimeaudio.js"></script>
-  <script type="module" src="/chatbot.js"></script>
-  <script type="module" src="/product.js"></script>
-  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-</body>
-
+    <script type="module" src="/index.js"></script>
+    <script type="module" src="/realtimeaudio.js"></script>
+    <script type="module" src="/chatbot.js"></script>
+    <script type="module" src="/product.js"></script>
+    <script
+      type="module"
+      src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"
+    ></script>
+  </body>
 </html>
