@@ -9,6 +9,7 @@ class ShopifyBuy {
     this.imageUrls = [];
     this.product = null;
     this.selectedSize = 0;
+    this.quantity = 0;
 
     // Create a cart
     this.cart = new Cart();
