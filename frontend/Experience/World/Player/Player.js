@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import Experience from "../../Experience.js";
 import { Capsule } from "three/examples/jsm/math/Capsule";
-import uiChange from "./changeView.js" 
+import uiChange from "./changeView.js";
 import nipplejs from "nipplejs";
 import elements from "../../Utils/functions/elements.js";
 import Avatar from "./Avatar.js";
@@ -18,8 +18,8 @@ export default class Player {
     this.socket = this.experience.socket;
     this.pointer = {
       x: -1,
-      y: -1
-    }
+      y: -1,
+    };
 
     this.domElements = elements({
       joystickArea: ".joystick-area",
@@ -32,8 +32,7 @@ export default class Player {
     this.initControls();
     this.setPlayerSocket();
 
-    if(window.mobileAndTabletCheck())
-      this.setJoyStick();
+    if (window.mobileAndTabletCheck()) this.setJoyStick();
 
     this.addEventListeners();
   }
@@ -118,8 +117,8 @@ export default class Player {
       mode: "static",
       dynamicPage: true,
       restOpacity: 1,
-      position: { left: '50px', bottom: '50px'},
-      color: 'rgb(200,200,200)',
+      position: { left: "50px", bottom: "50px" },
+      color: "rgb(200,200,200)",
       size: 120,
     };
     this.joystick = nipplejs.create(this.options);
@@ -268,7 +267,9 @@ export default class Player {
       case "KeyC":
         if (!this.camera.togglable) return;
         uiChange(this.camera.thirdPerson, this.requestPointerLock);
-        this.camera.thirdPerson ? this.camera.disableThirdPerson() : this.camera.enableThirdPerson();
+        this.camera.thirdPerson
+          ? this.camera.disableThirdPerson()
+          : this.camera.enableThirdPerson();
         this.camera.togglable = false;
         return;
         break;
@@ -421,7 +422,7 @@ export default class Player {
         this.onDesktopPointerMove(e);
       }
     });
-    canvas.addEventListener("pointerdown", this.raycastLight)
+    canvas.addEventListener("pointerdown", this.raycastLight);
     canvas.addEventListener("pointermove", this.updatePointerPosition);
     canvas.addEventListener("pointerdown", (e) => {
       if (e.target.closest(".joystick-area")) return;
@@ -449,13 +450,13 @@ export default class Player {
     this.pointer = {
       x: (event.clientX / window.innerWidth) * 2 - 1,
       y: -((event.clientY / window.innerHeight) * 2 - 1),
-    }
-  }
+    };
+  };
 
   requestPointerLock = (event) => {
     const canvas = document.querySelector(".experience-canvas");
     canvas.requestPointerLock();
-  }
+  };
 
   raycastLight = (e) => {
     const timeElapsed = this.time.current - this.lastRaycast;
@@ -639,19 +640,18 @@ export default class Player {
   raycast(isThirdPerson) {
     const firstPersonRaycastPosition = { x: 0, y: 0 };
     // Set raycaster from the camera
-    if(isThirdPerson){
+    if (isThirdPerson) {
       console.log(this.pointer);
       this.player.raycaster.setFromCamera(
         this.pointer,
         this.camera.perspectiveCamera
       );
-    }else {
-
-    this.player.raycaster.setFromCamera(
-      firstPersonRaycastPosition,
-      this.camera.perspectiveCamera
-    );
-  }
+    } else {
+      this.player.raycaster.setFromCamera(
+        firstPersonRaycastPosition,
+        this.camera.perspectiveCamera
+      );
+    }
 
     // Check for intersections with objects in the scene
     const intersects = this.player.raycaster.intersectObjects(

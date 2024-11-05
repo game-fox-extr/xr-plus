@@ -24,7 +24,16 @@ function initializeCarousel() {
           <button id="nextSlide">❯</button>
         </div>
       </div>
+      <button type="button" class="tryon-btn" id="tryon-btn">AR Try On Available</button>
     `;
+
+  document.getElementById("tryon-btn").addEventListener("click", function () {
+    alert("Proceed with Lens Experience!");
+    window.open(
+      "https://lens.snap.com/experience/6174e772-1d93-478f-bd13-fd4da3823b6f",
+      "_blank"
+    );
+  });
 
   carousel = document.getElementById("carousel");
   carouselInner = document.querySelector(".carousel-inner");
@@ -56,7 +65,7 @@ document.addEventListener("pointerlockchange", onPointerLockChange, false);
 function showModal(productId) {
   if (document.pointerLockElement) {
     pointerPreviouslyLocked = true;
-    console.log('here');
+    console.log("here");
     document.exitPointerLock();
   }
   shopifyBuy.fetchProduct("gid://shopify/Product/" + productId);
@@ -75,13 +84,13 @@ function onCloseModal() {
   modal.style.display = "none";
   modalBackdrop.style.display = "none";
   document.body.classList.remove("modal-open");
-  if(!experience.camera.thirdPerson) crosshair.classList.remove("hidden");
+  if (!experience.camera.thirdPerson) crosshair.classList.remove("hidden");
   onViewPhoto();
   // Request pointer lock if not on mobile
   if (!window.mobileAndTabletCheck() && pointerPreviouslyLocked) {
     document.querySelector(".experience-canvas").requestPointerLock();
     pointerPreviouslyLocked = false;
-  } else if (window.mobileAndTabletCheck()){
+  } else if (window.mobileAndTabletCheck()) {
     // Ensure the joystick is visible on mobile
     const gamepad = document.querySelector("#gamepad-overlay");
     gamepad.style.display = "block";
