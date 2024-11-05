@@ -184,6 +184,7 @@ export class Cart{
         document.getElementById("cartCloseButton").addEventListener("click", async() => {
             await this.reloadCartArray();
             this.closeCart();
+            this.itemList = this.itemList.filter(item => item.quantity > 0);
         });
         document.getElementById("cartCheckoutButton").addEventListener("click", async() => {
             await this.reloadCartArray();
