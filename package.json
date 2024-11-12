@@ -8,17 +8,21 @@
     "frontend-build": "vite build",
     "backend-build": "node server.js",
     "backend-dev": "nodemon server.js",
-    "dev": "concurrently --kill-others \"npm run frontend-build\" \"npm run backend-dev\"",
     "prod": "concurrently --kill-others \"npm run heroku-postbuild\" \"npm run backend-dev\"",
     "heroku-postbuild": "vite build",
-    "ser": "nodemon server.js"
+    "ser": "nodemon server.js",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
   "devDependencies": {
+    "@types/react": "18.3.12",
     "concurrently": "^8.2.0",
     "gsap": "^3.12.2",
     "include-media": "^2.0.0",
     "nodemon": "^2.0.22",
     "sass": "^1.63.6",
+    "typescript": "5.6.3",
     "vite": "^4.3.9"
   },
   "dependencies": {
@@ -31,7 +35,10 @@
     "dotenv": "^16.4.5",
     "events": "^3.3.0",
     "express": "^4.18.2",
+    "next": "^15.0.3",
     "nipplejs": "^0.10.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "shopify-buy": "^2.22.0",
     "socket.io": "^4.7.1",
     "socket.io-client": "^4.7.1",

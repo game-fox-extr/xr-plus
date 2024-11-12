@@ -1,0 +1,545 @@
+/* Modal and backdrop styling */
+#modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.25);
+  /* Transparent white background */
+  backdrop-filter: blur(10px);
+  /* Glassmorphic effect */
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  /* Subtle border */
+  border-radius: 10px;
+  // padding: 20px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  width: 50%;
+  max-width: 1200px;
+  height: 90%;
+  max-height: 800px;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  overflow: hidden;
+  color: #fff;
+  /* White text color for contrast */
+  font-family: "Poppins", sans-serif;
+  /* Consistent font */
+  box-sizing: border-box;
+}
+
+#modalBackdrop {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 999;
+}
+
+/* Crosshair styling */
+.crosshair {
+  position: fixed;
+  width: 7px;
+  height: 7px;
+  background-color: white;
+  border-radius: 50%;
+  pointer-events: none;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1001;
+}
+
+/* Enable cursor when modal is open */
+body.modal-open {
+  cursor: default !important;
+}
+
+/* Button styling */
+#closeModal {
+  background: rgba(255, 255, 255, 0.2);
+  /* Transparent background */
+  color: #fff;
+  /* White text color */
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  position: absolute;
+  z-index: 1010;
+}
+
+.button-wrapper {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+}
+
+.viewBtn {
+  display: flex;
+  flex-direction: row;
+  gap: 5rem;
+  width: 40vw;
+  justify-content: flex-end;
+  padding-top: 10px;
+}
+
+.closeBtn {
+  width: 25vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.toggle-btn {
+  margin-top: 5vh;
+}
+
+#viewPhoto {
+  background: rgba(255, 255, 255, 0.2);
+  /* Transparent background */
+  color: #fff;
+  /* White text color */
+  border: none;
+  border-radius: 50px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  z-index: 1010;
+}
+
+#view3dModel {
+  background: rgba(255, 255, 255, 0.2);
+  /* Transparent background */
+  color: #fff;
+  /* White text color */
+  border: none;
+  border-radius: 50px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  z-index: 1010;
+}
+
+#xCloseBtn {
+  background: rgba(255, 255, 255, 0.2);
+  /* Transparent background */
+  color: black;
+  /* White text color */
+  border: none;
+  /* border-radius: 50px; */
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  z-index: 1010;
+}
+
+#closeModal {
+  bottom: 20px;
+  left: 20px;
+}
+
+#viewPhoto {
+  top: 20px;
+  left: 20px;
+}
+
+/* Product card styling */
+.product-card {
+  display: flex;
+  flex-direction: row;
+  width: 90%;
+  height: 100%;
+}
+
+/* Container for product image and details */
+.product-image-container {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  height: 100%;
+}
+
+.product-image {
+  width: 100%;
+  height: 75%; /* Fixed height for carousel */
+  max-height: 100%;
+  /* Ensuring a maximum height */
+  overflow: hidden;
+  border-radius: 10px;
+  margin-right: 3rem;
+  margin-bottom: 5rem;
+  object-fit: cover;
+  /* Ensure images cover the entire area */
+}
+
+.product-details-outer {
+  max-width: 50%;
+  min-width: 50%;
+  height: 600px;
+  padding: 20px;
+  overflow: hidden;
+  position: static;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Make the product details scrollable and sticky */
+.product-details {
+  width: 100%;
+  padding: 15px;
+  overflow-y: scroll;
+  border-radius: 10px;
+  position: static;
+  margin-bottom: 30px;
+  background-color: rgba(255, 255, 255, 0.2);
+  /* To make sticky positioning work */
+}
+
+.product-details p {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.product-details strong {
+  font-weight: 600;
+}
+
+.product-details em {
+  font-style: italic;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+}
+
+.quantity-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #534e50; /* Primary color for buttons */
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
+}
+
+#quantity {
+  margin: 0 10px;
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+}
+
+.product-price-stock-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: baseline;
+}
+
+.product-stock {
+  background-color: #534e50; // for temporary
+}
+
+.product-price {
+  padding-top: 10px;
+}
+
+.description-div {
+  height: 200px; /* Set a fixed height */
+  overflow-y: auto; /* Enable vertical scrolling */
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for Firefox */
+  scrollbar-width: none; /* Firefox */
+
+  /* Optional: hide scrollbar in Internet Explorer 10+ */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+.tryon-btn {
+  position: absolute;
+  bottom: 5%;
+  left: 2%;
+  background-color: #524c4e;
+}
+
+.product-details .sticky-header {
+  position: static;
+  top: 0;
+  border-radius: 5px;
+  padding: 10px 10px 0px 10px;
+  z-index: 1010;
+  /* Ensure it's on top of scrollable content */
+}
+
+.product-details h1 {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.product-details .size-options,
+.product-details .quantity-selector {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.product-details h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.product-details h3 {
+  font-size: 25px;
+  font-weight: 600;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.product-details::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+model-viewer {
+  width: 100%;
+  height: 60vh;
+}
+
+.size-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+  position: static;
+  top: 0;
+  padding: 10px 0;
+}
+
+.size-option {
+  background: #fff;
+  color: #333;
+  border-radius: 5px;
+  padding: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.size-option:hover {
+  background: #ffffffb4;
+}
+
+.size-option.selected-size {
+  background: #000000a7;
+  color: white;
+}
+
+.quantity-selector {
+  margin-bottom: 20px;
+  position: static;
+  top: 60px;
+  /* Adjust according to the height of size-options */
+  padding: 10px 0;
+}
+
+.quantity-selector label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.quantity-selector select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+}
+
+/* Carousel styling */
+.carousel {
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  /* Fixed height for carousel */
+  max-height: 100%;
+  /* Ensuring a maximum height */
+  position: relative;
+  border-radius: 10px;
+}
+
+.carousel-inner {
+  display: flex;
+  transition: transform 0.5s ease;
+  width: 100%;
+  height: 100%;
+  /* Ensure the inner carousel matches the fixed height */
+}
+
+.carousel-inner img {
+  min-width: 100%;
+  /* Ensure only one image is visible at a time */
+  height: 100%;
+  /* Ensure images take up the entire carousel */
+  object-fit: cover;
+  /* Cover the entire area without distortion */
+  border-radius: 10px;
+}
+
+.carousel-controls {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  transform: translateY(-50%);
+  z-index: 1020;
+}
+
+.carousel-controls button {
+  background: rgba(255, 255, 255, 0.3);
+  /* Transparent background */
+  border: none;
+  color: #fff;
+  /* White text color */
+  padding: 10px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.buttons-holder {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px;
+}
+
+.buttons-holder button {
+  width: 35%;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+@media screen and (max-width: 600px) {
+  .product-card {
+    flex-direction: column;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+
+  .product-image {
+    object-fit: cover;
+    margin: 1em 0 1em 0;
+    flex-shrink: 0;
+  }
+
+  .toggle-btn {
+    margin-top: 0;
+  }
+
+  .product-details {
+    max-width: 100%;
+    flex-shrink: 0;
+  }
+
+  .buttons-holder {
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .buttons-holder button {
+    width: 90%;
+    margin-bottom: 10px;
+  }
+}
+
+.hidden {
+  visibility: none;
+}
+
+#add-to-cart {
+  background-color: #ffffff19;
+  color: white;
+}
+
+#add-to-cart:hover {
+  background-color: #ffffff09;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+#checkout-btn {
+  background-color: rgba(28, 28, 28, 0.404);
+  color: white;
+}
+
+#checkout-btn:hover {
+  background-color: rgba(0, 0, 0, 0.45);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+@media only screen and (min-width: 320px) and (max-width: 450px) {
+  .viewBtn {
+    margin-left: 40px;
+    gap: 1rem;
+  }
+
+  .button-wrapper {
+    margin-top: 20px;
+  }
+
+  .tryon-btn {
+    margin-top: 10px;
+    position: sticky;
+  }
+
+  /* Adjust product card for smaller screens */
+  .product-card {
+    padding: 10px; /* Adjust padding */
+    font-size: 0.9rem; /* Adjust text size */
+  }
+
+  .product-details {
+    margin-top: 20px;
+  }
+
+  .product-title {
+    font-size: 1rem; /* Adjust title size */
+  }
+
+  .carousel-image {
+    width: 100%; /* Ensure images are responsive */
+  }
+
+  #modal {
+    width: 85%;
+  }
+}

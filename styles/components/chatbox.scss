@@ -1,0 +1,377 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
+
+/* for chatbot */
+/* General styling for the chatbot modal */
+/* General styling for the Chat with Others modal */
+.chatWithOther-modal {
+  font-family: "Poppins", sans-serif;
+  position: fixed;
+  font-weight: 500;
+  bottom: 0;
+  left: 20px;
+  width: 25vw;
+  height: 65vh;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: none;
+  flex-direction: column;
+  z-index: 1010;
+  margin-bottom: 10px;
+}
+
+/* Replicate header styling from the chatbot modal */
+.chatWithOther-header {
+  background: #f5f5f5;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #ddd;
+  border-radius: 10px 10px 0px 0px;
+}
+
+.chatWithOther-header h1 {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  padding-left: 0.5 rem;
+  font-size: 1.2rem;
+}
+
+.close-chatWithOther-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Replicate the chat history and input form styling */
+#chatWithOtherHistory {
+  flex: 1;
+  overflow-x: hidden;
+  padding: 10px;
+}
+
+/* Style for the user and bot messages in Chat with Others */
+.chatWithOther-user-message {
+  background: #d1e7dd;
+  border-radius: 5px;
+  padding: 8px;
+  margin-bottom: 10px;
+  max-width: 65%; /* Limiting the width of user messages */
+  float: right; /* Float user messages to the right */
+  clear: both; /* Clear the float */
+}
+
+.chatWithOther-bot-message {
+  background: #f8d7da;
+  border-radius: 5px;
+  padding: 8px;
+  margin-bottom: 10px;
+  max-width: 65%; /* Limiting the width of bot messages */
+  float: left; /* Float bot messages to the left */
+  clear: both; /* Clear the float */
+}
+
+/* Form styling for Chat with Others */
+#chatWithOtherForm {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 10px;
+  padding: 10px;
+  border-top: 2px solid #ddd;
+}
+
+
+button {
+  font-family: "Poppins", sans-serif;
+  padding: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: #e4451e; /* Default button color */
+  border: none;
+  color: white; /* Text color */
+  border-radius: 5px;
+}
+
+button:disabled {
+  background-color: #edc4ba; /* Disabled button color */
+  color: black; /* Text color when disabled */
+  cursor: not-allowed; /* Change cursor to indicate the button is disabled */
+}
+
+#chatWithOtherLoader {
+  display: none;
+  position: fixed;
+  top: 70%;
+  left: 5%;
+  transform: translate(-50%, -50%);
+}
+
+
+#joinRoomButton {
+  font-family: "Poppins", sans-serif;
+  padding: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: #e4451e;
+  border: none;
+  color: white;
+  border-radius: 5px;
+}
+
+#joinRoomButton:disabled {
+  background-color: #edc4ba;
+  color: black;
+  cursor: not-allowed;
+}
+
+/* Styling for chat form */
+#chatWithOtherForm {
+  display: flex;
+  padding: 10px;
+  border-top: 2px solid #ddd;
+}
+
+#chatWithOtherInput {
+  flex: 5 1 0;
+  min-width: fit-content;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+#chatWithOtherButton {
+  flex: 1 1 0;
+}
+
+/* Send button styling */
+#sendMessageButton {
+  font-family: "Poppins", sans-serif;
+  padding: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: #e4451e;
+  border: none;
+  color: white;
+  border-radius: 5px;
+}
+
+#sendMessageButton:disabled {
+  background-color: #edc4ba;
+  color: black;
+  cursor: not-allowed;
+}
+
+/* Close button styling */
+.close-chatWithOther-btn {
+  color: black;
+  font-size: 2rem;
+}
+
+.chatbot-modal {
+  font-family: "Poppins", sans-serif;
+  position: fixed;
+  font-weight: 500;
+  bottom: 0;
+  right: 20px;
+  width: 25vw;
+  height: 65vh;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: none; /* Hidden by default */
+  flex-direction: column;
+  z-index: 1010;
+  margin-bottom: 10px;
+}
+
+.chatbot-header {
+  background: #f5f5f5;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #ddd;
+  border-radius: 10px 10px 0px 0px;
+}
+
+.chatbot-header h1 {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  padding-left: 0.5 rem;
+  font-size: 1.2rem;
+}
+
+.close-chatbot-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+#chat-history {
+  flex: 1;
+  overflow-x: hidden;
+  padding: 10px;
+}
+
+/* Style for the user and bot messages */
+.user-message {
+  background: #d1e7dd;
+  border-radius: 5px;
+  padding: 8px;
+  margin-bottom: 10px;
+  max-width: 65%; /* Limiting the width of user messages */
+  float: right; /* Float user messages to the right */
+  clear: both; /* Clear the float */
+}
+
+.bot-message {
+  background: #f8d7da;
+  border-radius: 5px;
+  padding: 8px;
+  margin-bottom: 10px;
+  max-width: 65%; /* Limiting the width of bot messages */
+  float: left; /* Float bot messages to the left */
+  clear: both; /* Clear the float */
+}
+
+#chat-form {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 10px;
+  padding: 10px;
+  border-top: 2px solid #ddd;
+}
+
+#chat-form button {
+  flex: 1 1 0;
+}
+
+#user-input {
+  flex: 5 1 0;
+  min-width: fit-content;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+button {
+  font-family: "Poppins", sans-serif;
+  padding: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: #e4451e; /* Default button color */
+  border: none;
+  color: white; /* Text color */
+  border-radius: 5px;
+}
+
+button:disabled {
+  background-color: #edc4ba; /* Disabled button color */
+  color: black; /* Text color when disabled */
+  cursor: not-allowed; /* Change cursor to indicate the button is disabled */
+}
+
+#loader {
+  display: none;
+  position: fixed;
+  top: 70%;
+  right: 5%;
+  transform: translate(-50%, -50%);
+}
+
+.close-chatbot-btn {
+  color: black;
+  font-size: 2rem;
+}
+
+.system-message {
+  text-align: center;
+  clear: both;
+}
+
+.other-message {
+  background: #f8d7da;
+  border-radius: 5px;
+  padding: 8px;
+  margin-bottom: 10px;
+  max-width: 65%; /* Limiting the width of bot messages */
+  float: left; /* Float bot messages to the left */
+  clear: both; /* Clear the float */
+}
+
+@include media("<=900px") {
+  .chatWithOther-modal {
+    width: 90vw; /* Adjust the width to be more mobile-friendly */
+    height: 60vh; /* Adjust height to fit smaller screens */
+    left: 5vw; /* Adjust the left positioning to give some padding */
+    bottom: 0;
+  }
+
+  .chatWithOther-header h1 {
+    font-size: 1rem; /* Adjust the font size for the header */
+  }
+
+
+  button {
+    padding: 8px; /* Adjust button padding */
+    font-size: 0.9rem; /* Adjust font size for buttons */
+  }
+
+  .chatWithOther-user-message,
+  .chatWithOther-bot-message {
+    max-width: 80%; /* Allow more space for messages on smaller screens */
+    font-size: 0.85rem; /* Smaller font size for messages */
+  }
+
+  .close-chatWithOther-btn {
+    font-size: 1.2rem; /* Reduce close button size */
+  }
+
+  #chatWithOtherLoader {
+    left: 12.5%;
+  }
+
+  .chatbot-modal {
+    width: 90vw; /* Adjust the width to be more mobile-friendly */
+    height: 60vh; /* Adjust height to fit smaller screens */
+    right: 5vw; /* Adjust the right positioning to give some padding */
+    bottom: 0;
+  }
+
+  .chatbot-header h1 {
+    font-size: 1rem; /* Adjust the font size for the header */
+  }
+
+
+  button {
+    padding: 8px; /* Adjust button padding */
+    font-size: 0.9rem; /* Adjust font size for buttons */
+  }
+
+  .user-message,
+  .bot-message {
+    max-width: 80%; /* Allow more space for messages on smaller screens */
+    font-size: 0.85rem; /* Smaller font size for messages */
+  }
+
+  /* Adjust chatbot icon for smaller screens */
+  .chatbot-icon {
+    width: 50px;
+    height: 50px;
+    bottom: 20px;
+    right: 20px;
+  }
+
+  .close-chatbot-btn {
+    font-size: 1.2rem; /* Reduce close button size */
+  }
+
+  #loader {
+    right: 12.5%;
+  }
+}
