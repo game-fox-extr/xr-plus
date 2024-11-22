@@ -1,56 +1,35 @@
-import React, { useRef, useEffect } from 'react';
-import * as THREE from 'three';
+import { Environment, OrbitControls } from "@react-three/drei";
+import { Canvas, useThree } from "@react-three/fiber";
+import React, { useRef, useEffect } from "react";
+import * as THREE from "three";
+import Scene from "./Scene";
+
+function SkyBox() {
+  const { scene } = useThree();
+  const loader = new THREE.CubeTextureLoader();
+  // The CubeTextureLoader load method takes an array of urls representing all 6 sides of the cube.
+  const texture = loader.load([
+    "/textures/skybox/nx.webp",
+    "/textures/skybox/ny.webp",
+    "/textures/skybox/nz.webp",
+    "/textures/skybox/px.webp",
+    "/textures/skybox/py.webp",
+    "/textures/skybox/pz.webp",
+  ]);
+
+  // Set the scene background property to the resulting texture.
+  scene.background = texture;
+  return null;
+}
+
 
 const ThreeScene: React.FC = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-      const renderer = new THREE.WebGLRenderer();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      containerRef.current?.appendChild(renderer.domElement);
-      camera.position.z = 5;
 
-      if (typeof window !== 'undefined') {
-        const geometry = new THREE.BoxGeometry();
-        const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-        const cube = new THREE.Mesh(geometry, material);
-        scene.add(cube);
-      
-      // Render the scene and camera
-        renderer.render(scene, camera);
-
-        const renderScene = () => {
-            cube.rotation.x += 0.01;
-            cube.rotation.y += 0.01;
-            renderer.render(scene, camera);
-            requestAnimationFrame(renderScene);
-          };
-          
-          // Call the renderScene function to start the animation loop
-          renderScene();
-      }
-      const handleResize = () => {
-        const width = window.innerWidth;
-        const height = window.innerHeight;
-  
-        camera.aspect = width / height;
-        camera.updateProjectionMatrix();
-  
-        renderer.setSize(width, height);
-      };
-  
-      window.addEventListener('resize', handleResize);
-  
-      // Clean up the event listener when the component is unmounted
-      return () => {
-        window.removeEventListener('resize', handleResize);
-      };
-    }
-  }, []);
-
-  
-  return <div ref={containerRef} />;
+  return (
+    <Canvas>
+      <SkyBox />
+     <Scene/>
+    </Canvas>
+  );
 };
 export default ThreeScene;

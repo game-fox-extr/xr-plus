@@ -16,6 +16,7 @@
     "start": "next start"
   },
   "devDependencies": {
+    "@types/eccrypto": "^1.1.6",
     "@types/react": "18.3.12",
     "concurrently": "^8.2.0",
     "gsap": "^3.12.5",
@@ -29,7 +30,8 @@
     "@google-cloud/speech": "^6.7.0",
     "@google/generative-ai": "^0.20.0",
     "@react-three/drei": "^9.115.0",
-    "@react-three/fiber": "^8.17.10",
+    "@react-three/fiber": "^8.15.10",
+    "@react-three/rapier": "^1.5.0",
     "@types/npm": "^7.19.3",
     "@types/socket.io-client": "^3.0.0",
     "@types/three": "^0.170.0",
@@ -37,9 +39,10 @@
     "axios": "^1.7.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
+    "ecctrl": "^1.0.91",
     "events": "^3.3.0",
     "express": "^4.18.2",
-    "next": "^15.0.3",
+    "next": "14.2.0",
     "nipplejs": "^0.10.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -48,6 +51,7 @@
     "socket.io-client": "^4.8.1",
     "styled-components": "^6.1.13",
     "sweetalert2": "^11.14.5",
-    "three": "^0.154.0"
+    "three": "^0.170.0",
+    "three-mesh-bvh": "^0.8.3"
   }
 }
