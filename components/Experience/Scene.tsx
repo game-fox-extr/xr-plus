@@ -2,18 +2,16 @@ import {
   Gltf,
   KeyboardControls,
   OrbitControls,
-  useGLTF
+  useGLTF,
+  FirstPersonControls,
 } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
 import { Physics, RigidBody } from "@react-three/rapier";
 import { CubeTextureLoader } from "three";
-import Model from "./Model";
-// import Environment from './World/Environment'
 import Ecctrl from "ecctrl";
 function SkyBox() {
   const { scene } = useThree();
   const loader = new CubeTextureLoader();
-  // The CubeTextureLoader load method takes an array of urls representing all 6 sides of the cube.
   const texture = loader.load([
     "/textures/skybox/px.webp",
     "/textures/skybox/nx.webp",
@@ -23,12 +21,9 @@ function SkyBox() {
     "/textures/skybox/nz.webp",
   ]);
 
-  // Set the scene background property to the resulting texture.
   scene.background = texture;
   return null;
 }
-let characterURL = "./Demon.glb";
-console.log({ characterURL });
 
 const keyboardMap = [
   { name: "forward", keys: ["ArrowUp", "KeyW"] },
@@ -37,7 +32,6 @@ const keyboardMap = [
   { name: "rightward", keys: ["ArrowRight", "KeyD"] },
   { name: "jump", keys: ["Space"] },
   { name: "run", keys: ["Shift"] },
-  // Optional animation key map
   { name: "action1", keys: ["1"] },
   { name: "action2", keys: ["2"] },
   { name: "action3", keys: ["3"] },
@@ -84,13 +78,15 @@ useGLTF.preload("/Castle28mb.glb");
 const Scene = () => {
   return (
     <mesh>
-      <OrbitControls />
+      {/* SkyBox for environment */}
       <SkyBox />
+
+      {/* Lights */}
       <directionalLight
         intensity={0.7}
         castShadow
         shadow-bias={0.0004}
-        position={[ 0, 1, 0 ]}
+        position={[0, 1, 0]}
       >
         <perspectiveCamera attach="shadow-camera" args={[-20, 20, 20, -20]} />
       </directionalLight>
@@ -101,13 +97,33 @@ const Scene = () => {
         <RigidBody type="fixed" colliders="trimesh">
           <Castle position={[0, -0.55, -5]} scale={1} castShadow receiveShadow/>
         </RigidBody>
+
+        {/* Keyboard controls for interaction */}
         <KeyboardControls map={keyboardMap}>
-          <Ecctrl animated>
-            <Model />
-          </Ecctrl>
+        <RigidBody type="fixed" colliders="trimesh">
+          <Ecctrl
+            camCollision={false} // disable camera collision detect (useless in FP mode)
+            camInitDis={-0.01} // camera intial position
+            camMinDis={-0.01} // camera zoom in closest position
+            camFollowMult={1000} // give a big number here, so the camera follows the target (character) instantly
+            camLerpMult={1000} // give a big number here, so the camera lerp to the followCam position instantly
+            turnVelMultiplier={1} // Turning speed same as moving speed
+            turnSpeed={100} // give it big turning speed to prevent turning wait time
+            mode="CameraBasedMovement" // character's rotation will follow camera's rotation in this mode>
+          ></Ecctrl>
+          </RigidBody>
         </KeyboardControls>
       </Physics>
+
+      {/* First-person camera controls */}
+      <FirstPersonControls
+        lookSpeed={0.1} // Adjust look sensitivity
+        movementSpeed={5} // Adjust movement speed
+        autoForward={false} // Disable automatic forward movement
+        activeLook={true} // Enable mouse look
+      />
     </mesh>
   );
 };
+
 export default Scene;
