@@ -31,7 +31,7 @@ export default function Model(props: any) {
     <primitive 
       object={nodes.Scene} 
       scale={1} 
-      position={[0, -0.55, 0]}
+      position={[0, -0.55, 1]}
       rotation={[0, 0, 0]}
     />
   </group>

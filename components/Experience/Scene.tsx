@@ -1,17 +1,14 @@
-import { Canvas, useThree } from "@react-three/fiber";
 import {
-  Environment,
-  Fisheye,
   Gltf,
   KeyboardControls,
-  OrbitControls,
+  OrbitControls
 } from "@react-three/drei";
-import Player from "../Experience/World/Player/Player";
-import Model from "./Model";
+import { useThree } from "@react-three/fiber";
 import { Physics, RigidBody } from "@react-three/rapier";
-import { CatmullRomCurve3, CubeTextureLoader } from "three";
+import { CubeTextureLoader } from "three";
+import Model from "./Model";
 // import Environment from './World/Environment'
-import Ecctrl, { EcctrlAnimation } from "ecctrl";
+import Ecctrl from "ecctrl";
 
 function SkyBox() {
   const { scene } = useThree();
@@ -46,20 +43,7 @@ const keyboardMap = [
   { name: "action3", keys: ["3"] },
   { name: "action4", keys: ["KeyF"] },
 ];
-const animationSet = {
-  idle: "Idle",
-  walk: "Walk",
-  run: "Run",
-  jump: "Jump_Start",
-  jumpIdle: "Jump_Idle",
-  jumpLand: "Jump_Land",
-  fall: "Climbing", // This is for falling from high sky
-  // Currently support four additional animations
-  action1: "Wave",
-  action2: "Dance",
-  action3: "Cheer",
-  action4: "Attack(1h)", // This is special action which can be trigger while walking or running
-};
+
 const Scene = () => {
   return (
     <mesh>
@@ -68,48 +52,32 @@ const Scene = () => {
       <directionalLight
         intensity={0.7}
         castShadow
-        shadow-bias={-0.0004}
-        position={[-20, 20, 20]}
+        shadow-bias={0.0004}
+        position={[ 0, 1, 0 ]}
       >
         <perspectiveCamera attach="shadow-camera" args={[-20, 20, 20, -20]} />
       </directionalLight>
-      <ambientLight intensity={0.2} />
+      <ambientLight color={'0xffffff'} intensity={1} />
       <Physics timeStep="vary">
+        <RigidBody type="fixed" colliders="trimesh">
+          <Gltf
+          
+            castShadow
+            receiveShadow
+            // rotation={[-Math.PI / 2, 0, 0]}
+            position={[0, -0.55, -5]}
+            scale={1}
+            src="Castle28mb.glb"
+            // src="/fantasy_game_inn2-transformed.glb"
+          />
+        </RigidBody>
         <KeyboardControls map={keyboardMap}>
-          {/* <EcctrlAnimation
-              characterURL={characterURL} // Must have property
-              animationSet={animationSet} // Must have property
-            >
-             
-            </EcctrlAnimation> */}
-
           <Ecctrl animated>
-  
             <Model />
           </Ecctrl>
         </KeyboardControls>
-
-        <RigidBody type="fixed" colliders="trimesh">
-          <Gltf
-            castShadow
-            receiveShadow
-            rotation={[-Math.PI / 2, 0, 0]}
-            scale={0.5}
-            src="fantasy_game_inn2-transformed.glb"
-          />
-        </RigidBody>
       </Physics>
     </mesh>
   );
 };
 export default Scene;
-
-//TODO: - plane mesh, collider property.
-// 1- environment yes
-// 2 - model
-// 3 - movements / fpv
-// 4 - placing products
-// 5 - add to cart -> product detail modal
-// - add to czrt / wishist
-// - checkout
-// -
