@@ -18,14 +18,14 @@ const keyboardMap = [
 
 const Scene = () => {
   return (
-    <mesh>
+    <>
       <directionalLight
         intensity={0.7}
         castShadow
         shadow-bias={0.0004}
         position={[0, 1, 0]}
       >
-        <perspectiveCamera attach="shadow-camera" args={[-20, 20, 20, -20]} />
+        {/* <perspectiveCamera attach="shadow-camera" args={[-20, 20, 20, -20]} /> */}
       </directionalLight>
       <ambientLight color={"white"} intensity={3} />
       <Physics timeStep="vary">
@@ -53,21 +53,24 @@ const Scene = () => {
               camFollowMult={1000} // give a big number here, so the camera follows the target (character) instantly
               camLerpMult={1000} // give a big number here, so the camera lerp to the followCam position instantly
               turnVelMultiplier={1} // Turning speed same as moving speed
-              turnSpeed={100} // give it big turning speed to prevent turning wait time
-              mode="CameraBasedMovement" // character's rotation will follow camera's rotation in this mode>
+              turnSpeed={200} // give it big turning speed to prevent turning wait time
+              mode="PointToMove" // CameraBasedMovement" | "FixedCamera" | "PointToMove | null
+              wakeUpDelay={200}
+              accDeltaTime={8}
+              followLightPos= {{ x: 20, y: 30, z: 10 }}
             ></Ecctrl>
           </RigidBody>
         </KeyboardControls>
       </Physics>
 
       {/* First-person camera controls */}
-      <FirstPersonControls
+      {/* <FirstPersonControls
         lookSpeed={0.5} // Adjust look sensitivity
         movementSpeed={5} // Adjust movement speed
         autoForward={false} // Disable automatic forward movement
         activeLook={true} // Enable mouse look
-      />
-    </mesh>
+      /> */}
+    </>
   );
 };
 
