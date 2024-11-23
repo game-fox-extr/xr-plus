@@ -1,7 +1,8 @@
 import {
   Gltf,
   KeyboardControls,
-  OrbitControls
+  OrbitControls,
+  useGLTF
 } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
 import { Physics, RigidBody } from "@react-three/rapier";
@@ -9,7 +10,6 @@ import { CubeTextureLoader } from "three";
 import Model from "./Model";
 // import Environment from './World/Environment'
 import Ecctrl from "ecctrl";
-
 function SkyBox() {
   const { scene } = useThree();
   const loader = new CubeTextureLoader();
@@ -44,6 +44,43 @@ const keyboardMap = [
   { name: "action4", keys: ["KeyF"] },
 ];
 
+type CastleProps = JSX.IntrinsicElements["group"];
+
+export const Castle: React.FC<CastleProps> = (props) => {
+  const { nodes, materials } = useGLTF("/Castle28mb.glb") as any; // Replace `any` with generated GLTF types if available
+  return (
+    <group {...props} dispose={null}>
+      <group position={[9.78, 0, 62.55]}>
+        <mesh
+          castShadow
+          receiveShadow
+          geometry={nodes.Plane_1.geometry}
+          material={materials["Material.004"]}
+        />
+        <mesh
+          castShadow
+          receiveShadow
+          geometry={nodes.Plane_2.geometry}
+          material={materials["Material.002"]}
+        />
+        <mesh
+          castShadow
+          receiveShadow
+          geometry={nodes.Plane_3.geometry}
+          material={materials["Material.001"]}
+        />
+        <mesh
+          castShadow
+          receiveShadow
+          geometry={nodes.Plane_4.geometry}
+          material={materials["Material.003"]}
+        />
+      </group>
+    </group>
+  );
+};
+useGLTF.preload("/Castle28mb.glb");
+
 const Scene = () => {
   return (
     <mesh>
@@ -57,19 +94,12 @@ const Scene = () => {
       >
         <perspectiveCamera attach="shadow-camera" args={[-20, 20, 20, -20]} />
       </directionalLight>
-      <ambientLight color={'0xffffff'} intensity={1} />
+      <ambientLight color={'white'} intensity={1} />
+      <ambientLight color={'white'} intensity={1} />
+      <ambientLight color={'white'} intensity={1} />
       <Physics timeStep="vary">
         <RigidBody type="fixed" colliders="trimesh">
-          <Gltf
-          
-            castShadow
-            receiveShadow
-            // rotation={[-Math.PI / 2, 0, 0]}
-            position={[0, -0.55, -5]}
-            scale={1}
-            src="Castle28mb.glb"
-            // src="/fantasy_game_inn2-transformed.glb"
-          />
+          <Castle position={[0, -0.55, -5]} scale={1} castShadow receiveShadow/>
         </RigidBody>
         <KeyboardControls map={keyboardMap}>
           <Ecctrl animated>
