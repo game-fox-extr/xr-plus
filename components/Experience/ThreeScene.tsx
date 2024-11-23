@@ -18,7 +18,14 @@ const ThreeScene: React.FC = () => {
     return <>{isTouchScreen && <EcctrlJoystick buttonNumber={5} />}</>;
   };
   return (
-    <>
+    <div
+    style={{
+      position: "relative", // Ensures child elements are positioned correctly
+      width: "100vw", // Full viewport width
+      height: "100vh", // Full viewport height
+      overflow: "hidden", // Prevents scrollbars
+    }}
+  >
       <EcctrlJoystickControls />
       <Canvas
         onPointerDown={(e) => {
@@ -32,7 +39,23 @@ const ThreeScene: React.FC = () => {
           <Scene />
         </Suspense>
       </Canvas>
-    </>
+   
+      {/* Crosshair */}
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: "8px",
+          height: "8px",
+          backgroundColor: "white", 
+          borderRadius: "50%", 
+          pointerEvents: "none", 
+          zIndex: 100, 
+        }}
+      ></div>
+     </div>
   );
 };
 export default ThreeScene;
