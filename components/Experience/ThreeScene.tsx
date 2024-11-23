@@ -1,35 +1,38 @@
-import { Environment, OrbitControls } from "@react-three/drei";
-import { Canvas, useThree } from "@react-three/fiber";
-import React, { useRef, useEffect } from "react";
-import * as THREE from "three";
+import { Canvas } from "@react-three/fiber";
+import React, { Suspense, useEffect, useState } from "react";
 import Scene from "./Scene";
-
-function SkyBox() {
-  const { scene } = useThree();
-  const loader = new THREE.CubeTextureLoader();
-  // The CubeTextureLoader load method takes an array of urls representing all 6 sides of the cube.
-  const texture = loader.load([
-    "/textures/skybox/nx.webp",
-    "/textures/skybox/ny.webp",
-    "/textures/skybox/nz.webp",
-    "/textures/skybox/px.webp",
-    "/textures/skybox/py.webp",
-    "/textures/skybox/pz.webp",
-  ]);
-
-  // Set the scene background property to the resulting texture.
-  scene.background = texture;
-  return null;
-}
-
+import Skybox from "./Skybox";
+import { EcctrlJoystick } from "ecctrl";
 
 const ThreeScene: React.FC = () => {
-
+  const EcctrlJoystickControls = () => {
+    const [isTouchScreen, setIsTouchScreen] = useState(false);
+    useEffect(() => {
+      // Check if using a touch control device, show/hide joystick
+      if ("ontouchstart" in window || navigator.maxTouchPoints > 0) {
+        setIsTouchScreen(true);
+      } else {
+        setIsTouchScreen(false);
+      }
+    }, []);
+    return <>{isTouchScreen && <EcctrlJoystick buttonNumber={5} />}</>;
+  };
   return (
-    <Canvas>
-      <SkyBox />
-     <Scene/>
-    </Canvas>
+    <>
+      <EcctrlJoystickControls />
+      <Canvas
+        onPointerDown={(e) => {
+          if (e.pointerType === "mouse") {
+            (e.target as HTMLCanvasElement).requestPointerLock();
+          }
+        }}
+      >
+        <Suspense fallback={"Loading..."}>
+          <Skybox />
+          <Scene />
+        </Suspense>
+      </Canvas>
+    </>
   );
 };
 export default ThreeScene;
