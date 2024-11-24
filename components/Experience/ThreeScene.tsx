@@ -18,26 +18,26 @@ const ThreeScene: React.FC = () => {
     }, []);
     return <>{isTouchScreen && <EcctrlJoystick buttonNumber={5} />}</>;
   };
-  const Cart = () => {
-    return (
-      <Html center>
-        <div
-          onClick={() => alert("Center pointer clicked!")}
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            width: "10px",
-            height: "10px",
-            backgroundColor: "red",
-            borderRadius: "50%",
-            transform: "translate(-50%, -50%)",
-            pointerEvents: "auto", // Ensures this is clickable
-          }}
-        />
-      </Html>
-    );
-  };
+  // const Cart = () => {
+  //   return (
+  //     <Html center>
+  //       <div
+  //         onClick={() => alert("Center pointer clicked!")}
+  //         style={{
+  //           position: "absolute",
+  //           top: "50%",
+  //           left: "50%",
+  //           width: "10px",
+  //           height: "10px",
+  //           backgroundColor: "red",
+  //           borderRadius: "50%",
+  //           transform: "translate(-50%, -50%)",
+  //           pointerEvents: "auto", // Ensures this is clickable
+  //         }}
+  //       />
+  //     </Html>
+  //   );
+  // };
   return (
     <div
     style={{
