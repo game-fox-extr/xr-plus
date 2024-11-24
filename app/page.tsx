@@ -1,8 +1,7 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import Preloader from "../components/Experience/Preloader";
+import { useState } from "react";
 import styled from "styled-components";
 
 // Dynamically import ThreeScene with no SSR
@@ -22,9 +21,7 @@ const Page = () => {
   return (
     <main className="w-full h-screen">
       <div style={{ width: "100vw", height: "100vh" }}>
-        <Suspense fallback={null}>
-          <ThreeScene />
-        </Suspense>
+        <ThreeScene />
       </div>
     </main>
   );

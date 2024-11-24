@@ -1,7 +1,8 @@
-import { FirstPersonControls, KeyboardControls } from "@react-three/drei";
+import { Html, KeyboardControls } from "@react-three/drei";
 import { Physics, RigidBody } from "@react-three/rapier";
 import Ecctrl from "ecctrl";
 import { Castle } from "./Castle";
+import Light from "./Light";
 
 const keyboardMap = [
   { name: "forward", keys: ["ArrowUp", "KeyW"] },
@@ -19,16 +20,24 @@ const keyboardMap = [
 const Scene = () => {
   return (
     <>
-      <directionalLight
-        intensity={0.7}
-        castShadow
-        shadow-bias={0.0004}
-        position={[0, 1, 0]}
-      >
-        {/* <perspectiveCamera attach="shadow-camera" args={[-20, 20, 20, -20]} /> */}
-      </directionalLight>
-      <ambientLight color={"white"} intensity={3} />
+      <Light />
       <Physics timeStep="vary">
+        {/* <Html center>
+          <div
+            onClick={() => alert("Center pointer clicked!")}
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              width: "10px",
+              height: "10px",
+              backgroundColor: "red",
+              borderRadius: "50%",
+              transform: "translate(-50%, -50%)",
+              pointerEvents: "auto", // Ensures this is clickable
+            }}
+          />
+        </Html> */}
         <RigidBody type="fixed" colliders="trimesh">
           <Castle
             position={[0, -0.55, -5]}
@@ -57,19 +66,11 @@ const Scene = () => {
               mode="PointToMove" // CameraBasedMovement" | "FixedCamera" | "PointToMove | null
               wakeUpDelay={200}
               accDeltaTime={8}
-              followLightPos= {{ x: 20, y: 30, z: 10 }}
+              followLightPos={{ x: 20, y: 30, z: 10 }}
             ></Ecctrl>
           </RigidBody>
         </KeyboardControls>
       </Physics>
-
-      {/* First-person camera controls */}
-      {/* <FirstPersonControls
-        lookSpeed={0.5} // Adjust look sensitivity
-        movementSpeed={5} // Adjust movement speed
-        autoForward={false} // Disable automatic forward movement
-        activeLook={true} // Enable mouse look
-      /> */}
     </>
   );
 };

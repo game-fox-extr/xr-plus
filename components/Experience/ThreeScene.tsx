@@ -1,8 +1,9 @@
 import { Canvas } from "@react-three/fiber";
+import { EcctrlJoystick } from "ecctrl";
 import React, { Suspense, useEffect, useState } from "react";
 import Scene from "./Scene";
 import Skybox from "./Skybox";
-import { EcctrlJoystick } from "ecctrl";
+import { Html } from "@react-three/drei";
 
 const ThreeScene: React.FC = () => {
   const EcctrlJoystickControls = () => {
@@ -17,6 +18,26 @@ const ThreeScene: React.FC = () => {
     }, []);
     return <>{isTouchScreen && <EcctrlJoystick buttonNumber={5} />}</>;
   };
+  const Cart = () => {
+    return (
+      <Html center>
+        <div
+          onClick={() => alert("Center pointer clicked!")}
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            width: "10px",
+            height: "10px",
+            backgroundColor: "red",
+            borderRadius: "50%",
+            transform: "translate(-50%, -50%)",
+            pointerEvents: "auto", // Ensures this is clickable
+          }}
+        />
+      </Html>
+    );
+  };
   return (
     <div
     style={{
@@ -28,12 +49,19 @@ const ThreeScene: React.FC = () => {
   >
       <EcctrlJoystickControls />
       <Canvas
+        shadows
+        camera={{
+          fov: 65,
+          near: 0.1,
+          far: 1000,
+        }}
         onPointerDown={(e) => {
           if (e.pointerType === "mouse") {
             (e.target as HTMLCanvasElement).requestPointerLock();
           }
         }}
       >
+        {/* <Cart /> */}
         <Suspense fallback={"Loading..."}>
           <Skybox />
           <Scene />
