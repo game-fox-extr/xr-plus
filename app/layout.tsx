@@ -1,5 +1,3 @@
-// import './globals.css'
-
 export const metadata = {
   title: 'Multiplayer Game Fox',
   description: 'A multiplayer gaming experience',
