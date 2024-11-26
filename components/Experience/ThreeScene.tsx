@@ -1,4 +1,4 @@
-import { PivotControls } from "@react-three/drei";
+import { PivotControls, useProgress } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import React, { Suspense, useEffect, useState } from "react";
 import CenteredDot from "./CenteredDot";
@@ -7,6 +7,60 @@ import RayCaster from "./Raycaster";
 import Scene from "./Scene";
 import Skybox from "./Skybox";
 import axios from "axios";
+import { DM_Sans } from 'next/font/google';
+
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700']
+});
+
+const LoadingScreen = () => {
+  const { progress, active } = useProgress();
+  
+  if (!active) return null;
+  
+  return (
+    <div style={{
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100vw",
+      height: "100vh",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "black",
+      color: "white",
+      zIndex: 1001,
+    }}>
+      <div style={{
+        width: "256px",
+        height: "16px",
+        backgroundColor: "#374151",
+        borderRadius: "9999px",
+        overflow: "hidden"
+      }}>
+        <div 
+          style={{
+            width: `${progress}%`,
+            height: "100%",
+            backgroundColor: "#f6523b",
+            transition: "all 300ms"
+          }}
+        />
+      </div>
+      <div className={dmSans.className} style={{
+        marginTop: "16px",
+        fontSize: "1.125rem",
+        fontWeight: 300,
+        
+      }}>
+        Loading... {progress.toFixed(0)}%
+      </div>
+    </div>
+  );
+};
 
 const DraggableCube = ({
   position = [0, 0, 0],
@@ -79,6 +133,7 @@ const ThreeScene: React.FC = () => {
     "status-code": number;
     product: any;
   } | null>(null);
+ 
 
   useEffect(() => {
     setIsSceneReady(true);
@@ -87,7 +142,7 @@ const ThreeScene: React.FC = () => {
   const handleCubeClick = async () => {
     try {
       const data = await fetchData();
-      setModalData(data); // Save the fetched data for the Modal
+      setModalData(data);
       setIsModalOpen(true);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -111,6 +166,9 @@ const ThreeScene: React.FC = () => {
     >
       {/* <EcctrlJoystickControls /> */}
       <div style={{ position: "absolute", zIndex: 100, right: "1" }}>hello</div>
+      
+      <LoadingScreen />
+      
       <Canvas
         shadows
         camera={{
@@ -124,7 +182,7 @@ const ThreeScene: React.FC = () => {
           }
         }}
       >
-        <Suspense fallback={"Loading..."}>
+        <Suspense fallback={null}>
           <RayCaster />
           <Skybox />
           {isSceneReady && (
