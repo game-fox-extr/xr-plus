@@ -6,6 +6,7 @@ import CenteredDot from "./CenteredDot";
 import RayCaster from "./Raycaster";
 import Scene from "./Scene";
 import Skybox from "./Skybox";
+import axios from "axios";
 
 const DraggableCube = ({
   position = [0, 0, 0],
@@ -24,7 +25,7 @@ const DraggableCube = ({
   );
 };
 
-const Modal = ({ isOpen, onClose } : any) => {
+const Modal = ({ isOpen, onClose, data }: any) => {
   if (!isOpen) return null;
 
   return (
@@ -50,27 +51,53 @@ const Modal = ({ isOpen, onClose } : any) => {
         }}
       >
         <h2>Modal Content</h2>
+        {data && (
+          <>
+            <p>Status Code: {data["status-code"]}</p>
+            <p>Product Title: {data.product.title}</p>
+            <p>Product ID: {data.product.id}</p>
+          </>
+        )}
         <button onClick={onClose}>Close</button>
       </div>
     </div>
   );
 };
 
+const fetchData = async () => {
+  const res = await axios.get(
+    "http://localhost:5000/api/shopify/products/9658662388005"
+  );
+  return { "status-code": res.status, product: res.data.product };
+};
+
 const ThreeScene: React.FC = () => {
   // const { camera } = useThree();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSceneReady, setIsSceneReady] = useState(false);
+  const [modalData, setModalData] = useState<{
+    "status-code": number;
+    product: any;
+  } | null>(null);
 
   useEffect(() => {
     setIsSceneReady(true);
   }, []);
 
-  const handleCubeClick = () => {
-    setIsModalOpen(true);
+  const handleCubeClick = async () => {
+    try {
+      const data = await fetchData();
+      setModalData(data); // Save the fetched data for the Modal
+      setIsModalOpen(true);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setModalData(null);
+    }
   };
 
   const handleModalClose = () => {
     setIsModalOpen(false);
+    setModalData(null);
   };
 
   return (
@@ -103,14 +130,20 @@ const ThreeScene: React.FC = () => {
           {isSceneReady && (
             <>
               <Scene />
-              <DraggableCube position={[2.89, -0.57, -28.56]} onClick={handleCubeClick} />
-              <DraggableCube position={[8.23, -0.73, -29.52]} onClick={handleCubeClick} />
+              <DraggableCube
+                position={[2.89, -0.57, -28.56]}
+                onClick={handleCubeClick}
+              />
+              <DraggableCube
+                position={[8.23, -0.73, -29.52]}
+                onClick={handleCubeClick}
+              />
             </>
           )}
         </Suspense>
       </Canvas>
       <CenteredDot />
-      <Modal isOpen={isModalOpen} onClose={handleModalClose} />
+      <Modal isOpen={isModalOpen} onClose={handleModalClose} data={modalData} />
     </div>
   );
 };
