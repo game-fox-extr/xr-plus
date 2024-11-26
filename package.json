@@ -9,7 +9,7 @@
     "backend-build": "node server.js",
     "backend-dev": "nodemon server.js",
     "prod": "concurrently --kill-others \"npm run heroku-postbuild\" \"npm run backend-dev\"",
-    "heroku-postbuild": "vite build",
+    "heroku-postbuild": "next build",
     "ser": "nodemon server.js",
     "dev": "next dev",
     "build": "next build",
