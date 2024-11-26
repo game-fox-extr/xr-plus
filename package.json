@@ -12,6 +12,7 @@
     "heroku-postbuild": "next build",
     "ser": "nodemon server.js",
     "dev": "next dev",
+    "postinstall": "rm -rf ./node_modules/ecctrl/src/EcctrlJoystick.tsx",
     "build": "next build",
     "start": "next start"
   },
