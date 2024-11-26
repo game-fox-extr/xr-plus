@@ -1,6 +1,7 @@
-import { Html, KeyboardControls } from "@react-three/drei";
+import { KeyboardControls } from "@react-three/drei";
 import { Physics, RigidBody } from "@react-three/rapier";
 import Ecctrl from "ecctrl";
+import React from "react";
 import { Castle } from "./Castle";
 import Light from "./Light";
 
@@ -22,22 +23,7 @@ const Scene = () => {
     <>
       <Light />
       <Physics timeStep="vary">
-        {/* <Html center>
-          <div
-            onClick={() => alert("Center pointer clicked!")}
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              width: "10px",
-              height: "10px",
-              backgroundColor: "red",
-              borderRadius: "50%",
-              transform: "translate(-50%, -50%)",
-              pointerEvents: "auto", // Ensures this is clickable
-            }}
-          />
-        </Html> */}
+       
         <RigidBody type="fixed" colliders="trimesh">
           <Castle
             position={[0, -0.55, -5]}
@@ -54,7 +40,7 @@ const Scene = () => {
               maxVelLimit={2.5}
               fallingGravityScale={2.5} // Character is falling, apply higher gravity
               fallingMaxVel={-20}
-              jumpVel={4}
+              jumpVel={3}
               position={[10, 10, 0]}
               camCollision={false} // disable camera collision detect (useless in FP mode)
               camInitDis={-0.01} // camera intial position

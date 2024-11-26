@@ -1,53 +1,39 @@
+import { PivotControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { EcctrlJoystick } from "ecctrl";
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense } from "react";
+import CenteredDot from "./CenteredDot";
+import EcctrlJoystickControls from "./JoyStickControls";
+import RayCaster from "./Raycaster";
 import Scene from "./Scene";
 import Skybox from "./Skybox";
-import { Html } from "@react-three/drei";
+
+const DraggableCube = ({
+  position = [0, 0, 0],
+}: {
+  position: [x: number, y: number, z: number];
+}) => {
+  return (
+    <PivotControls anchor={[0, 0, 0]} scale={1}>
+      <mesh position={position}>
+        <boxGeometry args={[1, 1, 1]} />
+        <meshStandardMaterial color="orange" />
+      </mesh>
+    </PivotControls>
+  );
+};
 
 const ThreeScene: React.FC = () => {
-  const EcctrlJoystickControls = () => {
-    const [isTouchScreen, setIsTouchScreen] = useState(false);
-    useEffect(() => {
-      // Check if using a touch control device, show/hide joystick
-      if ("ontouchstart" in window || navigator.maxTouchPoints > 0) {
-        setIsTouchScreen(true);
-      } else {
-        setIsTouchScreen(false);
-      }
-    }, []);
-    return <>{isTouchScreen && <EcctrlJoystick buttonNumber={5} />}</>;
-  };
-  // const Cart = () => {
-  //   return (
-  //     <Html center>
-  //       <div
-  //         onClick={() => alert("Center pointer clicked!")}
-  //         style={{
-  //           position: "absolute",
-  //           top: "50%",
-  //           left: "50%",
-  //           width: "10px",
-  //           height: "10px",
-  //           backgroundColor: "red",
-  //           borderRadius: "50%",
-  //           transform: "translate(-50%, -50%)",
-  //           pointerEvents: "auto", // Ensures this is clickable
-  //         }}
-  //       />
-  //     </Html>
-  //   );
-  // };
   return (
     <div
-    style={{
-      position: "relative", // Ensures child elements are positioned correctly
-      width: "100vw", // Full viewport width
-      height: "100vh", // Full viewport height
-      overflow: "hidden", // Prevents scrollbars
-    }}
-  >
+      style={{
+        position: "relative",
+        width: "100vw",
+        height: "100vh",
+        overflow: "hidden",
+      }}
+    >
       <EcctrlJoystickControls />
+      <div style={{ position: "absolute", zIndex: 100, right: "1" }}>hello</div>
       <Canvas
         shadows
         camera={{
@@ -61,29 +47,17 @@ const ThreeScene: React.FC = () => {
           }
         }}
       >
-        {/* <Cart /> */}
         <Suspense fallback={"Loading..."}>
+          <RayCaster />
           <Skybox />
           <Scene />
+          <DraggableCube position={[2.89, -0.57, -28.56]} />
+          <DraggableCube position={[8.23, -0.73, -29.52]} />
         </Suspense>
       </Canvas>
-   
-      {/* Crosshair */}
-      <div
-        style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: "8px",
-          height: "8px",
-          backgroundColor: "white", 
-          borderRadius: "50%", 
-          pointerEvents: "none", 
-          zIndex: 100, 
-        }}
-      ></div>
-     </div>
+      <CenteredDot />
+    </div>
   );
 };
+
 export default ThreeScene;
