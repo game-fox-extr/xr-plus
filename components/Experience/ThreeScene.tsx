@@ -2,7 +2,7 @@ import { PivotControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import React, { Suspense, useEffect, useState } from "react";
 import CenteredDot from "./CenteredDot";
-import EcctrlJoystickControls from "./JoyStickControls";
+//import EcctrlJoystickControls from "./JoyStickControls";
 import RayCaster from "./Raycaster";
 import Scene from "./Scene";
 import Skybox from "./Skybox";
@@ -82,7 +82,7 @@ const ThreeScene: React.FC = () => {
         overflow: "hidden",
       }}
     >
-      <EcctrlJoystickControls />
+      {/* <EcctrlJoystickControls /> */}
       <div style={{ position: "absolute", zIndex: 100, right: "1" }}>hello</div>
       <Canvas
         shadows
