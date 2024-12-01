@@ -20,10 +20,9 @@ const keyboardMap = [
 
 const Scene = () => {
   return (
-    <>
+    <mesh>
       <Light />
       <Physics timeStep="vary">
-       
         <RigidBody type="fixed" colliders="trimesh">
           <Castle
             position={[0, -0.55, -5]}
@@ -57,7 +56,7 @@ const Scene = () => {
           </RigidBody>
         </KeyboardControls>
       </Physics>
-    </>
+    </mesh>
   );
 };
 

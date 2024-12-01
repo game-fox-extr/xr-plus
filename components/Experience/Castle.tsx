@@ -1,7 +1,8 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useMemo } from "react";
 import { useGLTF } from "@react-three/drei";
 import { RigidBody } from "@react-three/rapier";
 import * as THREE from "three";
+
 // Define proper TypeScript types for the GLTF model
 interface CastleGLTF {
   nodes: {
@@ -25,17 +26,18 @@ interface CastleProps {
   receiveShadow?: boolean;
 }
 
-// Loading component to show while model loads
-const LoadingCastle = () => (
-  <mesh>
-    <boxGeometry args={[1, 1, 1]} />
-    <meshStandardMaterial color="gray" wireframe />
-  </mesh>
-);
-
 // Main Castle component with optimizations
 export const Castle: React.FC<CastleProps> = (props) => {
-  const { nodes, materials } = useGLTF("/Castle28mb.glb") as unknown as  CastleGLTF;
+  // Use GLTF loader
+  const gltf = useGLTF("/Castle28mb.glb") as unknown as CastleGLTF;
+
+  // Memoize the GLTF nodes and materials
+  const memoizedGLTF = useMemo(() => {
+    return {
+      nodes: gltf.nodes,
+      materials: gltf.materials,
+    };
+  }, [gltf]);
 
   const castle = (
     <group {...props} dispose={null}>
@@ -43,26 +45,26 @@ export const Castle: React.FC<CastleProps> = (props) => {
         <mesh
           castShadow
           receiveShadow
-          geometry={nodes.Plane_1.geometry}
-          material={materials["Material.004"]}
+          geometry={memoizedGLTF.nodes.Plane_1.geometry}
+          material={memoizedGLTF.materials["Material.004"]}
         />
         <mesh
           castShadow
           receiveShadow
-          geometry={nodes.Plane_2.geometry}
-          material={materials["Material.002"]}
+          geometry={memoizedGLTF.nodes.Plane_2.geometry}
+          material={memoizedGLTF.materials["Material.002"]}
         />
         <mesh
           castShadow
           receiveShadow
-          geometry={nodes.Plane_3.geometry}
-          material={materials["Material.001"]}
+          geometry={memoizedGLTF.nodes.Plane_3.geometry}
+          material={memoizedGLTF.materials["Material.001"]}
         />
         <mesh
           castShadow
           receiveShadow
-          geometry={nodes.Plane_4.geometry}
-          material={materials["Material.003"]}
+          geometry={memoizedGLTF.nodes.Plane_4.geometry}
+          material={memoizedGLTF.materials["Material.003"]}
         />
       </group>
     </group>
@@ -70,7 +72,7 @@ export const Castle: React.FC<CastleProps> = (props) => {
 
   return (
     <RigidBody type="fixed" colliders="trimesh">
-      <Suspense fallback={<LoadingCastle />}>{castle}</Suspense>
+      <Suspense fallback={null}>{castle}</Suspense>
     </RigidBody>
   );
 };
