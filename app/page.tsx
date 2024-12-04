@@ -1,6 +1,6 @@
 "use client";
 import dynamic from "next/dynamic";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useRef, useEffect } from "react";
 import CenteredDot from "../components/Experience/CenteredDot";
 import "./styles/defaults/reset.scss";
 import React from "react";
@@ -15,31 +15,84 @@ const MemoizedThreeScene = React.memo(ThreeScene);
 
 const Page = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [modalData, setModalData] = useState<{
-  //   "status-code": number;
-  //   product: any;
-  // } | null>(null);
-  // Memoized click handler
-  const handleCubeClick = useCallback(() => {
+  // const [modalData, setModalData] = useState<any[] | null>(null);
+  // const mainRef = useRef(null);
+  // const { 
+  //   isPointerLocked, 
+  //   requestPointerLock, 
+  //   exitPointerLock 
+  // } = usePointerLock();
+
+  // Memoized click handler with optional data
+  const handleCubeClick = useCallback((data?: any) => {
     setIsModalOpen(true);
-  }, []); // No dependencies, so function remains the same
-
-  let modalData: any[] = [];
-
-  const handleModalClose = useCallback(() => {
-    setIsModalOpen(false);
+    // if (data) {
+    //   setModalData(Array.isArray(data) ? data : [data]);
+    // }
   }, []);
 
-  console.count("page.tsx");
+  // Memoized modal close handler
+  const handleModalClose = useCallback(() => {
+    setIsModalOpen(false);
+    // setModalData(null);
+  }, []);
+
+  // Toggle pointer lock
+  // const handleTogglePointerLock = useCallback(() => {
+  //   if (mainRef.current) {
+  //     if (!isPointerLocked) {
+  //       // Request pointer lock on the main element
+  //       requestPointerLock(mainRef.current);
+  //     } else {
+  //       // Exit pointer lock
+  //       exitPointerLock();
+  //     }
+  //   }
+  // }, [isPointerLocked, requestPointerLock, exitPointerLock]);
+
+  // Handle mouse movement when pointer is locked
+  // useEffect(() => {
+  //   if (!isPointerLocked) return;
+
+  //   const handleMouseMove = (e: MouseEvent) => {
+  //     // Handle mouse movement for camera or other interactions
+  //     // e.movementX and e.movementY will give you relative mouse movement
+  //     console.log('Mouse moved:', e.movementX, e.movementY);
+  //   };
+
+  //   window.addEventListener('mousemove', handleMouseMove);
+
+  //   return () => {
+  //     window.removeEventListener('mousemove', handleMouseMove);
+  //   };
+  // }, [isPointerLocked]);
+
+  console.count("page.tsx render");
+
   return (
-    <main className="w-full h-screen">
-     {!isModalOpen && <CenteredDot />}
-      <MemoizedThreeScene onCubeClick={handleCubeClick} />
-      <Modal isOpen={isModalOpen} onClose={handleModalClose} data={modalData} />
+    <main 
+      // ref={mainRef}
+      className="w-full h-screen relative"
+    >
+      {!isModalOpen && (
+        <CenteredDot 
+          // isPointerLocked={isPointerLocked}
+          // onTogglePointerLock={handleTogglePointerLock}
+        />
+      )}
+      
+      <MemoizedThreeScene 
+        onCubeClick={handleCubeClick}
+        // isPointerLocked={isPointerLocked}
+      />
+      
+      <Modal 
+        isOpen={isModalOpen} 
+        onClose={handleModalClose} 
+        // data={modalData} 
+      />
     </main>
   );
 };
 
 export default Page;
-
-// TODO: pointer lock controls from page 

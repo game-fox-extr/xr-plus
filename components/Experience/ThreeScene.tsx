@@ -7,6 +7,7 @@ import DraggableCube from "./Cube";
 import Scene from "./Scene";
 import Skybox from "./Skybox";
 import { DM_Sans } from "next/font/google";
+import RayCaster from "./Raycaster";
 const dmSans = DM_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
@@ -73,7 +74,13 @@ const fetchData = async () => {
   return { "status-code": res.status, product: res.data.product };
 };
 
-const ThreeScene = ({ onCubeClick }: { onCubeClick: () => void }) => {
+const ThreeScene = ({
+  onCubeClick,
+  // isPointerLocked,
+}: {
+  onCubeClick: () => void;
+  // isPointerLocked: boolean;
+}) => {
   console.count("threesceen.tsx");
   const [isSceneReady, setIsSceneReady] = useState(false);
 
@@ -116,11 +123,15 @@ const ThreeScene = ({ onCubeClick }: { onCubeClick: () => void }) => {
               <Scene />
               <DraggableCube
                 position={[2.89, -0.57, -28.56]}
+                productId="product1"
                 onClick={onCubeClick}
+                // isPointerLocked={isPointerLocked}
               />
               <DraggableCube
                 position={[8.23, -0.73, -29.52]}
+                productId="product1"
                 onClick={onCubeClick}
+                // isPointerLocked={isPointerLocked}
               />
             </>
           )}
