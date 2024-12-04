@@ -1,5 +1,5 @@
 import { PivotControls } from "@react-three/drei";
-import React, { useState } from "react";
+import React from "react";
 
 const DraggableCube = ({
   position = [0, 0, 0],
@@ -12,8 +12,6 @@ const DraggableCube = ({
   productId?: string;
   onClick?: (productId?: string) => void;
 }) => {
-  const [isHovered, setIsHovered] = useState(false);
-
   const handleClick = (event: any) => {
     // Only handle click if not pointer locked or explicitly allowed
     // if (!isPointerLocked) {

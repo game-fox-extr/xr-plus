@@ -1,6 +1,6 @@
 import { PointerLockControls, useProgress } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense} from "react";
 //import EcctrlJoystickControls from "./JoyStickControls";
 import axios from "axios";
 import DraggableCube from "./Cube";
@@ -76,17 +76,12 @@ const fetchData = async () => {
 
 const ThreeScene = ({
   onCubeClick,
-  // isPointerLocked,
-}: {
+}: // isPointerLocked,
+{
   onCubeClick: () => void;
   // isPointerLocked: boolean;
 }) => {
   console.count("threesceen.tsx");
-  const [isSceneReady, setIsSceneReady] = useState(false);
-
-  useEffect(() => {
-    setIsSceneReady(true);
-  }, []);
 
   return (
     <div
@@ -118,23 +113,19 @@ const ThreeScene = ({
         <Suspense fallback={null}>
           {/* <RayCaster /> */}
           <Skybox />
-          {isSceneReady && (
-            <>
-              <Scene />
-              <DraggableCube
-                position={[2.89, -0.57, -28.56]}
-                productId="product1"
-                onClick={onCubeClick}
-                // isPointerLocked={isPointerLocked}
-              />
-              <DraggableCube
-                position={[8.23, -0.73, -29.52]}
-                productId="product1"
-                onClick={onCubeClick}
-                // isPointerLocked={isPointerLocked}
-              />
-            </>
-          )}
+          <Scene />
+          <DraggableCube
+            position={[2.89, -0.57, -28.56]}
+            productId="product1"
+            onClick={onCubeClick}
+            // isPointerLocked={isPointerLocked}
+          />
+          <DraggableCube
+            position={[8.23, -0.73, -29.52]}
+            productId="product1"
+            onClick={onCubeClick}
+            // isPointerLocked={isPointerLocked}
+          />
         </Suspense>
         <PointerLockControls />
       </Canvas>

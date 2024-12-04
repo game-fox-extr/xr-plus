@@ -27,7 +27,7 @@ const CanvasContainer = styled.div`
 `;
 
 const ModalContent = styled.div`
-  background: rgba(255, 255, 255, 0.1); /* Semi-transparent white */
+  background: rgb(0 0 0 / 15%); /* Semi-transparent white */
   backdrop-filter: blur(10px); /* Blur effect for content */
   border-radius: 10px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
