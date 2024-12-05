@@ -149,7 +149,7 @@ const Modal = ({ isOpen, onClose, data }: any) => {
                 <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
                 <Model />
                 <OrbitControls enableZoom={false} />
-                <Environment preset="sunset" />
+                <Environment preset="warehouse" blur={2} />
               </Suspense>
             </Canvas>
           </CanvasContainer>

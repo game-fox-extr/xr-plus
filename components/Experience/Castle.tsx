@@ -27,9 +27,9 @@ interface CastleProps {
 }
 
 // Main Castle component with optimizations
-export const Castle: React.FC<CastleProps> = (props) => {
+const Castle: React.FC<CastleProps> = (props) => {
   // Use GLTF loader
-  const gltf = useGLTF("/Castle4mb.glb") as unknown as CastleGLTF;
+  const gltf = useGLTF("/Castle28mb.glb") as unknown as CastleGLTF;
 
   // Memoize the GLTF nodes and materials
   const memoizedGLTF = useMemo(() => {
@@ -78,7 +78,9 @@ export const Castle: React.FC<CastleProps> = (props) => {
 };
 
 // Preload the model
-useGLTF.preload("/Castle4mb.glb");
+useGLTF.preload("/Castle28mb.glb");
 
 // Optional: Cleanup when component unmounts
 Castle.displayName = "Castle";
+
+export default Castle

@@ -1,13 +1,12 @@
 import { PointerLockControls, useProgress } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { Suspense} from "react";
+import { Suspense } from "react";
 //import EcctrlJoystickControls from "./JoyStickControls";
 import axios from "axios";
-import DraggableCube from "./Cube";
-import Scene from "./Scene";
-import Skybox from "./Skybox";
 import { DM_Sans } from "next/font/google";
-import RayCaster from "./Raycaster";
+import DraggableCube from "./Cube";
+import Environment from "./Environment";
+import Skybox from "./Skybox";
 const dmSans = DM_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
@@ -95,8 +94,7 @@ const ThreeScene = ({
       {/* <EcctrlJoystickControls /> */}
       <div style={{ position: "absolute", zIndex: 100, right: "1" }}>hello</div>
 
-      <LoadingScreen />
-
+      {/* <LoadingScreen /> */}
       <Canvas
         shadows
         camera={{
@@ -113,7 +111,7 @@ const ThreeScene = ({
         <Suspense fallback={null}>
           {/* <RayCaster /> */}
           <Skybox />
-          <Scene />
+          <Environment />
           <DraggableCube
             position={[2.89, -0.57, -28.56]}
             productId="product1"
