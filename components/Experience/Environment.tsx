@@ -3,7 +3,7 @@ import { Physics, RigidBody } from "@react-three/rapier";
 import Ecctrl from "ecctrl";
 import React, { Suspense, useMemo } from "react";
 import Light from "./Light";
-import LoadingScreen from "./LoadingScreen";
+import { useSceneStabilityStore } from "../../store/useSceneStabilityStore";
 
 function Loader() {
   const { progress } = useProgress();
@@ -28,6 +28,8 @@ const KEYBOARD_MAP = [
 const LazyCastle = React.lazy(() => import("./Castle"));
 
 const Environment = React.memo(() => {
+   const { sceneKey, playerPosition, resetScene } = useSceneStabilityStore();
+  // const { setLoading } = useSceneStabilityStore();
   const physicsProps = useMemo(
     () => ({
       timeStep: "vary" as const,
@@ -42,7 +44,7 @@ const Environment = React.memo(() => {
       fallingGravityScale: 2.5,
       fallingMaxVel: -20,
       jumpVel: 3,
-      position: [10, 10, 0] as [number, number, number],
+      position: playerPosition,
       camCollision: false,
       camInitDis: -0.01,
       camMinDis: -0.01,
@@ -55,13 +57,13 @@ const Environment = React.memo(() => {
       accDeltaTime: 8,
       followLightPos: { x: 20, y: 30, z: 10 },
     }),
-    []
+    [playerPosition]
   );
-
+ 
   return (
     <Suspense fallback={<Loader />}>
       <KeyboardControls map={KEYBOARD_MAP}>
-        <Physics {...physicsProps}>
+        <Physics key={sceneKey}  {...physicsProps}>
           <Light />
           <RigidBody type="fixed" colliders="trimesh">
             <LazyCastle
@@ -72,6 +74,7 @@ const Environment = React.memo(() => {
             />
           </RigidBody>
           <RigidBody type="fixed" colliders="trimesh">
+            {/* //TODO: reset screen implementation along with controls? */}
             <Ecctrl {...ecctrlProps} />
           </RigidBody>
         </Physics>

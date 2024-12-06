@@ -7,6 +7,7 @@ import { DM_Sans } from "next/font/google";
 import DraggableCube from "./Cube";
 import Environment from "./Environment";
 import Skybox from "./Skybox";
+import { useSceneStabilityStore } from "../../store/useSceneStabilityStore";
 const dmSans = DM_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
@@ -80,6 +81,7 @@ const ThreeScene = ({
   onCubeClick: () => void;
   // isPointerLocked: boolean;
 }) => {
+  const { isLoading, sceneKey } = useSceneStabilityStore();
   console.count("threesceen.tsx");
 
   return (
@@ -96,6 +98,7 @@ const ThreeScene = ({
 
       {/* <LoadingScreen /> */}
       <Canvas
+       key={sceneKey}
         shadows
         camera={{
           fov: 65,
