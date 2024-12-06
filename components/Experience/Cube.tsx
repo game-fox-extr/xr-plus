@@ -1,58 +1,62 @@
-import { PivotControls } from "@react-three/drei";
+import { PivotControls, useGLTF } from "@react-three/drei";
 import React from "react";
 
-const DraggableCube = ({
+const DraggableAsset = ({
   position = [0, 0, 0],
   productId,
+  modelPath,
   onClick,
-  // isPointerLocked,
 }: {
   position: [x: number, y: number, z: number];
-  // isPointerLocked: boolean;
+  modelPath: string;
   productId?: string;
   onClick?: (productId?: string) => void;
 }) => {
-  const handleClick = (event: any) => {
-    // Only handle click if not pointer locked or explicitly allowed
-    // if (!isPointerLocked) {
-    //   event.stopPropagation();
+  // Load your GLTF model using useGLTF hook
+  const { scene } = useGLTF(modelPath);
 
-      if (onClick) {
-        onClick(productId);
-      }
-    // }
+  const handleClick = (event: any) => {
+    console.log("Model clicked!");
+    if (onClick) {
+      onClick(productId);
+    }
   };
 
   const handlePointerEnter = () => {
-    // Only change hover state if not pointer locked
-    // if (!isPointerLocked) {
-    //   setIsHovered(true);
-    // }
+    console.log("Pointer entered!");
   };
 
   const handlePointerLeave = () => {
-    // Only change hover state if not pointer locked
-    // if (!isPointerLocked) {
-    //   setIsHovered(false);
-    // }
+    console.log("Pointer left!");
   };
 
   return (
     <PivotControls anchor={[0, 0, 0]} scale={1}>
-      <mesh
+      <primitive
+        object={scene}
         position={position}
         onClick={handleClick}
         onPointerDown={handleClick}
         onPointerEnter={handlePointerEnter}
         onPointerLeave={handlePointerLeave}
-      >
-        <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial
-          // color={isHovered && !isPointerLocked ? "red" : "orange"} 
-        />
-      </mesh>
+      />
     </PivotControls>
   );
 };
 
-export default DraggableCube;
+const Scene = () => {
+  return (
+    <>
+      {/* Model 1 */}
+      <DraggableAsset position={[4, -0.5, -24]} modelPath="/models/inter_elem1.glb" />
+
+      {/* Model 2 */}
+      <DraggableAsset position={[6, -0.5, -24]} modelPath="/models/inter_elem2.glb" />
+
+      {/* Model 3 */}
+      <DraggableAsset position={[8, -0.5, -24]} modelPath="/models/inter_elem.glb" />
+    </>
+  );
+};
+
+export default Scene;
