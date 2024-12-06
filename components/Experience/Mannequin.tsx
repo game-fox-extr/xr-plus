@@ -1,7 +1,7 @@
 import { PivotControls, useGLTF } from "@react-three/drei";
 import React from "react";
 
-const DraggableAsset = ({
+const DraggableMannequin = ({
   position = [0, 0, 0],
   productId,
   modelPath,
@@ -44,19 +44,4 @@ const DraggableAsset = ({
   );
 };
 
-const Scene = () => {
-  return (
-    <>
-      {/* Model 1 */}
-      <DraggableAsset position={[4, -0.5, -24]} modelPath="/models/inter_elem1.glb" />
-
-      {/* Model 2 */}
-      <DraggableAsset position={[6, -0.5, -24]} modelPath="/models/inter_elem2.glb" />
-
-      {/* Model 3 */}
-      <DraggableAsset position={[8, -0.5, -24]} modelPath="/models/inter_elem.glb" />
-    </>
-  );
-};
-
-export default Scene;
+export default DraggableMannequin;

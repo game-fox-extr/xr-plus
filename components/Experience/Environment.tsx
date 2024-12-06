@@ -48,7 +48,7 @@ const Environment = React.memo(() => {
       camCollision: false,
       camInitDis: -0.01,
       camMinDis: -0.01,
-      camFollowMult: 1000,
+      camFollowMult: 10000,
       camLerpMult: 10000,
       turnVelMultiplier: 1,
       turnSpeed: 200,
