@@ -37,7 +37,7 @@ const DraggableMannequin = ({
     typeof scale === "number" ? [scale, scale, scale] : scale;
 
   return (
-    <PivotControls anchor={[0, 0, 0]} scale={1}>
+    <PivotControls anchor={[0, 0, 0]} scale={1} activeAxes={[false,false,false]}>
       <primitive
         object={scene}
         position={position}
