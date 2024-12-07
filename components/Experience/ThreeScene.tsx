@@ -7,6 +7,7 @@ import { DM_Sans } from "next/font/google";
 import Environment from "./Environment";
 import Skybox from "./Skybox";
 import { useSceneStabilityStore } from "../../store/useSceneStabilityStore";
+import RayCaster from "./Raycaster";
 import DraggableMannequin from "./Mannequin";
 
 const dmSans = DM_Sans({
@@ -113,24 +114,27 @@ const ThreeScene = ({
         // }}
       >
         <Suspense fallback={null}>
-          {/* <RayCaster /> */}
+          <RayCaster />
           <Skybox />
           <Environment />
           <DraggableMannequin
             position={[4, -0.5, -24]}
             modelPath="/models/inter_elem1.glb"
+            onClick={onCubeClick}
           />
 
           {/* Model 2 */}
           <DraggableMannequin
             position={[6, -0.5, -24]}
             modelPath="/models/inter_elem2.glb"
+            onClick={onCubeClick}
           />
 
           {/* Model 3 */}
           <DraggableMannequin
             position={[8, -0.5, -24]}
             modelPath="/models/inter_elem.glb"
+            onClick={onCubeClick}
           />
         </Suspense>
         <PointerLockControls />
