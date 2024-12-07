@@ -4,10 +4,12 @@ import { Suspense } from "react";
 //import EcctrlJoystickControls from "./JoyStickControls";
 import axios from "axios";
 import { DM_Sans } from "next/font/google";
-import DraggableCube from "./Cube";
 import Environment from "./Environment";
 import Skybox from "./Skybox";
 import { useSceneStabilityStore } from "../../store/useSceneStabilityStore";
+import RayCaster from "./Raycaster";
+import DraggableMannequin from "./Mannequin";
+
 const dmSans = DM_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
@@ -98,7 +100,7 @@ const ThreeScene = ({
 
       {/* <LoadingScreen /> */}
       <Canvas
-       key={sceneKey}
+        key={sceneKey}
         shadows
         camera={{
           fov: 65,
@@ -112,20 +114,27 @@ const ThreeScene = ({
         // }}
       >
         <Suspense fallback={null}>
-          {/* <RayCaster /> */}
+          <RayCaster />
           <Skybox />
           <Environment />
-          <DraggableCube
-            position={[2.89, -0.57, -28.56]}
-            productId="product1"
+          <DraggableMannequin
+            position={[4, -0.5, -24]}
+            modelPath="/models/inter_elem1.glb"
             onClick={onCubeClick}
-            // isPointerLocked={isPointerLocked}
           />
-          <DraggableCube
-            position={[8.23, -0.73, -29.52]}
-            productId="product1"
+
+          {/* Model 2 */}
+          <DraggableMannequin
+            position={[6, -0.5, -24]}
+            modelPath="/models/inter_elem2.glb"
             onClick={onCubeClick}
-            // isPointerLocked={isPointerLocked}
+          />
+
+          {/* Model 3 */}
+          <DraggableMannequin
+            position={[8, -0.5, -24]}
+            modelPath="/models/inter_elem.glb"
+            onClick={onCubeClick}
           />
         </Suspense>
         <PointerLockControls />
