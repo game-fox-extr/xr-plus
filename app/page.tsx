@@ -39,23 +39,85 @@ const Page = () => {
       window.removeEventListener("load", handleLoad);
     };
   }, []);
+  const [modalData, setModalData] = useState({});
+  const [modelUrl, setModelUrl] = useState("");
 
-  const handleProductClick = useCallback((data?: any) => {
-    openModal("product");
-  }, [openModal]);
+  const handleProductClick = useCallback(
+    async (data?: any) => {
+      try {
+        const response1 = await fetch(
+          "https://strategy-fox-go-bked.com/api/shopify/products/9658662388005",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (!response1.ok) {
+          console.error("Failed to fetch product details in first call");
+          return;
+        }
+
+        const result1 = await response1.json();
+        console.log({ result1: result1 });
+        console.log("First API Response:", result1.product);
+
+        setModalData(result1.product);
+
+        // Second API call
+        const response2 = await fetch(
+          `https://strategy-fox-go-bked.com/api/shopify/products/9658662388005/model`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (!response2.ok) {
+          console.error("Failed to fetch product details in second call");
+          return;
+        }
+
+        const result2 = await response2.json();
+        console.log({ result2: result2 });
+        console.log("Second API Response:", result2.data);
+
+        setModelUrl(
+          result2["data"]["product"]["media"]["edges"][2]["node"]["sources"][0][
+            "url"
+          ]
+        );
+        openModal("product"); // Open modal only after second call
+      } catch (error) {
+        console.error("Error during API calls:", error);
+      }
+    },
+    [openModal]
+  );
 
   const handleModalClose = useCallback(() => {
     closeModal("product");
   }, [closeModal]);
 
+  console.log({ "Modal Product": modals.product });
+
   return (
     <>
       {isVisible && <Loader />} 
-      <main ref={mainRef} className="w-full h-screen relative">
-        {!modals.product && <CenteredDot />}
-        <MemoizedThreeScene onCubeClick={handleProductClick} />
-        <Modal isOpen={modals.product} onClose={handleModalClose} />
-      </main>
+    <main ref={mainRef} className="w-full h-screen relative">
+      {!modals.product && <CenteredDot />}
+      <MemoizedThreeScene onCubeClick={handleProductClick} />
+      <Modal
+        isOpen={modals.product}
+        onClose={handleModalClose}
+        data={modalData}
+        modelUrl={modelUrl}
+      />
+    </main>
     </>
   );
 };

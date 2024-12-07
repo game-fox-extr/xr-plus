@@ -5,6 +5,7 @@ import { Environment, OrbitControls } from "@react-three/drei";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { Suspense } from "react";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
+import DOMPurify from "dompurify";
 
 const ModalBackground = styled.div`
   position: fixed;
@@ -53,16 +54,19 @@ const CloseButton = styled.button`
   cursor: pointer;
 `;
 
-const Model = () => {
-  const gltf = useLoader(
-    GLTFLoader,
-    "models/asian_female_animated.glb",
-    (loader) => {
-      const dracoLoader = new DRACOLoader();
-      dracoLoader.setDecoderPath("https://www.gstatic.com/draco/v1/decoders/"); // Path to Draco decoder
-      loader.setDRACOLoader(dracoLoader);
-    }
-  );
+interface ModalProps {
+  isOpen: boolean;
+  onClose: any;
+  data: any;
+  modelUrl: string;
+}
+
+const Model = ({ modelUrl }: { modelUrl: string }) => {
+  const gltf = useLoader(GLTFLoader, modelUrl, (loader) => {
+    const dracoLoader = new DRACOLoader();
+    dracoLoader.setDecoderPath("https://www.gstatic.com/draco/v1/decoders/"); // Path to Draco decoder
+    loader.setDRACOLoader(dracoLoader);
+  });
   return (
     <group position={[0, -2, 0]} scale={3}>
       <primitive object={gltf.scene} />
@@ -70,20 +74,23 @@ const Model = () => {
   );
 };
 
-const Modal = ({ isOpen, onClose, data }: any) => {
-  if (!isOpen) return null;
+const Modal: React.FC<ModalProps> = (props) => {
+  if (!props.isOpen) return null;
+
+  // Sanitizing the html using dompurify
+  const sanitizedHtml = DOMPurify.sanitize(props.data["body_html"]);
 
   return (
     <ModalBackground>
       <ModalContent>
-        <CloseButton onClick={onClose}>
+        <CloseButton onClick={props.onClose}>
           &times; {/* Unicode character for 'X' */}
         </CloseButton>
         <div
           style={{ display: "flex", justifyContent: "center", padding: "10px" }}
         >
-          <div style={{ padding: "5px" }}>tab1</div>
-          <div style={{ padding: "5px" }}>tab2</div>
+          <div style={{ padding: "5px" }}>Photos</div>
+          <div style={{ padding: "5px" }}>3D Model</div>
         </div>
         <div
           style={{
@@ -111,22 +118,13 @@ const Modal = ({ isOpen, onClose, data }: any) => {
                 padding: "5px",
               }}
             >
-              <h1>Five Star Chocolate</h1>
+              <h1>{props.data["title"]}</h1>
               <div style={{ display: "flex" }}>
-                <span>Quantity :</span> <div>2</div>
+                <span>Price :</span> <div>{props.data.variants[0].price}</div>
               </div>
             </div>
             <h1>Description</h1>
-            <p>
-              This is a Cadbury 5 Star chocolate bar, featuring its classic
-              golden-yellow packaging with bold red and white lettering. The
-              wrapper highlights the "New Softer Bar" feature, emphasizing an
-              improved texture for an even more indulgent experience. The
-              product image showcases the chocolate's signature combination of
-              caramel and nougat coated in rich, creamy Cadbury milk chocolate,
-              promising a delightful blend of flavors and softness in every
-              bite. Perfect for those seeking a sweet, satisfying treat.
-            </p>
+            <div dangerouslySetInnerHTML={{ __html: sanitizedHtml }}></div>
             <div
               style={{
                 display: "flex",
@@ -134,7 +132,7 @@ const Modal = ({ isOpen, onClose, data }: any) => {
                 justifyContent: "space-evenly",
                 alignItems: "center",
                 width: "100%",
-                padding : '15px'
+                padding: "15px",
               }}
             >
               <button>Add to Cart</button>
@@ -147,7 +145,7 @@ const Modal = ({ isOpen, onClose, data }: any) => {
               <Suspense fallback={null}>
                 <ambientLight intensity={0.5} />
                 <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
-                <Model />
+                <Model modelUrl={props.modelUrl} />
                 <OrbitControls enableZoom={false} />
                 <Environment preset="warehouse" blur={2} />
               </Suspense>
