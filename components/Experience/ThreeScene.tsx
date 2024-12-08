@@ -121,6 +121,7 @@ const ThreeScene = ({
             position={[4, -0.5, -24]}
             modelPath="/models/inter_elem1.glb"
             onClick={onCubeClick}
+            scale={1.2}
           />
 
           {/* Model 2 */}
@@ -128,6 +129,7 @@ const ThreeScene = ({
             position={[6, -0.5, -24]}
             modelPath="/models/inter_elem2.glb"
             onClick={onCubeClick}
+            scale={1.2}
           />
 
           {/* Model 3 */}
@@ -135,6 +137,7 @@ const ThreeScene = ({
             position={[8, -0.5, -24]}
             modelPath="/models/inter_elem.glb"
             onClick={onCubeClick}
+            scale={1.2}
           />
         </Suspense>
         <PointerLockControls />
