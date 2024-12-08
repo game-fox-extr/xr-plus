@@ -1,14 +1,58 @@
 import { Html, KeyboardControls, useProgress } from "@react-three/drei";
 import { Physics, RigidBody } from "@react-three/rapier";
 import Ecctrl from "ecctrl";
+import { useState ,useEffect } from "react";
 import React, { Suspense, useMemo } from "react";
 import Light from "./Light";
 import { useSceneStabilityStore } from "../../store/useSceneStabilityStore";
+import "../styles/loading-animation.css";
+
 
 function Loader() {
   const { progress } = useProgress();
-  return <Html center>{progress} % loaded</Html>;
+  const [isFading, setIsFading] = useState(false);
+
+  useEffect(() => {
+    if (progress >= 90) {
+      const timer = setTimeout(() => setIsFading(true), 300); 
+      return () => clearTimeout(timer); // Cleanup timeout
+    }
+  }, [progress]);
+
+  return (
+    <Html center>
+      <div className={`loader-background ${isFading ? "fade-out" : ""}`}>
+        <div className="loader-container-container">
+          <div className="loader-container" id="loaderContainer">
+            <div className="spinner">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+            <div className="loading-text-container">
+              <div className="loading-text typewriter">Delta XR</div>
+              <div className="loading-text">{progress.toFixed(0)}% loaded</div>
+            </div>
+            <img
+              id="powered-by-loader"
+              src="logo.avif"
+              alt="Powered By Strategy Fox"
+              className="powered-by-loader"
+            />
+          </div>
+          <div
+            className="loading-line"
+            style={{ transform: `scaleX(${progress / 100})` }}
+          ></div>
+        </div>
+      </div>
+    </Html>
+  );
 }
+
 
 // Memoized keyboard map to prevent recreation
 const KEYBOARD_MAP = [

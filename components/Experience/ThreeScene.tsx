@@ -3,78 +3,19 @@ import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
 //import EcctrlJoystickControls from "./JoyStickControls";
 import axios from "axios";
-import { DM_Sans } from "next/font/google";
 import Environment from "./Environment";
 import Skybox from "./Skybox";
 import { useSceneStabilityStore } from "../../store/useSceneStabilityStore";
 import RayCaster from "./Raycaster";
 import DraggableMannequin from "./Mannequin";
 
-const dmSans = DM_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-});
 
-const LoadingScreen = () => {
-  const { progress, active } = useProgress();
-
-  if (!active) return null;
-
-  return (
-    <div
-      style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        width: "100vw",
-        height: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "black",
-        color: "white",
-        zIndex: 1001,
-      }}
-    >
-      <div
-        style={{
-          width: "256px",
-          height: "16px",
-          backgroundColor: "#374151",
-          borderRadius: "9999px",
-          overflow: "hidden",
-        }}
-      >
-        <div
-          style={{
-            width: `${progress}%`,
-            height: "100%",
-            backgroundColor: "#f6523b",
-            transition: "all 300ms",
-          }}
-        />
-      </div>
-      <div
-        className={dmSans.className}
-        style={{
-          marginTop: "16px",
-          fontSize: "1.125rem",
-          fontWeight: 300,
-        }}
-      >
-        Loading... {progress.toFixed(0)}%
-      </div>
-    </div>
-  );
-};
-
-const fetchData = async () => {
-  const res = await axios.get(
-    "http://localhost:5000/api/shopify/products/9658662388005"
-  );
-  return { "status-code": res.status, product: res.data.product };
-};
+// const fetchData = async () => {
+//   const res = await axios.get(
+//     "http://localhost:5000/api/shopify/products/9658662388005"
+//   );
+//   return { "status-code": res.status, product: res.data.product };
+// };
 
 const ThreeScene = ({
   onCubeClick,
@@ -106,6 +47,7 @@ const ThreeScene = ({
           fov: 65,
           near: 0.1,
           far: 1000,
+          position: [5, -5, 0],
         }}
         // onPointerDown={(e) => {
         //   if (e.pointerType === "mouse") {
