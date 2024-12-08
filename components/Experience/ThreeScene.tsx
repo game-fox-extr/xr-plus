@@ -123,6 +123,7 @@ const ThreeScene = ({
           fov: 65,
           near: 0.1,
           far: 1000,
+          position: [5,-5,0],
         }}
         onContextMenu={(e) => e.preventDefault()}
       >
