@@ -9,6 +9,7 @@ import Skybox from "./Skybox";
 import { useSceneStabilityStore } from "../../store/useSceneStabilityStore";
 import RayCaster from "./Raycaster";
 import DraggableMannequin from "./Mannequin";
+import Television from "./Television";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -150,6 +151,12 @@ const ThreeScene = ({
             modelPath="/models/inter_elem.glb"
             onClick={onCubeClick}
             scale={1.2}
+          />
+          <Television
+            videoPath="/media/backhome.mp4"
+            scale={[0.9,0.9,0.9]}
+            position={[5, 14.8, -33.5]}
+            rotation={[0, -82.79, 0]} 
           />
         </Suspense>
         <PointerLockControls />
