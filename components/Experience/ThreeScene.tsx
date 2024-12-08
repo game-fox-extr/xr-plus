@@ -76,6 +76,26 @@ const fetchData = async () => {
   return { "status-code": res.status, product: res.data.product };
 };
 
+const LoadingOverlay: React.FC = () => {
+  const { loadingProgress, isLoading } = useSceneStabilityStore();
+
+  if (!isLoading) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black">
+      <div className="w-64 h-4 bg-gray-700 rounded-full overflow-hidden">
+        <div 
+          className="h-full bg-red-500 transition-all duration-300" 
+          style={{ width: `${loadingProgress}%` }}
+        />
+      </div>
+      <p className="mt-4 text-white">
+        Loading... {loadingProgress.toFixed(0)}%
+      </p>
+    </div>
+  );
+};
+
 const ThreeScene = ({
   onCubeClick,
 }: // isPointerLocked,
@@ -83,8 +103,7 @@ const ThreeScene = ({
   onCubeClick: () => void;
   // isPointerLocked: boolean;
 }) => {
-  const { isLoading, sceneKey } = useSceneStabilityStore();
-  console.count("threesceen.tsx");
+  const { isLoading, sceneKey, loadingProgress } = useSceneStabilityStore();
 
   return (
     <div
@@ -95,9 +114,6 @@ const ThreeScene = ({
         overflow: "hidden",
       }}
     >
-      {/* <EcctrlJoystickControls /> */}
-      <div style={{ position: "absolute", zIndex: 100, right: "1" }}>hello</div>
-
       {/* <LoadingScreen /> */}
       <Canvas
         key={sceneKey}
@@ -107,11 +123,7 @@ const ThreeScene = ({
           near: 0.1,
           far: 1000,
         }}
-        // onPointerDown={(e) => {
-        //   if (e.pointerType === "mouse") {
-        //     (e.target as HTMLCanvasElement).requestPointerLock();
-        //   }
-        // }}
+        onContextMenu={(e) => e.preventDefault()}
       >
         <Suspense fallback={null}>
           <RayCaster />
@@ -121,6 +133,7 @@ const ThreeScene = ({
             position={[4, -0.5, -24]}
             modelPath="/models/inter_elem1.glb"
             onClick={onCubeClick}
+            scale={1.2}
           />
 
           {/* Model 2 */}
@@ -128,6 +141,7 @@ const ThreeScene = ({
             position={[6, -0.5, -24]}
             modelPath="/models/inter_elem2.glb"
             onClick={onCubeClick}
+            scale={1.2}
           />
 
           {/* Model 3 */}
@@ -135,6 +149,7 @@ const ThreeScene = ({
             position={[8, -0.5, -24]}
             modelPath="/models/inter_elem.glb"
             onClick={onCubeClick}
+            scale={1.2}
           />
         </Suspense>
         <PointerLockControls />
