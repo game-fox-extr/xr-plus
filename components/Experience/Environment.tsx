@@ -125,6 +125,7 @@ const Environment = React.memo(() => {
       camCollision: false,
       camInitDis: -0.01,
       camMinDis: -0.01,
+      capsuleHalfHeight: 0.55, //Height of character
       camFollowMult: 10000,
       camLerpMult: 10000,
       turnVelMultiplier: 1,
@@ -141,6 +142,7 @@ const Environment = React.memo(() => {
     <KeyboardControls map={KEYBOARD_MAP}>
       <Physics key={sceneKey} {...physicsProps}>
         <Light />
+         <CustomEcctrl {...ecctrlProps} />
         <RigidBody type="fixed" colliders="trimesh">
           <LazyCastle
             position={[0, -0.55, -5]}
@@ -149,11 +151,9 @@ const Environment = React.memo(() => {
             receiveShadow
           />
         </RigidBody>
-        <RigidBody type="fixed" colliders="trimesh">
-          <CustomEcctrl {...ecctrlProps} />
-        </RigidBody>
       </Physics>
     </KeyboardControls>
+
   );
 });
 

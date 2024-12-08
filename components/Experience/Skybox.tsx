@@ -1,20 +1,23 @@
 import { useThree } from "@react-three/fiber";
+import { useMemo } from "react";
 import * as THREE from "three";
 
 const Skybox = () => {
   const { scene } = useThree();
-  const loader = new THREE.CubeTextureLoader();
-  // The CubeTextureLoader load method takes an array of urls representing all 6 sides of the cube.
-  const texture = loader.load([
-    "/textures/skybox/px.webp",
-    "/textures/skybox/nx.webp",
-    "/textures/skybox/py.webp",
-    "/textures/skybox/ny.webp",
-    "/textures/skybox/pz.webp",
-    "/textures/skybox/nz.webp",
-  ]);
+  // Use useMemo to cache the texture
+  const texture = useMemo(() => {
+    const loader = new THREE.CubeTextureLoader();
+    return loader.load([
+      "/textures/skybox/px.webp",
+      "/textures/skybox/nx.webp",
+      "/textures/skybox/py.webp",
+      "/textures/skybox/ny.webp",
+      "/textures/skybox/pz.webp",
+      "/textures/skybox/nz.webp",
+    ]);
+  }, []);
 
-  // Set the scene background property to the resulting texture.
+  // Set the scene background to the memoized texture
   scene.background = texture;
   return null;
 };
