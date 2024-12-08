@@ -1,9 +1,13 @@
 import { Html, KeyboardControls, useProgress } from "@react-three/drei";
-import { Physics, RigidBody } from "@react-three/rapier";
-import Ecctrl from "ecctrl";
-import React, { Suspense, useMemo } from "react";
+import { Physics, RapierRigidBody, RigidBody } from "@react-three/rapier";
+import Ecctrl, { EcctrlProps } from "ecctrl";
+import React, { forwardRef, Suspense, useEffect, useMemo, useRef } from "react";
 import Light from "./Light";
 import { useSceneStabilityStore } from "../../store/useSceneStabilityStore";
+
+interface CustomEcctrlProps extends EcctrlProps {
+  initialPosition?: [number, number, number];
+}
 
 function Loader() {
   const { progress } = useProgress();
@@ -24,12 +28,85 @@ const KEYBOARD_MAP = [
   { name: "action4", keys: ["KeyF"] },
 ];
 
-// Lazy loaded Castle component
 const LazyCastle = React.lazy(() => import("./Castle"));
 
+const CustomEcctrl = forwardRef<RapierRigidBody, CustomEcctrlProps  >(
+  ({ initialPosition = [10, 10, 0], ...props }, ref) => {
+    const localRef = useRef<RapierRigidBody>(null);
+    const { resetScene, setPlayerPosition, playerPosition } = useSceneStabilityStore();
+
+    const combinedRef = (ref || localRef) as React.RefObject<RapierRigidBody>;
+
+    useEffect(() => {
+      const handleVisibilityChange = () => {
+        if (document.visibilityState === 'visible' && combinedRef.current) {
+          try {
+            combinedRef.current.setTranslation(
+              { 
+                x: playerPosition[0], 
+                y: playerPosition[1], 
+                z: playerPosition[2] 
+              }, 
+              true
+            );
+            combinedRef.current.setLinvel(
+              { x: 0, y: 0, z: 0 }, 
+              true
+            );
+
+            // global state
+            setPlayerPosition(playerPosition);
+            resetScene();
+          } catch (error) {
+            console.error('Failed to reset character position:', error);
+          }
+        }
+      };
+
+      const handleWindowResize = () => {
+        if (combinedRef.current) {
+          try {
+            // Reset position on window resize
+            combinedRef.current.setTranslation(
+              { x: initialPosition[0], y: initialPosition[1], z: initialPosition[2] }, 
+              true
+            );
+            combinedRef.current.setLinvel(
+              { x: 0, y: 0, z: 0 }, 
+              true
+            );
+
+            setPlayerPosition(initialPosition);
+            resetScene();
+          } catch (error) {
+            console.error('Failed to reset character position on resize:', error);
+          }
+        }
+      };
+      
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+      window.addEventListener('resize', handleWindowResize);
+
+      return () => {
+        document.removeEventListener('visibilitychange', handleVisibilityChange);
+        window.removeEventListener('resize', handleWindowResize);
+      };
+    }, [initialPosition, resetScene, setPlayerPosition]);
+
+    return (
+      <Ecctrl
+        ref={combinedRef}
+        position={initialPosition}
+        {...props}
+      />
+    );
+  }
+);
+
+CustomEcctrl.displayName = 'CustomEcctrl';
+
 const Environment = React.memo(() => {
-   const { sceneKey, playerPosition, resetScene } = useSceneStabilityStore();
-  // const { setLoading } = useSceneStabilityStore();
+  const { sceneKey, playerPosition } = useSceneStabilityStore();
   const physicsProps = useMemo(
     () => ({
       timeStep: "vary" as const,
@@ -60,29 +137,23 @@ const Environment = React.memo(() => {
     }),
     [playerPosition]
   );
- 
-  return (
-    <Suspense fallback={<Loader />}>
-      
-        <Physics key={sceneKey}  {...physicsProps}>
-        <KeyboardControls map={KEYBOARD_MAP}>
-        <Light />
-          {/* <RigidBody type="fixed" colliders="trimesh"> */}
-            {/* //TODO: reset screen implementation along with controls? */}
-            <Ecctrl {...ecctrlProps}  />
-          {/* </RigidBody> */}
-          </KeyboardControls>
-          <RigidBody type="fixed" colliders="trimesh">
-            <LazyCastle
-              position={[0, -0.55, -5]}
-              scale={1}
-              castShadow
-              receiveShadow
-            />
-          </RigidBody>
 
-        </Physics>
-    </Suspense>
+  return (
+    <KeyboardControls map={KEYBOARD_MAP}>
+      <Physics key={sceneKey} {...physicsProps}>
+        <Light />
+         <CustomEcctrl {...ecctrlProps} />
+        <RigidBody type="fixed" colliders="trimesh">
+          <LazyCastle
+            position={[0, -0.55, -5]}
+            scale={1}
+            castShadow
+            receiveShadow
+          />
+        </RigidBody>
+      </Physics>
+    </KeyboardControls>
+
   );
 });
 
