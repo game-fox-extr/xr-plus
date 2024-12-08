@@ -43,9 +43,9 @@ const CustomEcctrl = forwardRef<RapierRigidBody, CustomEcctrlProps  >(
           try {
             combinedRef.current.setTranslation(
               { 
-                x: playerPosition[0], 
-                y: playerPosition[1], 
-                z: playerPosition[2] 
+                x: initialPosition[0], 
+                y: initialPosition[1], 
+                z: initialPosition[2] 
               }, 
               true
             );
@@ -55,7 +55,7 @@ const CustomEcctrl = forwardRef<RapierRigidBody, CustomEcctrlProps  >(
             );
 
             // global state
-            setPlayerPosition(playerPosition);
+            // setPlayerPosition(playerPosition);
             resetScene();
           } catch (error) {
             console.error('Failed to reset character position:', error);
