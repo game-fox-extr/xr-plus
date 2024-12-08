@@ -30,7 +30,7 @@
     left: 0;
     z-index: 1001;
     opacity: 1; /* Fully visible */
-    transition: opacity 2s ease; /* Smooth fade-out effect */
+    transition: opacity 3s ease; /* Smooth fade-out effect */
   }
   
   .loader-background.fade-out {
