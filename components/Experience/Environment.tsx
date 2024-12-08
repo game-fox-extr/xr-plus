@@ -48,6 +48,7 @@ const Environment = React.memo(() => {
       camCollision: false,
       camInitDis: -0.01,
       camMinDis: -0.01,
+      capsuleHalfHeight: 0.55, //Height of character
       camFollowMult: 10000,
       camLerpMult: 10000,
       turnVelMultiplier: 1,
@@ -62,9 +63,15 @@ const Environment = React.memo(() => {
  
   return (
     <Suspense fallback={<Loader />}>
-      <KeyboardControls map={KEYBOARD_MAP}>
+      
         <Physics key={sceneKey}  {...physicsProps}>
-          <Light />
+        <KeyboardControls map={KEYBOARD_MAP}>
+        <Light />
+          {/* <RigidBody type="fixed" colliders="trimesh"> */}
+            {/* //TODO: reset screen implementation along with controls? */}
+            <Ecctrl {...ecctrlProps}  />
+          {/* </RigidBody> */}
+          </KeyboardControls>
           <RigidBody type="fixed" colliders="trimesh">
             <LazyCastle
               position={[0, -0.55, -5]}
@@ -73,12 +80,8 @@ const Environment = React.memo(() => {
               receiveShadow
             />
           </RigidBody>
-          <RigidBody type="fixed" colliders="trimesh">
-            {/* //TODO: reset screen implementation along with controls? */}
-            <Ecctrl {...ecctrlProps} />
-          </RigidBody>
+
         </Physics>
-      </KeyboardControls>
     </Suspense>
   );
 });
