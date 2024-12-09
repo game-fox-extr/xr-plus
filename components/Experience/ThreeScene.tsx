@@ -17,6 +17,8 @@ const isMobileOrTablet = () => {
   );
 };
 
+const yeah: number = 10;
+
 const LazyEnvironment = React.lazy(()=> import('./Environment'))
 const LazyTelevision = React.lazy(()=> import('./Television'))
 const LazyMannequin = React.lazy(()=> import('./Mannequin'))
