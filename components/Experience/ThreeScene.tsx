@@ -132,7 +132,7 @@ const ThreeScene = ({
           <Skybox />
           <Environment />
           <DraggableMannequin
-            position={[4, -0.5, -24]}
+            position={[4, -10.5, -24]}
             modelPath="/models/inter_elem1.glb"
             onClick={onCubeClick}
             scale={1.2}
@@ -140,7 +140,7 @@ const ThreeScene = ({
 
           {/* Model 2 */}
           <DraggableMannequin
-            position={[6, -0.5, -24]}
+            position={[6, -10.5, -24]}
             modelPath="/models/inter_elem2.glb"
             onClick={onCubeClick}
             scale={1.2}
@@ -148,7 +148,7 @@ const ThreeScene = ({
 
           {/* Model 3 */}
           <DraggableMannequin
-            position={[8, -0.5, -24]}
+            position={[8, -10.5, -24]}
             modelPath="/models/inter_elem.glb"
             onClick={onCubeClick}
             scale={1.2}
@@ -156,7 +156,7 @@ const ThreeScene = ({
           <Television
             videoPath="/media/backhome.mp4"
             scale={[0.9,0.9,0.9]}
-            position={[5, 14.8, -33.5]}
+            position={[5, 4.8, -33.5]}
             rotation={[0, -82.79, 0]} 
           />
         </Suspense>
