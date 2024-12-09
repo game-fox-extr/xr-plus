@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import Input from "@mui/joy/Input";
 import CloseIcon from "@mui/icons-material/Close";
+import ReactMarkdown from "react-markdown";
 
 interface ChatbotProps {
   isChatbotModalOpen: boolean;
@@ -33,16 +34,13 @@ const ChatBotModal: React.FC<ChatbotProps> = (props) => {
 
     // Send the message to the chatbot API
     try {
-      const response = await fetch(
-        "https://strategy-fox-go-bked.com/api/chatbot/chat",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userInput: currentMessage }),
-        }
-      );
+      const response = await fetch("https://strategy-fox-go-bked.com/api/chatbot/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userInput: currentMessage }),
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -163,7 +161,7 @@ const ChatBotModal: React.FC<ChatbotProps> = (props) => {
                   fontFamily: "SF Pro Display",
                 }}
               >
-                {message.text}
+                <ReactMarkdown>{message.text}</ReactMarkdown>
               </Typography>
             </Box>
           </Box>
@@ -189,10 +187,10 @@ const ChatBotModal: React.FC<ChatbotProps> = (props) => {
           }}
           sx={{
             flex: 1,
-            border: "1px solid grey",
+            border: "2px solid grey",
             padding: 1.5,
             "&:focus-within": {
-              border: "3px solid black",
+              border: "3px solid white",
             },
           }}
         />

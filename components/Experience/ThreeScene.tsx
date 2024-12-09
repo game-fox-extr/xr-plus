@@ -28,7 +28,7 @@ const ThreeScene = ({
   onCubeClick: () => void;
   // isPointerLocked: boolean;
 }) => {
-  const { isLoading, sceneKey, loadingProgress } = useSceneStabilityStore();
+  const { isLoading, sceneKey, loadingProgress,isModalOpen } = useSceneStabilityStore();
 
   return (
     <div
@@ -40,7 +40,7 @@ const ThreeScene = ({
       }}
     >
       {/* Render joystick only on mobile or tablet */}
-      {isMobileOrTablet() && <EcctrlJoystick />}
+      {isMobileOrTablet() && !isModalOpen && <EcctrlJoystick />}
 
       
       {/* <LoadingScreen /> */}
