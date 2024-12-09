@@ -7,6 +7,7 @@ import React from "react";
 import Modal from "../components/Experience/Modal";
 import { useModalStore } from "../store/useModalStore";
 import Loader from "../components/Experience/Loader";
+import ChatbotModal from "../components/Experience/ChatBot";
 
 const ThreeScene = dynamic(
   () => import("../components/Experience/ThreeScene"),
@@ -16,7 +17,10 @@ const MemoizedThreeScene = React.memo(ThreeScene);
 
 const Page = () => {
   const mainRef = useRef(null);
-  const { modals, closeModal, openModal } = useModalStore();
+  const { modals, closeModal, openModal, openChatbotModal, closeChatbotModal } =
+    useModalStore();
+  const [modalData, setModalData] = useState({});
+  const [modelUrl, setModelUrl] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
   const [isVisible, setIsVisible] = useState(true); // Tracks loader visibility
 
@@ -39,8 +43,6 @@ const Page = () => {
       window.removeEventListener("load", handleLoad);
     };
   }, []);
-  const [modalData, setModalData] = useState({});
-  const [modelUrl, setModelUrl] = useState("");
 
   const handleProductClick = useCallback(
     async (data?: any) => {
@@ -107,17 +109,27 @@ const Page = () => {
 
   return (
     <>
-      {isVisible && <Loader />} 
-    <main ref={mainRef} className="w-full h-screen relative">
-      {!modals.product && <CenteredDot />}
-      <MemoizedThreeScene onCubeClick={handleProductClick} />
-      <Modal
-        isOpen={modals.product}
-        onClose={handleModalClose}
-        data={modalData}
-        modelUrl={modelUrl}
-      />
-    </main>
+      {isVisible && <Loader />}
+      <main ref={mainRef} className="w-full h-screen relative">
+        {!modals.product && <CenteredDot />}
+        <MemoizedThreeScene onCubeClick={handleProductClick} />
+        <img
+          src="/Bot Icon.svg"
+          alt="BotIcon"
+          style={{ position: "fixed", top: "1.5%", right: "1.5%", zIndex: 999 }}
+          onClick={() => openChatbotModal("chatbot")}
+        />
+        <Modal
+          isOpen={modals.product}
+          onClose={handleModalClose}
+          data={modalData}
+          modelUrl={modelUrl}
+        />
+        <ChatbotModal
+          isChatbotModalOpen={modals.chatbot}
+          onChatbotModalClose={() => closeChatbotModal("chatbot")}
+        />
+      </main>
     </>
   );
 };
