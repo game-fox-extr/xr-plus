@@ -45,7 +45,6 @@ const ThreeScene = ({
       {/* Render joystick only on mobile or tablet */}
       {isMobileOrTablet() && !isModalOpen && <EcctrlJoystick />}
 
-      
       {/* <LoadingScreen /> */}
       <Canvas
         key={sceneKey}
