@@ -41,7 +41,7 @@ const Castle: React.FC<CastleProps> = (props) => {
 
   const castle = (
     <group {...props} dispose={null}>
-      <group position={[9.78, 0, 62.55]}>
+      <group position={[9.78, -10, 62.55]}>
         <mesh
           castShadow
           receiveShadow
