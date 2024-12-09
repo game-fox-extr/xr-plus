@@ -10,90 +10,14 @@ import { useSceneStabilityStore } from "../../store/useSceneStabilityStore";
 import RayCaster from "./Raycaster";
 import DraggableMannequin from "./Mannequin";
 import Television from "./Television";
+import { EcctrlJoystick } from "ecctrl";
+import * as THREE from "three";
 
-const dmSans = DM_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-});
 
-const LoadingScreen = () => {
-  const { progress, active } = useProgress();
-
-  if (!active) return null;
-
-  return (
-    <div
-      style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        width: "100vw",
-        height: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "black",
-        color: "white",
-        zIndex: 1001,
-      }}
-    >
-      <div
-        style={{
-          width: "256px",
-          height: "16px",
-          backgroundColor: "#374151",
-          borderRadius: "9999px",
-          overflow: "hidden",
-        }}
-      >
-        <div
-          style={{
-            width: `${progress}%`,
-            height: "100%",
-            backgroundColor: "#f6523b",
-            transition: "all 300ms",
-          }}
-        />
-      </div>
-      <div
-        className={dmSans.className}
-        style={{
-          marginTop: "16px",
-          fontSize: "1.125rem",
-          fontWeight: 300,
-        }}
-      >
-        Loading... {progress.toFixed(0)}%
-      </div>
-    </div>
-  );
-};
-
-const fetchData = async () => {
-  const res = await axios.get(
-    "http://localhost:5000/api/shopify/products/9658662388005"
-  );
-  return { "status-code": res.status, product: res.data.product };
-};
-
-const LoadingOverlay: React.FC = () => {
-  const { loadingProgress, isLoading } = useSceneStabilityStore();
-
-  if (!isLoading) return null;
-
-  return (
-    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black">
-      <div className="w-64 h-4 bg-gray-700 rounded-full overflow-hidden">
-        <div 
-          className="h-full bg-red-500 transition-all duration-300" 
-          style={{ width: `${loadingProgress}%` }}
-        />
-      </div>
-      <p className="mt-4 text-white">
-        Loading... {loadingProgress.toFixed(0)}%
-      </p>
-    </div>
+// Utility function to detect mobile or tablet
+const isMobileOrTablet = () => {
+  return /iPhone|iPad|iPod|Android|webOS|BlackBerry|Windows Phone/i.test(
+    navigator.userAgent
   );
 };
 
@@ -115,6 +39,10 @@ const ThreeScene = ({
         overflow: "hidden",
       }}
     >
+      {/* Render joystick only on mobile or tablet */}
+      {isMobileOrTablet() && <EcctrlJoystick />}
+
+      
       {/* <LoadingScreen /> */}
       <Canvas
         key={sceneKey}
@@ -123,7 +51,7 @@ const ThreeScene = ({
           fov: 65,
           near: 0.1,
           far: 1000,
-          position: [5,-5,0],
+          position: [5, -5, 0],
         }}
         onContextMenu={(e) => e.preventDefault()}
       >
@@ -155,9 +83,9 @@ const ThreeScene = ({
           />
           <Television
             videoPath="/media/backhome.mp4"
-            scale={[0.9,0.9,0.9]}
+            scale={[0.9, 0.9, 0.9]}
             position={[5, 4.8, -33.5]}
-            rotation={[0, -82.79, 0]} 
+            rotation={[0, -82.79, 0]}
           />
         </Suspense>
         <PointerLockControls />
