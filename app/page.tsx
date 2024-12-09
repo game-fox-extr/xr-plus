@@ -8,6 +8,7 @@ import Modal from "../components/Experience/Modal";
 import { useModalStore } from "../store/useModalStore";
 import Loader from "../components/Experience/Loader";
 import ChatbotModal from "../components/Experience/ChatBot";
+import { useSceneStabilityStore } from "../store/useSceneStabilityStore";
 
 const ThreeScene = dynamic(
   () => import("../components/Experience/ThreeScene"),
@@ -19,6 +20,7 @@ const Page = () => {
   const mainRef = useRef(null);
   const { modals, closeModal, openModal, openChatbotModal, closeChatbotModal } =
     useModalStore();
+  const { removeJoyStick } = useSceneStabilityStore();
   const [modalData, setModalData] = useState({});
   const [modelUrl, setModelUrl] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
@@ -117,7 +119,10 @@ const Page = () => {
           src="/Bot Icon.svg"
           alt="BotIcon"
           style={{ position: "fixed", top: "1.5%", right: "1.5%", zIndex: 999 }}
-          onClick={() => openChatbotModal("chatbot")}
+          onClick={() => {
+            openChatbotModal("chatbot");
+            removeJoyStick(true);
+          }}
         />
         <Modal
           isOpen={modals.product}
@@ -127,7 +132,10 @@ const Page = () => {
         />
         <ChatbotModal
           isChatbotModalOpen={modals.chatbot}
-          onChatbotModalClose={() => closeChatbotModal("chatbot")}
+          onChatbotModalClose={() => {
+            closeChatbotModal("chatbot");
+            removeJoyStick(false);
+          }}
         />
       </main>
     </>
