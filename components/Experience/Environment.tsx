@@ -141,7 +141,7 @@ const Environment = React.memo(() => {
 
   const ecctrlProps = useMemo(
     () => ({
-      maxVelLimit: 2.5,
+      maxVelLimit: 4,
       fallingGravityScale: 2.5,
       fallingMaxVel: -20,
       jumpVel: 3,
