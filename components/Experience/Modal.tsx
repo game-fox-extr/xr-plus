@@ -23,7 +23,7 @@ const CanvasContainer = ({ children }: { children: React.ReactNode }) => {
     <Box
       sx={{
         position: "relative",
-        width: { md: "50%", lg: "50%" }, // Adjust width for responsiveness manually in your layout
+        width: { xs: "50%", sm: "45%", md: "50%", lg: "50%" }, // Adjust width for responsiveness manually in your layout
         borderRadius: "10px",
         overflow: "hidden",
         objectFit: "cover",
@@ -51,7 +51,6 @@ const Model = ({ modelUrl }: { modelUrl: string }) => {
     loader.setDRACOLoader(dracoLoader);
   });
 
-  console.log({ gltf: gltf });
   return (
     <group position={[0, -3, 0]} scale={3}>
       <primitive object={gltf.scene} />
@@ -104,11 +103,17 @@ const Modal: React.FC<ModalProps> = (props) => {
       <Card
         sx={{
           position: "fixed",
-          top: { md: "1%", lg: "0.75%" },
-          left: { md: "25%", lg: "25%" },
+          top: { xs: "5%", sm: "10%", md: "5%", lg: "5%" },
+          left: { xs: "10%", sm: "15%", md: "25%", lg: "25%" },
           display: "flex",
           flexDirection: "column",
-          maxWidth: { xs: "80vw", md: "60vw", lg: "50vw", xl: "50vw" },
+          maxWidth: {
+            xs: "80vw",
+            sm: "70%",
+            md: "60vw",
+            lg: "50vw",
+            xl: "50vw",
+          },
           gap: "10px",
           backgroundColor: "rgba(255, 255, 255, 0.1)", // Semi-transparent white
           backdropFilter: "blur(10px)", // Blur effect for glass morphism
@@ -149,6 +154,7 @@ const Modal: React.FC<ModalProps> = (props) => {
                 color: "white",
                 borderRadius: "50px 50px 50px 50px", // Rounded right side
                 padding: "6px 16px",
+                fontFamily: "'Poppins', sans-serif",
               }}
             >
               Photos
@@ -162,6 +168,7 @@ const Modal: React.FC<ModalProps> = (props) => {
                 color: "white",
                 borderRadius: "50px 50px 50px 50px", // Rounded right side
                 padding: "6px 16px",
+                fontFamily: "'Poppins', sans-serif",
               }}
             >
               3D Model
@@ -187,7 +194,7 @@ const Modal: React.FC<ModalProps> = (props) => {
           sx={{
             display: "flex",
             margin: { lg: "auto" },
-            flexDirection: "row",
+            flexDirection: { xs: "column", sm: "row", md: "row", lg: "row" },
           }}
         >
           {/* Left Side: Photos or 3D Model */}
@@ -294,7 +301,7 @@ const Modal: React.FC<ModalProps> = (props) => {
                   color: "black",
                   borderRadius: "5px",
                   padding: { md: "0 4px ", lg: "0 8px" },
-                  width: { md: "100%", lg: "100%" },
+                  width: { xs: "100%", sm: "100%", md: "100%", lg: "100%" },
                   zIndex: "1000",
                 }}
               >
@@ -345,7 +352,12 @@ const Modal: React.FC<ModalProps> = (props) => {
                 sx={{
                   fontFamily: "'Poppins', sans-serif",
                   color: "white",
-                  fontSize: "1.5rem",
+                  fontSize: {
+                    xs: "1.5rem",
+                    sm: "1.5rem",
+                    md: "1rem",
+                    lg: "1.5rem",
+                  },
                 }}
               >
                 Description
@@ -357,7 +369,12 @@ const Modal: React.FC<ModalProps> = (props) => {
                   padding: 1,
                   marginTop: 1,
                   backdropFilter: "blur(10px)",
-                  maxHeight: { md: "200px", lg: "300px" },
+                  maxHeight: {
+                    xs: "225px",
+                    sm: "210px",
+                    md: "225px",
+                    lg: "250px",
+                  },
                   boxShadow: "0 4px 15px rgba(0, 0, 0, 0.2)",
                   overflowY: "auto", // Enable vertical scrolling
                   scrollbarWidth: "none", // Firefox - hide scrollbar
@@ -399,6 +416,7 @@ const Modal: React.FC<ModalProps> = (props) => {
                 backgroundColor: "#ffffff09",
                 boxShadow: "0 6px 12px rgba(0, 0, 0, 0.2)",
               },
+              fontFamily: "'Poppins', sans-serif",
             }}
           >
             ADD TO CART
@@ -415,6 +433,7 @@ const Modal: React.FC<ModalProps> = (props) => {
                 backgroundColor: "rgba(0, 0, 0, 0.45)",
                 boxShadow: "0 6px 12px rgba(0, 0, 0, 0.2)",
               },
+              fontFamily: "'Poppins', sans-serif",
             }}
           >
             CHECKOUT
