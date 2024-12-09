@@ -12,7 +12,7 @@
     "heroku-postbuild": "next build",
     "ser": "nodemon server.js",
     "dev": "next dev",
-    "postinstall": "rm -rf ./node_modules/ecctrl/src/EcctrlJoystick.tsx",
+    "postinstall": "node -e \"require('fs').rmSync('./node_modules/ecctrl/src/EcctrlJoystick.tsx', { force: true });\"",
     "build": "next build",
     "start": "next start"
   },
@@ -29,8 +29,12 @@
     "vite": "^4.3.9"
   },
   "dependencies": {
+    "@emotion/react": "^11.13.5",
+    "@emotion/styled": "^11.13.5",
     "@google-cloud/speech": "^6.7.0",
     "@google/generative-ai": "^0.20.0",
+    "@mui/icons-material": "^6.1.10",
+    "@mui/material": "^6.1.10",
     "@react-three/drei": "^9.115.0",
     "@react-three/fiber": "^8.15.10",
     "@react-three/rapier": "^1.5.0",
@@ -40,6 +44,7 @@
     "agora-rtc-sdk-ng": "^4.22.1",
     "axios": "^1.7.7",
     "cors": "^2.8.5",
+    "dompurify": "^3.2.2",
     "dotenv": "^16.4.5",
     "ecctrl": "^1.0.91",
     "events": "^3.3.0",
