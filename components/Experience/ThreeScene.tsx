@@ -1,6 +1,7 @@
 import { PointerLockControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
+import { usePointerStore } from "../../store/usePointerStore";
 //import EcctrlJoystickControls from "./JoyStickControls";
 import { EcctrlJoystick } from "ecctrl";
 import { useSceneStabilityStore } from "../../store/useSceneStabilityStore";
@@ -9,6 +10,7 @@ import RayCaster from "./Raycaster";
 import Skybox from "./Skybox";
 import Television from "./Television";
 import React from "react";
+import Products from "./Products";
 
 // Utility function to detect mobile or tablet
 const isMobileOrTablet = () => {
@@ -17,18 +19,19 @@ const isMobileOrTablet = () => {
   );
 };
 
-const LazyEnvironment = React.lazy(()=> import('./Environment'))
-const LazyTelevision = React.lazy(()=> import('./Television'))
-const LazyMannequin = React.lazy(()=> import('./Mannequin'))
+const LazyEnvironment = React.lazy(() => import("./Environment"));
+const LazyTelevision = React.lazy(() => import("./Television"));
+
 
 const ThreeScene = ({
   onCubeClick,
 }: // isPointerLocked,
-{
-  onCubeClick: () => void;
-  // isPointerLocked: boolean;
-}) => {
+  {
+    onCubeClick: () => void;
+    // isPointerLocked: boolean;
+  }) => {
   const { isLoading, sceneKey, loadingProgress } = useSceneStabilityStore();
+  const { pointerLocked } = usePointerStore();
 
   return (
     <div
@@ -58,28 +61,7 @@ const ThreeScene = ({
           <RayCaster />
           <Skybox />
           <LazyEnvironment />
-          <LazyMannequin
-            position={[4, -10.5, -24]}
-            modelPath="/models/inter_elem1.glb"
-            onClick={onCubeClick}
-            scale={1.2}
-          />
-
-          {/* Model 2 */}
-          <LazyMannequin
-            position={[6, -10.5, -24]}
-            modelPath="/models/inter_elem2.glb"
-            onClick={onCubeClick}
-            scale={1.2}
-          />
-
-          {/* Model 3 */}
-          <LazyMannequin
-            position={[8, -10.5, -24]}
-            modelPath="/models/inter_elem.glb"
-            onClick={onCubeClick}
-            scale={1.2}
-          />
+          <Products onCubeClick={onCubeClick} />
           <LazyTelevision
             videoPath="/media/backhome.mp4"
             scale={[0.9, 0.9, 0.9]}
@@ -87,7 +69,7 @@ const ThreeScene = ({
             rotation={[0, -82.79, 0]}
           />
         </Suspense>
-        <PointerLockControls />
+        <PointerLockControls enabled={pointerLocked}/>
       </Canvas>
     </div>
   );

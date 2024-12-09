@@ -3,12 +3,14 @@ import React from "react";
 
 const DraggableMannequin = ({
   position = [0, 0, 0],
+  rotation = [0, 0, 0], // Default rotation in degrees
   scale = 1,
   productId,
   modelPath,
   onClick,
 }: {
   position: [x: number, y: number, z: number];
+  rotation?: [x: number, y: number, z: number]; // Rotation in degrees
   scale?: number | [x: number, y: number, z: number];
   modelPath: string;
   productId?: string;
@@ -36,11 +38,15 @@ const DraggableMannequin = ({
   const computedScale =
     typeof scale === "number" ? [scale, scale, scale] : scale;
 
+  // Convert rotation from degrees to radians
+  const computedRotation = rotation.map((deg) => (deg * Math.PI) / 180);
+
   return (
-    <PivotControls anchor={[0, 0, 0]} scale={1} activeAxes={[false,false,false]}>
+    <PivotControls anchor={[0, 0, 0]} scale={1} activeAxes={[false, false, false]}>
       <primitive
         object={scene}
         position={position}
+        rotation={computedRotation} // Apply computed rotation
         scale={computedScale}
         onClick={handleClick}
         onPointerDown={handleClick}
