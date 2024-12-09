@@ -6,6 +6,7 @@ import "./styles/defaults/reset.scss";
 import React from "react";
 import Modal from "../components/Experience/Modal";
 import { useModalStore } from "../store/useModalStore";
+import { usePointerStore } from "../store/usePointerStore";
 import ChatbotModal from "../components/Experience/ChatBot";
 import { useSceneStabilityStore } from "../store/useSceneStabilityStore";
 
@@ -19,6 +20,7 @@ const Page = () => {
   const mainRef = useRef(null);
   const { modals, closeModal, openModal, openChatbotModal, closeChatbotModal } =
     useModalStore();
+  const { setLock } = usePointerStore();
   const { removeJoyStick } = useSceneStabilityStore();
   const [modalData, setModalData] = useState({});
   const [modelUrl, setModelUrl] = useState("");
@@ -82,6 +84,7 @@ const Page = () => {
 
   const handleModalClose = useCallback(() => {
     closeModal("product");
+    setLock(true);
   }, [closeModal]);
 
   console.log({ "Modal Product": modals.product });

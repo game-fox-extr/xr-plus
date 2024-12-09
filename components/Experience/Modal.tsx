@@ -1,8 +1,10 @@
 import { styled } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { Canvas } from "@react-three/fiber";
 import { useLoader } from "@react-three/fiber";
 import { Environment, OrbitControls } from "@react-three/drei";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { Suspense, useState } from "react";
 import { Suspense, useState } from "react";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 import DOMPurify from "dompurify";
@@ -52,6 +54,7 @@ const Model = ({ modelUrl }: { modelUrl: string }) => {
   });
 
   return (
+    <group position={[0, -3, 0]} scale={3}>
     <group position={[0, -3, 0]} scale={3}>
       <primitive object={gltf.scene} />
     </group>
