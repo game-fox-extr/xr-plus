@@ -5,7 +5,6 @@ import { Environment, OrbitControls } from "@react-three/drei";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { Suspense, useState } from "react";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
-import DOMPurify from "dompurify";
 import {
   Box,
   Button,
@@ -84,8 +83,8 @@ const CanvasContainer = styled(Box)(({ theme }) => ({
 interface ModalProps {
   isOpen: boolean;
   onClose: any;
-  data: any;
-  modelUrl: string;
+  data?: any;
+  modelUrl?: string;
 }
 
 const Model = ({ modelUrl }: { modelUrl: string }) => {
@@ -114,9 +113,6 @@ const Modal: React.FC<ModalProps> = (props) => {
     "https://cdn.shopify.com/s/files/1/0901/2222/3909/files/Open_jacket1.png?v=1729603533",
     "https://cdn.shopify.com/s/files/1/0901/2222/3909/files/Open_jacket2.png?v=1729603533",
   ];
-
-  // Sanitizing the html using dompurify
-  const sanitizedHtml = DOMPurify.sanitize(props.data["body_html"]);
 
   const nextImage = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);

@@ -1,6 +1,7 @@
 import { PointerLockControls, useProgress } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
+import { usePointerStore } from "../../store/usePointerStore";
 //import EcctrlJoystickControls from "./JoyStickControls";
 import axios from "axios";
 import { DM_Sans } from "next/font/google";
@@ -29,6 +30,7 @@ const ThreeScene = ({
   // isPointerLocked: boolean;
 }) => {
   const { isLoading, sceneKey, loadingProgress } = useSceneStabilityStore();
+  const { pointerLocked } = usePointerStore();
 
   return (
     <div
@@ -88,7 +90,7 @@ const ThreeScene = ({
             rotation={[0, -82.79, 0]}
           />
         </Suspense>
-        <PointerLockControls />
+        <PointerLockControls enabled={pointerLocked}/>
       </Canvas>
     </div>
   );
