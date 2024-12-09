@@ -1,18 +1,14 @@
-import { PointerLockControls, useProgress } from "@react-three/drei";
+import { PointerLockControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
 //import EcctrlJoystickControls from "./JoyStickControls";
-import axios from "axios";
-import { DM_Sans } from "next/font/google";
-import Environment from "./Environment";
-import Skybox from "./Skybox";
-import { useSceneStabilityStore } from "../../store/useSceneStabilityStore";
-import RayCaster from "./Raycaster";
-import DraggableMannequin from "./Mannequin";
-import Television from "./Television";
 import { EcctrlJoystick } from "ecctrl";
-import * as THREE from "three";
-
+import { useSceneStabilityStore } from "../../store/useSceneStabilityStore";
+import Environment from "./Environment";
+import RayCaster from "./Raycaster";
+import Skybox from "./Skybox";
+import Television from "./Television";
+import React from "react";
 
 // Utility function to detect mobile or tablet
 const isMobileOrTablet = () => {
@@ -20,6 +16,10 @@ const isMobileOrTablet = () => {
     navigator.userAgent
   );
 };
+
+const LazyEnvironment = React.lazy(()=> import('./Environment'))
+const LazyTelevision = React.lazy(()=> import('./Television'))
+const LazyMannequin = React.lazy(()=> import('./Mannequin'))
 
 const ThreeScene = ({
   onCubeClick,
@@ -42,7 +42,6 @@ const ThreeScene = ({
       {/* Render joystick only on mobile or tablet */}
       {isMobileOrTablet() && <EcctrlJoystick />}
 
-      
       {/* <LoadingScreen /> */}
       <Canvas
         key={sceneKey}
@@ -58,8 +57,8 @@ const ThreeScene = ({
         <Suspense fallback={null}>
           <RayCaster />
           <Skybox />
-          <Environment />
-          <DraggableMannequin
+          <LazyEnvironment />
+          <LazyMannequin
             position={[4, -10.5, -24]}
             modelPath="/models/inter_elem1.glb"
             onClick={onCubeClick}
@@ -67,7 +66,7 @@ const ThreeScene = ({
           />
 
           {/* Model 2 */}
-          <DraggableMannequin
+          <LazyMannequin
             position={[6, -10.5, -24]}
             modelPath="/models/inter_elem2.glb"
             onClick={onCubeClick}
@@ -75,13 +74,13 @@ const ThreeScene = ({
           />
 
           {/* Model 3 */}
-          <DraggableMannequin
+          <LazyMannequin
             position={[8, -10.5, -24]}
             modelPath="/models/inter_elem.glb"
             onClick={onCubeClick}
             scale={1.2}
           />
-          <Television
+          <LazyTelevision
             videoPath="/media/backhome.mp4"
             scale={[0.9, 0.9, 0.9]}
             position={[5, 4.8, -33.5]}

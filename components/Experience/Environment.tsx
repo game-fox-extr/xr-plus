@@ -34,7 +34,9 @@ const CustomEcctrl = forwardRef<RapierRigidBody, CustomEcctrlProps>(
     const combinedRef = (ref || localRef) as React.RefObject<RapierRigidBody>;
 
     useEffect(() => {
+      console.log('Effect initialized with initialPosition:', initialPosition);
       const handleVisibilityChange = () => {
+        console.log('Visibility changed, document state:', document.visibilityState);
         if (document.visibilityState === 'visible' && combinedRef.current) {
           try {
             combinedRef.current.setTranslation(
@@ -55,6 +57,7 @@ const CustomEcctrl = forwardRef<RapierRigidBody, CustomEcctrlProps>(
       };
 
       const handleWindowResize = () => {
+        console.log('Window resized');
         if (combinedRef.current) {
           try {
             combinedRef.current.setTranslation(
@@ -77,11 +80,15 @@ const CustomEcctrl = forwardRef<RapierRigidBody, CustomEcctrlProps>(
           if (currentPos.y < -15) {
             try {
               combinedRef.current.setTranslation(
-                { x: initialPosition[0], y: initialPosition[1], z: initialPosition[2] }, 
+                { 
+                  x: initialPosition[0], 
+                  y: initialPosition[1], 
+                  z: initialPosition[2] 
+                }, 
                 true
               );
               combinedRef.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
-
+    
               setPlayerPosition(initialPosition);
               console.log('Player respawned at initial position');
             } catch (error) {
@@ -90,14 +97,21 @@ const CustomEcctrl = forwardRef<RapierRigidBody, CustomEcctrlProps>(
           }
         }
       };
-
-      const intervalId = setInterval(respawnPlayer, 100); // Check every 100ms
-
+    
+      let animationFrameId: number;
+      const checkRespawn = () => {
+        respawnPlayer();
+        animationFrameId = requestAnimationFrame(checkRespawn);
+      };
+      animationFrameId = requestAnimationFrame(checkRespawn);
+    
       document.addEventListener('visibilitychange', handleVisibilityChange);
       window.addEventListener('resize', handleWindowResize);
-
+      console.log('Effect setup complete');
+      
       return () => {
-        clearInterval(intervalId);
+        console.log('Effect cleanup');
+        cancelAnimationFrame(animationFrameId);
         document.removeEventListener('visibilitychange', handleVisibilityChange);
         window.removeEventListener('resize', handleWindowResize);
       };
