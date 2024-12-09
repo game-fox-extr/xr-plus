@@ -1,5 +1,18 @@
 import React, { useEffect } from 'react';
 import { useGLTF, useVideoTexture } from '@react-three/drei';
+import { Mesh, Material } from 'three';
+import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
+
+// Define a custom GLTF type for the TV model
+interface TVModelGLTF extends GLTF {
+  nodes: {
+    'monitor-screen': Mesh;
+    tv_frame: Mesh;
+  };
+  materials: {
+    phong15: Material;
+  };
+}
 
 interface TelevisionProps {
   videoPath: string;
@@ -14,7 +27,7 @@ export default function Television({
   position = [0, 0, 0],
   rotation = [0, 0, 0],
 }: TelevisionProps) {
-  const { nodes, materials } = useGLTF('/models/tv_modified.glb');
+  const { nodes, materials } = useGLTF('/models/tv_modified.glb') as unknown as TVModelGLTF;
   const videoTexture = useVideoTexture(videoPath, {
     crossOrigin: 'anonymous',
     loop: true,
