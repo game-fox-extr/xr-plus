@@ -1,4 +1,4 @@
-import { Html, KeyboardControls, useProgress } from "@react-three/drei";
+import { Html, KeyboardControls, useKeyboardControls } from "@react-three/drei";
 import { Physics, RapierRigidBody, RigidBody } from "@react-three/rapier";
 import Ecctrl, { EcctrlProps } from "ecctrl";
 import React, { forwardRef, Suspense, useEffect, useMemo, useRef, useState } from "react";
@@ -24,6 +24,7 @@ const KEYBOARD_MAP = [
   { name: "action4", keys: ["KeyF"] },
 ];
 
+
 const LazyCastle = React.lazy(() => import("./Castle"));
 
 const CustomEcctrl = forwardRef<RapierRigidBody, CustomEcctrlProps>(
@@ -33,23 +34,38 @@ const CustomEcctrl = forwardRef<RapierRigidBody, CustomEcctrlProps>(
 
     const combinedRef = (ref || localRef) as React.RefObject<RapierRigidBody>;
 
+    const resetKeys = () => {
+        dispatchEvent(new KeyboardEvent('keyup', {code: 'KeyW'}));
+        dispatchEvent(new KeyboardEvent('keyup', {code: 'KeyS'}));
+        dispatchEvent(new KeyboardEvent('keyup', {code: 'KeyA'}));
+        dispatchEvent(new KeyboardEvent('keyup', {code: 'KeyD'}));
+        dispatchEvent(new KeyboardEvent('keyup', {code: 'ArrowUp'}));
+        dispatchEvent(new KeyboardEvent('keyup', {code: 'ArrowDown'}));
+        dispatchEvent(new KeyboardEvent('keyup', {code: 'ArrowLeft'}));
+        dispatchEvent(new KeyboardEvent('keyup', {code: 'ArrowRight'}));
+        dispatchEvent(new KeyboardEvent('keyup', {code: 'Space'}));
+        dispatchEvent(new KeyboardEvent('keyup', {code: 'Shift'}));
+        console.log("Keys reset");
+    };
+
     useEffect(() => {
       console.log('Effect initialized with initialPosition:', initialPosition);
       const handleVisibilityChange = () => {
         console.log('Visibility changed, document state:', document.visibilityState);
         if (document.visibilityState === 'visible' && combinedRef.current) {
+          const currentPos = combinedRef.current.translation();
           try {
             combinedRef.current.setTranslation(
               { 
-                x: initialPosition[0], 
-                y: initialPosition[1], 
-                z: initialPosition[2] 
+                x: currentPos.x, 
+                y: currentPos.y, 
+                z: currentPos.z
               }, 
               true
             );
             combinedRef.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
 
-            resetScene();
+            // resetScene();
           } catch (error) {
             console.error('Failed to reset character position:', error);
           }
@@ -59,15 +75,16 @@ const CustomEcctrl = forwardRef<RapierRigidBody, CustomEcctrlProps>(
       const handleWindowResize = () => {
         console.log('Window resized');
         if (combinedRef.current) {
+          const currentPos = combinedRef.current.translation();
           try {
             combinedRef.current.setTranslation(
-              { x: initialPosition[0], y: initialPosition[1], z: initialPosition[2] }, 
+              { x: currentPos.x, y: currentPos.y, z: currentPos.z}, 
               true
             );
             combinedRef.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
 
-            setPlayerPosition(initialPosition);
-            resetScene();
+            setPlayerPosition([currentPos.x, currentPos.y, currentPos.z]);
+            // resetScene();
           } catch (error) {
             console.error('Failed to reset character position on resize:', error);
           }
@@ -106,6 +123,8 @@ const CustomEcctrl = forwardRef<RapierRigidBody, CustomEcctrlProps>(
       animationFrameId = requestAnimationFrame(checkRespawn);
     
       document.addEventListener('visibilitychange', handleVisibilityChange);
+      document.addEventListener('visibilitychange', resetKeys);
+      window.addEventListener('blur', resetKeys);
       window.addEventListener('resize', handleWindowResize);
       console.log('Effect setup complete');
       
@@ -113,6 +132,8 @@ const CustomEcctrl = forwardRef<RapierRigidBody, CustomEcctrlProps>(
         console.log('Effect cleanup');
         cancelAnimationFrame(animationFrameId);
         document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.removeEventListener('visibilitychange', resetKeys);
+      window.removeEventListener('blur', resetKeys);
         window.removeEventListener('resize', handleWindowResize);
       };
     }, [initialPosition, resetScene, setPlayerPosition]);
