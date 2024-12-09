@@ -34,13 +34,16 @@ const ChatBotModal: React.FC<ChatbotProps> = (props) => {
 
     // Send the message to the chatbot API
     try {
-      const response = await fetch("https://strategy-fox-go-bked.com/api/chatbot/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userInput: currentMessage }),
-      });
+      const response = await fetch(
+        "https://strategy-fox-go-bked.com/api/chatbot/chat",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userInput: currentMessage }),
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
