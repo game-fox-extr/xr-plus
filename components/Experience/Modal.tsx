@@ -5,7 +5,6 @@ import { Environment, OrbitControls } from "@react-three/drei";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { Suspense, useState } from "react";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
-import DOMPurify from "dompurify";
 import {
   Box,
   Button,
@@ -17,6 +16,7 @@ import {
   Select,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import DOMPurify from 'dompurify'
 
 const CanvasContainer = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -38,8 +38,8 @@ const CanvasContainer = ({ children }: { children: React.ReactNode }) => {
 interface ModalProps {
   isOpen: boolean;
   onClose: any;
-  data: any;
-  modelUrl: string;
+  data?: any;
+  modelUrl?: string;
 }
 
 const Model = ({ modelUrl }: { modelUrl: string }) => {
@@ -248,7 +248,7 @@ const Modal: React.FC<ModalProps> = (props) => {
                     angle={0.15}
                     penumbra={1}
                   />
-                  <Model modelUrl={props.modelUrl} />
+                  <Model modelUrl={props?.modelUrl!} />
                   <OrbitControls enableZoom={false} />
                   <Environment preset="warehouse" blur={2} />
                 </Suspense>
