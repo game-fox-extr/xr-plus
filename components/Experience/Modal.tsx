@@ -23,7 +23,7 @@ const CanvasContainer = ({ children }: { children: React.ReactNode }) => {
     <Box
       sx={{
         position: "relative",
-        width: { xs: "100%", sm: "45%", md: "50%", lg: "50%",xl:"50%" }, // Adjust width for responsiveness manually in your layout
+        width: { xs: "100%", sm: "45%", md: "50%", lg: "50%", xl: "50%" }, // Adjust width for responsiveness manually in your layout
         borderRadius: "10px",
         overflow: "hidden",
         objectFit: "cover",
@@ -66,12 +66,7 @@ const Modal: React.FC<ModalProps> = (props) => {
 
   const [view, setView] = useState("3dModel");
   const [currentIndex, setCurrentIndex] = useState(0);
-  // const images = [
-  //   "https://cdn.shopify.com/s/files/1/0901/2222/3909/files/Open_jacket1.png?v=1729603533",
-  //   "https://cdn.shopify.com/s/files/1/0901/2222/3909/files/Open_jacket2.png?v=1729603533",
-  // ];
-
-  // Sanitizing the html using dompurify
+  const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const sanitizedHtml = DOMPurify.sanitize(props.data["body_html"]);
 
   props.data.options.forEach((option: any) => {
@@ -89,7 +84,13 @@ const Modal: React.FC<ModalProps> = (props) => {
   };
 
   const prevImage = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1) % images.length);
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? images.length - 1 : prevIndex - 1
+    );
+  };
+
+  const handleSizeClick = (size: string) => {
+    setSelectedSize(size);
   };
 
   return (
@@ -101,8 +102,8 @@ const Modal: React.FC<ModalProps> = (props) => {
       <Card
         sx={{
           position: "fixed",
-          top: { xs: "5%", sm: "10%", md: "5%", lg: "5%",xl:"1%" },
-          left: { xs: "10%", sm: "15%", md: "25%", lg: "25%",xl:"25%" },
+          top: { xs: "5%", sm: "10%", md: "5%", lg: "15%", xl: "7%" },
+          left: { xs: "10%", sm: "15%", md: "25%", lg: "25%", xl: "25%" },
           display: "flex",
           flexDirection: "column",
           maxWidth: { xs: "80vw", md: "60vw", lg: "50vw", xl: "50vw" },
@@ -119,7 +120,7 @@ const Modal: React.FC<ModalProps> = (props) => {
           "&::-webkit-scrollbar": {
             display: { xs: "none" }, // Chrome, Safari, Edge - hide scrollbar
           },
-          maxHeight:{xs:"50vh"},
+          maxHeight: { xs: "90vh", lg: "auto", xl: "auto" },
         }}
       >
         {/* Header Buttons */}
@@ -188,7 +189,13 @@ const Modal: React.FC<ModalProps> = (props) => {
           sx={{
             display: "flex",
             margin: { lg: "auto" },
-            flexDirection: { xs: "column", sm: "row", md: "row", lg: "row",xl:"row" },
+            flexDirection: {
+              xs: "column",
+              sm: "row",
+              md: "row",
+              lg: "row",
+              xl: "row",
+            },
           }}
         >
           {/* Left Side: Photos or 3D Model */}
@@ -268,7 +275,7 @@ const Modal: React.FC<ModalProps> = (props) => {
             <CardContent sx={{ zIndex: 1000 }}>
               <Typography
                 sx={{
-                  fontSize: { md: "1rem", lg: "1.5rem",xl:"1.5rem" }, // Adjust the size as needed
+                  fontSize: { md: "1rem", lg: "1.5rem", xl: "1.5rem" }, // Adjust the size as needed
                   color: "white", // Set the color to white
                   fontFamily: "'Poppins', sans-serif",
                   paddingBottom: 1,
@@ -328,13 +335,14 @@ const Modal: React.FC<ModalProps> = (props) => {
                       size="small"
                       sx={{
                         fontFamily: "'Poppins', sans-serif",
-                        backgroundColor: "rgba(255, 255, 255, 0.2)",
+                        backgroundColor:
+                          selectedSize === size
+                            ? "black"
+                            : "rgba(255, 255, 255, 0.2)",
                         color: "white",
                         borderColor: "white",
-                        "&:hover": {
-                          backgroundColor: "rgba(255, 255, 255, 0.4)",
-                        },
                       }}
+                      onClick={() => handleSizeClick(size)}
                     >
                       {size}
                     </Button>
@@ -351,7 +359,7 @@ const Modal: React.FC<ModalProps> = (props) => {
                     sm: "1.5rem",
                     md: "1rem",
                     lg: "1.5rem",
-                    xl:"1.5rem",
+                    xl: "1.5rem",
                   },
                 }}
               >
@@ -369,7 +377,7 @@ const Modal: React.FC<ModalProps> = (props) => {
                     sm: "210px",
                     md: "225px",
                     lg: "250px",
-                    xl:"225px",
+                    xl: "225px",
                   },
                   boxShadow: "0 4px 15px rgba(0, 0, 0, 0.2)",
                   overflowY: "auto", // Enable vertical scrolling

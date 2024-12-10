@@ -2,7 +2,6 @@ import { PointerLockControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
 import { usePointerStore } from "../../store/usePointerStore";
-//import EcctrlJoystickControls from "./JoyStickControls";
 import { EcctrlJoystick } from "ecctrl";
 import React from "react";
 import { useSceneStabilityStore } from "../../store/useSceneStabilityStore";
