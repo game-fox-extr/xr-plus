@@ -256,8 +256,8 @@ const Modal: React.FC<ModalProps> = (props) => {
                     angle={0.15}
                     penumbra={1}
                   />
-                  <Model modelUrl={props?.modelUrl!} />
-                  <OrbitControls enableZoom={false} />
+                  <Model modelUrl={props.modelUrl} />
+                  <OrbitControls enableZoom={false} enablePan={false}/>
                   <Environment preset="warehouse" blur={2} />
                 </Suspense>
               </Canvas>

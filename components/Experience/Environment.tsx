@@ -167,6 +167,7 @@ const Environment = React.memo(() => {
       jumpVel: 3,
       position: playerPosition,
       camCollision: false,
+      camZoomSpeed: 0,
       camInitDis: -0.01,
       camMinDis: -0.01,
       capsuleHalfHeight: 0.55, //Height of character
