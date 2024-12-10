@@ -98,6 +98,7 @@ const Page = () => {
           ]
         );
         openModal("product"); // Open modal only after second call
+        removeJoyStick(true);
       } catch (error) {
         console.error("Error during API calls:", error);
       }
@@ -107,6 +108,7 @@ const Page = () => {
 
   const handleModalClose = useCallback(() => {
     closeModal("product");
+    removeJoyStick(false);
     setLock(true);
   }, [closeModal]);
 
