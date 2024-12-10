@@ -190,14 +190,12 @@ const Environment = React.memo(() => {
       <Physics key={sceneKey} {...physicsProps}>
         <Light />
          <CustomEcctrl {...ecctrlProps} />
-        <RigidBody type="fixed" colliders="trimesh">
           <LazyCastle
             position={[0, -0.55, -5]}
             scale={1}
             castShadow
             receiveShadow
           />
-        </RigidBody>
       </Physics>
     </KeyboardControls>
     </Suspense>
