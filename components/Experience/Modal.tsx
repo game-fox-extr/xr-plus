@@ -23,7 +23,7 @@ const CanvasContainer = ({ children }: { children: React.ReactNode }) => {
     <Box
       sx={{
         position: "relative",
-        width: { xs: "50%", sm: "45%", md: "50%", lg: "50%" }, // Adjust width for responsiveness manually in your layout
+        width: { xs: "100%", sm: "45%", md: "50%", lg: "50%",xl:"50%" }, // Adjust width for responsiveness manually in your layout
         borderRadius: "10px",
         overflow: "hidden",
         objectFit: "cover",
@@ -37,7 +37,7 @@ const CanvasContainer = ({ children }: { children: React.ReactNode }) => {
 
 interface ModalProps {
   isOpen: boolean;
-  onClose: a
+  onClose: any;
   data: any;
   modelUrl: string;
 }
@@ -104,8 +104,8 @@ const Modal: React.FC<ModalProps> = (props) => {
       <Card
         sx={{
           position: "fixed",
-          top: { xs: "5%", sm: "10%", md: "5%", lg: "5%" },
-          left: { xs: "10%", sm: "15%", md: "25%", lg: "25%" },
+          top: { xs: "5%", sm: "10%", md: "5%", lg: "5%",xl:"1%" },
+          left: { xs: "10%", sm: "15%", md: "25%", lg: "25%",xl:"25%" },
           display: "flex",
           flexDirection: "column",
           maxWidth: {
@@ -128,6 +128,7 @@ const Modal: React.FC<ModalProps> = (props) => {
           "&::-webkit-scrollbar": {
             display: { xs: "none" }, // Chrome, Safari, Edge - hide scrollbar
           },
+          maxHeight:{xs:"50vh"},
         }}
       >
         {/* Header Buttons */}
@@ -196,7 +197,7 @@ const Modal: React.FC<ModalProps> = (props) => {
           sx={{
             display: "flex",
             margin: { lg: "auto" },
-            flexDirection: { xs: "column", sm: "row", md: "row", lg: "row" },
+            flexDirection: { xs: "column", sm: "row", md: "row", lg: "row",xl:"row" },
           }}
         >
           {/* Left Side: Photos or 3D Model */}
@@ -276,7 +277,7 @@ const Modal: React.FC<ModalProps> = (props) => {
             <CardContent sx={{ zIndex: 1000 }}>
               <Typography
                 sx={{
-                  fontSize: { md: "1rem", lg: "1.5rem" }, // Adjust the size as needed
+                  fontSize: { md: "1rem", lg: "1.5rem",xl:"1.5rem" }, // Adjust the size as needed
                   color: "white", // Set the color to white
                   fontFamily: "'Poppins', sans-serif",
                   paddingBottom: 1,
@@ -359,6 +360,7 @@ const Modal: React.FC<ModalProps> = (props) => {
                     sm: "1.5rem",
                     md: "1rem",
                     lg: "1.5rem",
+                    xl:"1.5rem",
                   },
                 }}
               >
@@ -376,6 +378,7 @@ const Modal: React.FC<ModalProps> = (props) => {
                     sm: "210px",
                     md: "225px",
                     lg: "250px",
+                    xl:"225px",
                   },
                   boxShadow: "0 4px 15px rgba(0, 0, 0, 0.2)",
                   overflowY: "auto", // Enable vertical scrolling
