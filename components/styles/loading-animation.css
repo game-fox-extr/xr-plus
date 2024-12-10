@@ -155,10 +155,9 @@
     height: 4px; /* Adjust the height as needed */
     background: linear-gradient(to right, #e1401d, #f39c12, #e1401d); /* Gradient effect for a glowing look */
     background-size: 200% 100%;
+    animation: loading 4s steps(10, end) forwards; /* More steps for a realistic effect */
     box-shadow: 0 0 10px rgba(255, 87, 34, 0.6); /* Glowing effect */
     transform-origin: left; /* Start the scaling from the left */
-    transform: scaleX(0); /* Default scale */
-    transition: transform 0.1s ease-out; /* Smooth transition */
   }
   
   @keyframes loading {
