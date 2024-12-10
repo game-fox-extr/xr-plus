@@ -120,7 +120,15 @@ const Page = () => {
       <main ref={mainRef} className="w-full h-screen relative">
         {!modals.product && <CenteredDot />}
         <MemoizedThreeScene onCubeClick={handleProductClick} />
-        <img
+        <Modal
+          isOpen={modals.product}
+          onClose={handleModalClose}
+          data={modalData}
+          modelUrl={modelUrl}
+        />
+        
+        {/* NOTE: Commenting this part for future implementations
+         <img
           src="/Bot Icon.svg"
           alt="BotIcon"
           style={{ position: "fixed", top: "1.5%", right: "1.5%", zIndex: 999 }}
@@ -129,19 +137,13 @@ const Page = () => {
             removeJoyStick(true);
           }}
         />
-        <Modal
-          isOpen={modals.product}
-          onClose={handleModalClose}
-          data={modalData}
-          modelUrl={modelUrl}
-        />
         <ChatbotModal
           isChatbotModalOpen={modals.chatbot}
           onChatbotModalClose={() => {
             closeChatbotModal("chatbot");
             removeJoyStick(false);
           }}
-        />
+        /> */}
       </main>
     </>
   );
