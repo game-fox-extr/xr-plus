@@ -44,13 +44,13 @@ const CustomEcctrl = forwardRef<RapierRigidBody, CustomEcctrlProps>(
         dispatchEvent(new KeyboardEvent('keyup', {code: 'ArrowRight'}));
         dispatchEvent(new KeyboardEvent('keyup', {code: 'Space'}));
         dispatchEvent(new KeyboardEvent('keyup', {code: 'Shift'}));
-        console.log("Keys reset");
+        // console.log("Keys reset");
     };
 
     useEffect(() => {
-      console.log('Effect initialized with initialPosition:', initialPosition);
+      // console.log('Effect initialized with initialPosition:', initialPosition);
       const handleVisibilityChange = () => {
-        console.log('Visibility changed, document state:', document.visibilityState);
+        // console.log('Visibility changed, document state:', document.visibilityState);
         if (document.visibilityState === 'visible' && combinedRef.current) {
           const currentPos = combinedRef.current.translation();
           try {
@@ -72,7 +72,7 @@ const CustomEcctrl = forwardRef<RapierRigidBody, CustomEcctrlProps>(
       };
 
       const handleWindowResize = () => {
-        console.log('Window resized');
+        // console.log('Window resized');
         if (combinedRef.current) {
           const currentPos = combinedRef.current.translation();
           try {
@@ -106,7 +106,7 @@ const CustomEcctrl = forwardRef<RapierRigidBody, CustomEcctrlProps>(
               combinedRef.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
     
               setPlayerPosition(initialPosition);
-              console.log('Player respawned at initial position');
+              // console.log('Player respawned at initial position');
             } catch (error) {
               console.error('Failed to respawn player:', error);
             }
@@ -125,10 +125,10 @@ const CustomEcctrl = forwardRef<RapierRigidBody, CustomEcctrlProps>(
       document.addEventListener('visibilitychange', resetKeys);
       window.addEventListener('blur', resetKeys);
       window.addEventListener('resize', handleWindowResize);
-      console.log('Effect setup complete');
+      // console.log('Effect setup complete');
       
       return () => {
-        console.log('Effect cleanup');
+        // console.log('Effect cleanup');
         cancelAnimationFrame(animationFrameId);
         document.removeEventListener('visibilitychange', handleVisibilityChange);
       document.removeEventListener('visibilitychange', resetKeys);

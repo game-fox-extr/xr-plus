@@ -43,9 +43,9 @@ interface ModalProps {
 }
 
 const Model = ({ modelUrl }: { modelUrl: string }) => {
-  console.log("Function called");
+  // console.log("Function called");
   const gltf = useLoader(GLTFLoader, modelUrl, (loader) => {
-    console.log(loader);
+    // console.log(loader);
     const dracoLoader = new DRACOLoader();
     dracoLoader.setDecoderPath("https://www.gstatic.com/draco/v1/decoders/"); // Path to Draco decoder
     loader.setDRACOLoader(dracoLoader);
