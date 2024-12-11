@@ -1,14 +1,13 @@
 import { PointerLockControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
-//import EcctrlJoystickControls from "./JoyStickControls";
+import { usePointerStore } from "../../store/usePointerStore";
 import { EcctrlJoystick } from "ecctrl";
+import React from "react";
 import { useSceneStabilityStore } from "../../store/useSceneStabilityStore";
-import Environment from "./Environment";
+import Products from "./Products";
 import RayCaster from "./Raycaster";
 import Skybox from "./Skybox";
-import Television from "./Television";
-import React from "react";
 
 // Utility function to detect mobile or tablet
 const isMobileOrTablet = () => {
@@ -17,18 +16,19 @@ const isMobileOrTablet = () => {
   );
 };
 
-const LazyEnvironment = React.lazy(()=> import('./Environment'))
-const LazyTelevision = React.lazy(()=> import('./Television'))
-const LazyMannequin = React.lazy(()=> import('./Mannequin'))
+const LazyEnvironment = React.lazy(() => import("./Environment"));
+const LazyTelevision = React.lazy(() => import("./Television"));
+
 
 const ThreeScene = ({
   onCubeClick,
 }: // isPointerLocked,
-{
-  onCubeClick: () => void;
-  // isPointerLocked: boolean;
-}) => {
-  const { isLoading, sceneKey, loadingProgress } = useSceneStabilityStore();
+  {
+    onCubeClick: () => void;
+    // isPointerLocked: boolean;
+  }) => {
+  const { isLoading, sceneKey, loadingProgress,isModalOpen } = useSceneStabilityStore();
+  const { pointerLocked } = usePointerStore();
 
   return (
     <div
@@ -40,7 +40,7 @@ const ThreeScene = ({
       }}
     >
       {/* Render joystick only on mobile or tablet */}
-      {isMobileOrTablet() && <EcctrlJoystick />}
+      {isMobileOrTablet() && !isModalOpen && <EcctrlJoystick />}
 
       {/* <LoadingScreen /> */}
       <Canvas
@@ -58,28 +58,7 @@ const ThreeScene = ({
           <RayCaster />
           <Skybox />
           <LazyEnvironment />
-          <LazyMannequin
-            position={[4, -10.5, -24]}
-            modelPath="/models/inter_elem1.glb"
-            onClick={onCubeClick}
-            scale={1.2}
-          />
-
-          {/* Model 2 */}
-          <LazyMannequin
-            position={[6, -10.5, -24]}
-            modelPath="/models/inter_elem2.glb"
-            onClick={onCubeClick}
-            scale={1.2}
-          />
-
-          {/* Model 3 */}
-          <LazyMannequin
-            position={[8, -10.5, -24]}
-            modelPath="/models/inter_elem.glb"
-            onClick={onCubeClick}
-            scale={1.2}
-          />
+          <Products onCubeClick={onCubeClick} />
           <LazyTelevision
             videoPath="/media/backhome.mp4"
             scale={[0.9, 0.9, 0.9]}
@@ -87,7 +66,7 @@ const ThreeScene = ({
             rotation={[0, -82.79, 0]}
           />
         </Suspense>
-        <PointerLockControls />
+        <PointerLockControls enabled={pointerLocked}/>
       </Canvas>
     </div>
   );
