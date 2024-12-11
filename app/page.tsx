@@ -1,15 +1,15 @@
 "use client";
 import dynamic from "next/dynamic";
-import { useCallback, useRef, useState, useEffect } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import CenteredDot from "../components/Experience/CenteredDot";
-import "./styles/defaults/reset.scss";
-import React from "react";
+import Loader from "../components/Experience/Loader";
 import Modal from "../components/Experience/Modal";
 import { useModalStore } from "../store/useModalStore";
-import Loader from "../components/Experience/Loader";
 import { usePointerStore } from "../store/usePointerStore";
-import ChatbotModal from "../components/Experience/ChatBot";
 import { useSceneStabilityStore } from "../store/useSceneStabilityStore";
+import "./styles/defaults/reset.scss";
+import { ProductService } from "../api/shopifyAPIService";
+import { useProductsStore } from "../store/useProductStore";
 
 const ThreeScene = dynamic(
   () => import("../components/Experience/ThreeScene"),
@@ -19,20 +19,39 @@ const MemoizedThreeScene = React.memo(ThreeScene);
 
 const Page = () => {
   const mainRef = useRef(null);
-  const { modals, closeModal, openModal, openChatbotModal, closeChatbotModal } =
-    useModalStore();
-  const { setLock } = usePointerStore();
+  const {
+    modals,
+    closeModal,
+    openModal,
+    openChatbotModal,
+    closeChatbotModal,
+    toggleModal,
+  } = useModalStore();
+  const { setLock, pointerLocked } = usePointerStore();
   const { removeJoyStick } = useSceneStabilityStore();
-  const [modalData, setModalData] = useState({});
-  const [modelUrl, setModelUrl] = useState("");
-  const [isLoaded, setIsLoaded] = useState(false);
+  const {
+    products,
+    setProducts,
+    selectProduct,
+    selectedProduct,
+    selectedProductGLB,
+    setProductGLb,
+  } = useProductsStore();
   const [isVisible, setIsVisible] = useState(true); // Tracks loader visibility
 
   useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const response = await ProductService.getAllProducts();
+        setProducts(response.products);
+      } catch (err) {
+        console.error(err);
+      }
+    }
     const handleLoad = () => {
       // Delay hiding the loader by 4 seconds after the page loads
       setTimeout(() => {
-        setIsLoaded(true);
+        // setIsLoaded(true);
         setTimeout(() => setIsVisible(false), 5000); // Delay hiding the loader visually
       }, 0); // Start delay immediately after page load
     };
@@ -42,68 +61,36 @@ const Page = () => {
     } else {
       window.addEventListener("load", handleLoad);
     }
-
+    fetchProducts();
     return () => {
       window.removeEventListener("load", handleLoad);
     };
   }, []);
 
+  const listedProducts = [...products];
+
+  function findProductById(products: any, productId: any) {
+    return products.find((product: any) => product.id === productId);
+  }
+
   const handleProductClick = useCallback(
-    async (data?: any) => {
-      try {
-        const response1 = await fetch(
-          "https://strategy-fox-go-bked.com/api/shopify/products/9658662388005",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+    async (productID?: any) => {
+      const clickedProduct = await findProductById(listedProducts, productID);
+      selectProduct(clickedProduct);
+      //only for the 3d model url
+      const result2 = await ProductService.getProductModel(productID);
 
-        if (!response1.ok) {
-          console.error("Failed to fetch product details in first call");
-          return;
-        }
+      const glbUrl = result2.data.product.media
+        .edges!.find((edge: any) => edge.node.mediaContentType === "MODEL_3D")
+        ?.node.sources.find((source: any) => source.format === "glb")?.url;
 
-        const result1 = await response1.json();
-        console.log({ result1: result1 });
-        console.log("First API Response:", result1.product);
+      setProductGLb(glbUrl);
 
-        setModalData(result1.product);
+      openModal("product");
 
-        // Second API call
-        const response2 = await fetch(
-          `https://strategy-fox-go-bked.com/api/shopify/products/9658662388005/model`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (!response2.ok) {
-          console.error("Failed to fetch product details in second call");
-          return;
-        }
-
-        const result2 = await response2.json();
-        console.log({ result2: result2 });
-        console.log("Second API Response:", result2.data);
-
-        setModelUrl(
-          result2["data"]["product"]["media"]["edges"][2]["node"]["sources"][0][
-            "url"
-          ]
-        );
-        openModal("product"); // Open modal only after second call
-        removeJoyStick(true);
-      } catch (error) {
-        console.error("Error during API calls:", error);
-      }
+      removeJoyStick(true);
     },
-    [openModal]
+    [findProductById, openModal, removeJoyStick]
   );
 
   const handleModalClose = useCallback(() => {
@@ -111,9 +98,6 @@ const Page = () => {
     removeJoyStick(false);
     setLock(true);
   }, [closeModal]);
-
-  console.log({ "Modal Product": modals.product });
-
   return (
     <>
       {isVisible && <Loader />}
@@ -123,10 +107,10 @@ const Page = () => {
         <Modal
           isOpen={modals.product}
           onClose={handleModalClose}
-          data={modalData}
-          modelUrl={modelUrl}
+          data={selectedProduct}
+          modelUrl={selectedProductGLB}
         />
-        
+
         {/* NOTE: Commenting this part for future implementations
          <img
           src="/Bot Icon.svg"
