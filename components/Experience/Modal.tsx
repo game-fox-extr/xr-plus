@@ -16,7 +16,7 @@ import {
   Select,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import DOMPurify from 'dompurify'
+import DOMPurify from "dompurify";
 
 const CanvasContainer = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -42,7 +42,7 @@ interface ModalProps {
   modelUrl: string;
 }
 
-const Model = ({ modelUrl }: { modelUrl: string }) => {
+const ModelColumn = ({ modelUrl }: { modelUrl: string }) => {
   // console.log("Function called");
   const gltf = useLoader(GLTFLoader, modelUrl, (loader) => {
     // console.log(loader);
@@ -256,8 +256,8 @@ const Modal: React.FC<ModalProps> = (props) => {
                     angle={0.15}
                     penumbra={1}
                   />
-                  <Model modelUrl={props.modelUrl} />
-                  <OrbitControls enableZoom={false} enablePan={false}/>
+                  <ModelColumn modelUrl={props.modelUrl} />
+                  <OrbitControls enableZoom={false} enablePan={false} />
                   <Environment preset="warehouse" blur={2} />
                 </Suspense>
               </Canvas>
