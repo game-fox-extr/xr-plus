@@ -1,9 +1,8 @@
-import { styled } from "@mui/material/styles";
 import { Canvas } from "@react-three/fiber";
 import { useLoader } from "@react-three/fiber";
 import { Environment, OrbitControls } from "@react-three/drei";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 import DOMPurify from "dompurify";
 import {
@@ -17,6 +16,7 @@ import {
   Select,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import { useCart } from "@shopify/hydrogen-react";
 
 const CanvasContainer = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -67,7 +67,15 @@ const Modal: React.FC<ModalProps> = (props) => {
   const [view, setView] = useState("3dModel");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [quantity, setQuantity] = useState<number>(1);
   const sanitizedHtml = DOMPurify.sanitize(props.data["body_html"]);
+
+  const { linesAdd, checkoutUrl } = useCart();
+
+  useEffect(() => {
+    console.log("Cart Lines:", linesAdd); // Updated cart lines
+    console.log("Checkout URL:", checkoutUrl); // Updated checkout URL
+  }, [linesAdd, checkoutUrl]);
 
   props.data.options.forEach((option: any) => {
     if (option.name.toLowerCase() === "size") {
@@ -91,6 +99,51 @@ const Modal: React.FC<ModalProps> = (props) => {
 
   const handleSizeClick = (size: string) => {
     setSelectedSize(size);
+  };
+
+  const handleQuantityChange = (
+    event: React.ChangeEvent<{ value: unknown }>
+  ) => {
+    setQuantity(event.target.value as number);
+  };
+
+  const handleAddToCart = async () => {
+    if (!selectedSize) {
+      alert("Please select a size before adding to cart.");
+      return;
+    }
+
+    const selectedVariant = props.data.variants.find((variant: any) => {
+      return variant.option2.toUpperCase() === selectedSize;
+    });
+
+    if (!selectedVariant) {
+      alert("Selected size variant not found.");
+      return;
+    }
+
+    // Add the selected variant to the cart
+    try {
+      const result = await linesAdd([
+        {
+          merchandiseId: selectedVariant.admin_graphql_api_id,
+          quantity,
+        },
+      ]);
+      console.log(result, checkoutUrl);
+      alert("Product added to cart!");
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      alert("Failed to add product to cart. Please try again.");
+    }
+  };
+
+  const handleCheckout = () => {
+    if (checkoutUrl) {
+      window.open(checkoutUrl, "_blank", "noopener,noreferrer");
+    } else {
+      alert("Checkout session not initialized. Please try again.");
+    }
   };
 
   return (
@@ -126,7 +179,7 @@ const Modal: React.FC<ModalProps> = (props) => {
           "&::-webkit-scrollbar": {
             display: { xs: "none" }, // Chrome, Safari, Edge - hide scrollbar
           },
-          maxHeight: { xs: "90vh", lg: "auto", xl: "auto" },
+          maxHeight: { xs: "90vh", md: "none" },
         }}
       >
         {/* Header Buttons */}
@@ -302,7 +355,8 @@ const Modal: React.FC<ModalProps> = (props) => {
               </Typography>
 
               <Select
-                defaultValue={1}
+                value={quantity}
+                onChange={handleQuantityChange}
                 sx={{
                   backgroundColor: "white",
                   color: "black",
@@ -428,6 +482,7 @@ const Modal: React.FC<ModalProps> = (props) => {
               },
               fontFamily: "'Poppins', sans-serif",
             }}
+            onClick={handleAddToCart}
           >
             ADD TO CART
           </Button>
@@ -445,6 +500,7 @@ const Modal: React.FC<ModalProps> = (props) => {
               },
               fontFamily: "'Poppins', sans-serif",
             }}
+            onClick={handleCheckout}
           >
             CHECKOUT
           </Button>

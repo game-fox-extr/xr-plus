@@ -4,7 +4,6 @@ import Ecctrl, { EcctrlProps } from "ecctrl";
 import React, { forwardRef, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import Light from "./Light";
 import { useSceneStabilityStore } from "../../store/useSceneStabilityStore";
-import Loader from "./Loader";
 
 interface CustomEcctrlProps extends EcctrlProps {
   initialPosition?: [number, number, number];
@@ -184,7 +183,6 @@ const Environment = React.memo(() => {
   );
 
   return (
-    <Suspense fallback={<Loader />}>
     <KeyboardControls map={KEYBOARD_MAP}>
       <Physics key={sceneKey} {...physicsProps}>
         <Light />
@@ -199,7 +197,6 @@ const Environment = React.memo(() => {
         </RigidBody>
       </Physics>
     </KeyboardControls>
-    </Suspense>
   );
 });
 

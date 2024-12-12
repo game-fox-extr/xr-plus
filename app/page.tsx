@@ -1,26 +1,57 @@
 "use client";
 import dynamic from "next/dynamic";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState, useEffect } from "react";
 import CenteredDot from "../components/Experience/CenteredDot";
 import "./styles/defaults/reset.scss";
 import React from "react";
 import Modal from "../components/Experience/Modal";
 import { useModalStore } from "../store/useModalStore";
+import Loader from "../components/Experience/Loader";
 import { usePointerStore } from "../store/usePointerStore";
 import ChatbotModal from "../components/Experience/ChatBot";
 import { useSceneStabilityStore } from "../store/useSceneStabilityStore";
-
+import { ShopifyProvider, CartProvider } from "@shopify/hydrogen-react";
 
 const ThreeScene = dynamic(
   () => import("../components/Experience/ThreeScene"),
   { ssr: false }
 );
+
 const MemoizedThreeScene = React.memo(ThreeScene);
+
+const shopifyConfig = {
+  storeDomain: process.env.NEXT_PUBLIC_SHOPIFY_APP_DOMAIN || "", // Replace with your Shopify store domain
+  storefrontToken:
+    process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN || "",
+  storefrontApiVersion: "2024-10",
+};
 
 const Page = () => {
   const mainRef = useRef(null);
   const { modals, closeModal, openModal, openChatbotModal, closeChatbotModal } =
     useModalStore();
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isVisible, setIsVisible] = useState(true); // Tracks loader visibility
+
+  useEffect(() => {
+    const handleLoad = () => {
+      // Delay hiding the loader by 4 seconds after the page loads
+      setTimeout(() => {
+        setIsLoaded(true);
+        setTimeout(() => setIsVisible(false), 5000); // Delay hiding the loader visually
+      }, 0); // Start delay immediately after page load
+    };
+
+    if (document.readyState === "complete") {
+      handleLoad();
+    } else {
+      window.addEventListener("load", handleLoad);
+    }
+
+    return () => {
+      window.removeEventListener("load", handleLoad);
+    };
+  }, []);
   const { setLock } = usePointerStore();
   const { removeJoyStick } = useSceneStabilityStore();
   const [modalData, setModalData] = useState({});
@@ -93,32 +124,43 @@ const Page = () => {
   console.log({ "Modal Product": modals.product });
 
   return (
-    <main ref={mainRef} className="w-full h-screen relative">
-      {!modals.product && <CenteredDot />}
-      <MemoizedThreeScene onCubeClick={handleProductClick} />
-      <img
-        src="/Bot Icon.svg"
-        alt="BotIcon"
-        style={{ position: "fixed", top: "1.5%", right: "1.5%", zIndex: 999 }}
-        onClick={() => {
-          openChatbotModal("chatbot");
-          removeJoyStick(true);
-        }}
-      />
-      <Modal
-        isOpen={modals.product}
-        onClose={handleModalClose}
-        data={modalData}
-        modelUrl={modelUrl}
-      />
-      <ChatbotModal
-        isChatbotModalOpen={modals.chatbot}
-        onChatbotModalClose={() => {
-          closeChatbotModal("chatbot");
-          removeJoyStick(false);
-        }}
-      />
-    </main>
+    <>
+      {isVisible && <Loader />}
+      <main ref={mainRef} className="w-full h-screen relative">
+        {!modals.product && <CenteredDot />}
+        <MemoizedThreeScene onCubeClick={handleProductClick} />
+        <img
+          src="/Bot Icon.svg"
+          alt="BotIcon"
+          style={{ position: "fixed", top: "1.5%", right: "1.5%", zIndex: 999 }}
+          onClick={() => {
+            openChatbotModal("chatbot");
+            removeJoyStick(true);
+          }}
+        />
+        <ShopifyProvider
+          countryIsoCode={"ID"}
+          languageIsoCode={"ID"}
+          {...shopifyConfig}
+        >
+          <CartProvider>
+            <Modal
+              isOpen={modals.product}
+              onClose={handleModalClose}
+              data={modalData}
+              modelUrl={modelUrl}
+            />
+          </CartProvider>
+        </ShopifyProvider>
+        <ChatbotModal
+          isChatbotModalOpen={modals.chatbot}
+          onChatbotModalClose={() => {
+            closeChatbotModal("chatbot");
+            removeJoyStick(false);
+          }}
+        />
+      </main>
+    </>
   );
 };
 
