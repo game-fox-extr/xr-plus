@@ -57,8 +57,7 @@ const ThreeScene = ({
         <Suspense fallback={null}>
           <RayCaster />
           <Skybox />
-          <LazyEnvironment />
-          <Products onCubeClick={onCubeClick} />
+          <LazyEnvironment onCubeClick={onCubeClick}/>
           <LazyTelevision
             videoPath="/media/backhome.mp4"
             scale={[0.9, 0.9, 0.9]}
