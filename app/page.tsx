@@ -10,6 +10,8 @@ import { useSceneStabilityStore } from "../store/useSceneStabilityStore";
 import "./styles/defaults/reset.scss";
 import { ProductService } from "../api/shopifyAPIService";
 import { useProductsStore } from "../store/useProductStore";
+import FeatureButton from "../components/Experience/FeatureButton";
+import Cart from "../components/Experience/Cart";
 
 const ThreeScene = dynamic(
   () => import("../components/Experience/ThreeScene"),
@@ -98,11 +100,15 @@ const Page = () => {
     removeJoyStick(false);
     setLock(true);
   }, [closeModal]);
+
+  // Cart handling
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
   return (
     <>
       {isVisible && <Loader />}
       <main ref={mainRef} className="w-full h-screen relative">
-        {!modals.product && <CenteredDot />}
+        {!(modals.product || isCartOpen) && <CenteredDot />}
         <MemoizedThreeScene onCubeClick={handleProductClick} />
         <Modal
           isOpen={modals.product}
@@ -128,6 +134,8 @@ const Page = () => {
             removeJoyStick(false);
           }}
         /> */}
+        <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)}></Cart>
+        <FeatureButton image_url="Cart.svg" top="min(1vh,1vw)" onClick={() => setIsCartOpen(true)}></FeatureButton>
       </main>
     </>
   );
