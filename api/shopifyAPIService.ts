@@ -37,11 +37,11 @@ export const ProductService = {
     return fetchData<ProductResponse>("GET", "/products");
   },
 
-  async getProductById(id: number): Promise<Product> {
+  async getProductById(id: number | string): Promise<Product> {
     return fetchData<Product>("GET", `/products/${id}`);
   },
 
-  async getProductModel(id: number): Promise<Product> {
+  async getProductModel(id: number | string): Promise<Product> {
     return fetchData<Product>("GET", `/products/${id}/model`);
   }
 };

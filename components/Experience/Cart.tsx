@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { Box, Button, Card, Typography } from "@mui/material";
+import { useCart } from "@shopify/hydrogen-react";
 
 interface CartProps {
   isOpen: boolean,
@@ -8,6 +9,7 @@ interface CartProps {
 
 const Cart: FC<CartProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
+  const { lines } = useCart();
 
   return (
     <div
@@ -44,336 +46,99 @@ const Cart: FC<CartProps> = ({ isOpen, onClose }) => {
             padding: "2.5%", gap: "2.5%",
             display: "flex", flexDirection: "column", alignItems: "center",
             borderRadius: "10px",
-            backgroundColor: "rgba(255, 255, 255, 0.08)", boxShadow: "0 0 15px rgba(0, 0, 0, 0.1)", 
+            backgroundColor: "rgba(255, 255, 255, 0.08)", boxShadow: "0 0 15px rgba(0, 0, 0, 0.1)",
             overflowY: "scroll", scrollbarWidth: 0, "&::-webkit-scrollbar": { display: "none" }
           }}
         >
-          <Box
-            sx={{
-              width: "100%", height: "25%",
-              display: "flex", flexDirection: "row", justifyContent: "space-evenly", alignItems: "center",
-              borderRadius: "10px",
-              backgroundColor: "rgba(0, 0, 0, 0.26)", boxShadow: "0 0 15px rgba(0, 0, 0, 0.2)", 
-            }}
-          >
-            <img
-              src="images/asian_female_head.png" 
-              style={{
-                height: "80%", aspectRatio : "1 / 1",
-                backgroundColor: "rgba(255, 255, 255, 0.1)",
-                borderRadius: "50%"
-              }}
-            />
-            <Typography
-              sx={{
-                width: "25%",
-                fontSize: "16px", fontFamily: "'Poppins', sans-serif", fontWeight: "normal",
-                color: "rgba(255, 255, 255, 0.83)",
-                textAlign: "Center",
-                overflow: "hidden",
-                
-              }}
-            >
-              Jacket White Green
-            </Typography>
-            <Typography
-              sx={{
-                width: "10%",
-                fontSize: "16px", fontFamily: "'Poppins', sans-serif", fontWeight: "bold",
-                color: "rgba(255, 255, 255, 0.83)",
-                textAlign: "Center",
-                overflow: "hidden",
-                
-              }}
-            >
-              XXL
-            </Typography>
-            <Box
-              sx={{
-                minWidth: "70px", width: "15%", height: "24px",
-                display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between"
-              }}
-            >
-              <Button
+          {lines && lines.map((line) => {
+            return (
+              <Box
                 sx={{
-                  minWidth: "20px", width: "20px", height: "20px",
-                  padding: 1,
-                  fontSize: "16px", fontFamily: "'Poppins', sans-serif", fontWeight: "bold",
-                  color: "rgba(255, 255, 255, 0.74)", backgroundColor: "rgba(149, 149, 149, 0.21)",
-                  borderRadius: "50%",
-                  "&:hover": {
-                    backgroundColor: "rgba(149, 149, 149, 0.53)",
-                    transitionDuration: "0s"
-                  }
+                  width: "100%", height: "25%",
+                  display: "flex", flexDirection: "row", justifyContent: "space-evenly", alignItems: "center",
+                  borderRadius: "10px",
+                  backgroundColor: "rgba(0, 0, 0, 0.26)", boxShadow: "0 0 15px rgba(0, 0, 0, 0.2)",
                 }}
               >
-                -
-              </Button>
-              <Typography>
-                2
-              </Typography>
-              <Button
-                sx={{
-                  minWidth: "20px", width: "20px", height: "20px",
-                  padding: 1,
-                  fontSize: "16px", fontFamily: "'Poppins', sans-serif", fontWeight: "bold",
-                  color: "rgba(255, 255, 255, 0.74)", backgroundColor: "rgba(149, 149, 149, 0.21)",
-                  borderRadius: "50%",
-                  "&:hover": {
-                    backgroundColor: "rgba(149, 149, 149, 0.53)",
-                    transitionDuration: "0s"
-                  }
-                }}
-              >
-                +
-              </Button>
-            </Box>
-          </Box>
-          <Box
-            sx={{
-              width: "100%", height: "25%",
-              display: "flex", flexDirection: "row", justifyContent: "space-evenly", alignItems: "center",
-              borderRadius: "10px",
-              backgroundColor: "rgba(0, 0, 0, 0.26)", boxShadow: "0 0 15px rgba(0, 0, 0, 0.2)", 
-            }}
-          >
-            <img
-              src="images/asian_female_head.png" 
-              style={{
-                height: "80%", aspectRatio : "1 / 1",
-                backgroundColor: "rgba(255, 255, 255, 0.1)",
-                borderRadius: "50%"
-              }}
-            />
-            <Typography
-              sx={{
-                width: "25%",
-                fontSize: "16px", fontFamily: "'Poppins', sans-serif", fontWeight: "normal",
-                color: "rgba(255, 255, 255, 0.83)",
-                textAlign: "Center",
-                overflow: "hidden",
-                
-              }}
-            >
-              Jacket White Green
-            </Typography>
-            <Typography
-              sx={{
-                width: "10%",
-                fontSize: "16px", fontFamily: "'Poppins', sans-serif", fontWeight: "bold",
-                color: "rgba(255, 255, 255, 0.83)",
-                textAlign: "Center",
-                overflow: "hidden",
-                
-              }}
-            >
-              XXL
-            </Typography>
-            <Box
-              sx={{
-                minWidth: "70px", width: "15%", height: "24px",
-                display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between"
-              }}
-            >
-              <Button
-                sx={{
-                  minWidth: "20px", width: "20px", height: "20px",
-                  padding: 1,
-                  fontSize: "16px", fontFamily: "'Poppins', sans-serif", fontWeight: "bold",
-                  color: "rgba(255, 255, 255, 0.74)", backgroundColor: "rgba(149, 149, 149, 0.21)",
-                  borderRadius: "50%",
-                  "&:hover": {
-                    backgroundColor: "rgba(149, 149, 149, 0.53)",
-                    transitionDuration: "0s"
-                  }
-                }}
-              >
-                -
-              </Button>
-              <Typography>
-                2
-              </Typography>
-              <Button
-                sx={{
-                  minWidth: "20px", width: "20px", height: "20px",
-                  padding: 1,
-                  fontSize: "16px", fontFamily: "'Poppins', sans-serif", fontWeight: "bold",
-                  color: "rgba(255, 255, 255, 0.74)", backgroundColor: "rgba(149, 149, 149, 0.21)",
-                  borderRadius: "50%",
-                  "&:hover": {
-                    backgroundColor: "rgba(149, 149, 149, 0.53)",
-                    transitionDuration: "0s"
-                  }
-                }}
-              >
-                +
-              </Button>
-            </Box>
-          </Box>
-          <Box
-            sx={{
-              width: "100%", height: "25%",
-              display: "flex", flexDirection: "row", justifyContent: "space-evenly", alignItems: "center",
-              borderRadius: "10px",
-              backgroundColor: "rgba(0, 0, 0, 0.26)", boxShadow: "0 0 15px rgba(0, 0, 0, 0.2)", 
-            }}
-          >
-            <img
-              src="images/asian_female_head.png" 
-              style={{
-                height: "80%", aspectRatio : "1 / 1",
-                backgroundColor: "rgba(255, 255, 255, 0.1)",
-                borderRadius: "50%"
-              }}
-            />
-            <Typography
-              sx={{
-                width: "25%",
-                fontSize: "16px", fontFamily: "'Poppins', sans-serif", fontWeight: "normal",
-                color: "rgba(255, 255, 255, 0.83)",
-                textAlign: "Center",
-                overflow: "hidden",
-                
-              }}
-            >
-              Jacket White Green
-            </Typography>
-            <Typography
-              sx={{
-                width: "10%",
-                fontSize: "16px", fontFamily: "'Poppins', sans-serif", fontWeight: "bold",
-                color: "rgba(255, 255, 255, 0.83)",
-                textAlign: "Center",
-                overflow: "hidden",
-                
-              }}
-            >
-              XXL
-            </Typography>
-            <Box
-              sx={{
-                minWidth: "70px", width: "15%", height: "24px",
-                display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between"
-              }}
-            >
-              <Button
-                sx={{
-                  minWidth: "20px", width: "20px", height: "20px",
-                  padding: 1,
-                  fontSize: "16px", fontFamily: "'Poppins', sans-serif", fontWeight: "bold",
-                  color: "rgba(255, 255, 255, 0.74)", backgroundColor: "rgba(149, 149, 149, 0.21)",
-                  borderRadius: "50%",
-                  "&:hover": {
-                    backgroundColor: "rgba(149, 149, 149, 0.53)",
-                    transitionDuration: "0s"
-                  }
-                }}
-              >
-                -
-              </Button>
-              <Typography>
-                2
-              </Typography>
-              <Button
-                sx={{
-                  minWidth: "20px", width: "20px", height: "20px",
-                  padding: 1,
-                  fontSize: "16px", fontFamily: "'Poppins', sans-serif", fontWeight: "bold",
-                  color: "rgba(255, 255, 255, 0.74)", backgroundColor: "rgba(149, 149, 149, 0.21)",
-                  borderRadius: "50%",
-                  "&:hover": {
-                    backgroundColor: "rgba(149, 149, 149, 0.53)",
-                    transitionDuration: "0s"
-                  }
-                }}
-              >
-                +
-              </Button>
-            </Box>
-          </Box>
-          <Box
-            sx={{
-              width: "100%", height: "25%",
-              display: "flex", flexDirection: "row", justifyContent: "space-evenly", alignItems: "center",
-              borderRadius: "10px",
-              backgroundColor: "rgba(0, 0, 0, 0.26)", boxShadow: "0 0 15px rgba(0, 0, 0, 0.2)", 
-            }}
-          >
-            <img
-              src="images/asian_female_head.png" 
-              style={{
-                height: "80%", aspectRatio : "1 / 1",
-                backgroundColor: "rgba(255, 255, 255, 0.1)",
-                borderRadius: "50%"
-              }}
-            />
-            <Typography
-              sx={{
-                width: "25%",
-                fontSize: "16px", fontFamily: "'Poppins', sans-serif", fontWeight: "normal",
-                color: "rgba(255, 255, 255, 0.83)",
-                textAlign: "Center",
-                overflow: "hidden",
-                
-              }}
-            >
-              Jacket White Green
-            </Typography>
-            <Typography
-              sx={{
-                width: "10%",
-                fontSize: "16px", fontFamily: "'Poppins', sans-serif", fontWeight: "bold",
-                color: "rgba(255, 255, 255, 0.83)",
-                textAlign: "Center",
-                overflow: "hidden",
-                
-              }}
-            >
-              XXL
-            </Typography>
-            <Box
-              sx={{
-                minWidth: "70px", width: "15%", height: "24px",
-                display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between"
-              }}
-            >
-              <Button
-                sx={{
-                  minWidth: "20px", width: "20px", height: "20px",
-                  padding: 1,
-                  fontSize: "16px", fontFamily: "'Poppins', sans-serif", fontWeight: "bold",
-                  color: "rgba(255, 255, 255, 0.74)", backgroundColor: "rgba(149, 149, 149, 0.21)",
-                  borderRadius: "50%",
-                  "&:hover": {
-                    backgroundColor: "rgba(149, 149, 149, 0.53)",
-                    transitionDuration: "0s"
-                  }
-                }}
-              >
-                -
-              </Button>
-              <Typography>
-                2
-              </Typography>
-              <Button
-                sx={{
-                  minWidth: "20px", width: "20px", height: "20px",
-                  padding: 1,
-                  fontSize: "16px", fontFamily: "'Poppins', sans-serif", fontWeight: "bold",
-                  color: "rgba(255, 255, 255, 0.74)", backgroundColor: "rgba(149, 149, 149, 0.21)",
-                  borderRadius: "50%",
-                  "&:hover": {
-                    backgroundColor: "rgba(149, 149, 149, 0.53)",
-                    transitionDuration: "0s"
-                  }
-                }}
-              >
-                +
-              </Button>
-            </Box>
-          </Box>
-        </Box>
+                {/* <img
+                  src={product.images[0].src}
+                  style={{
+                    height: "80%", aspectRatio: "1 / 1",
+                    backgroundColor: "rgba(255, 255, 255, 0.1)",
+                    borderRadius: "50%"
+                  }} 
+                /> */}
+                <Typography
+                  sx={{
+                    width: "25%",
+                    fontSize: "16px", fontFamily: "'Poppins', sans-serif", fontWeight: "normal",
+                    color: "rgba(255, 255, 255, 0.83)",
+                    textAlign: "Center",
+                    overflow: "hidden",
+                  }}
+                >
+                  {line?.merchandise?.product?.title}
+                </Typography>
+                <Typography
+                  sx={{
+                    width: "10%",
+                    fontSize: "16px", fontFamily: "'Poppins', sans-serif", fontWeight: "bold",
+                    color: "rgba(255, 255, 255, 0.83)",
+                    textAlign: "Center",
+                    overflow: "hidden",
 
+                  }}
+                >
+                  {(line?.merchandise as { variant?: { selectedOptions?: { name: string, value: string }[] } })
+                    .variant?.selectedOptions?.find((option) => {
+                      return option.name.toLowerCase() === "size";
+                    })?.value
+                  }
+                </Typography>
+                <Box
+                  sx={{
+                    minWidth: "70px", width: "15%", height: "24px",
+                    display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between"
+                  }}
+                >
+                  <Button
+                    sx={{
+                      minWidth: "20px", width: "20px", height: "20px",
+                      padding: 1,
+                      fontSize: "16px", fontFamily: "'Poppins', sans-serif", fontWeight: "bold",
+                      color: "rgba(255, 255, 255, 0.74)", backgroundColor: "rgba(149, 149, 149, 0.21)",
+                      borderRadius: "50%",
+                      "&:hover": {
+                        backgroundColor: "rgba(149, 149, 149, 0.53)",
+                        transitionDuration: "0s"
+                      }
+                    }}
+                  >
+                    -
+                  </Button>
+                  <Typography>
+                    {line?.quantity}
+                  </Typography>
+                  <Button
+                    sx={{
+                      minWidth: "20px", width: "20px", height: "20px",
+                      padding: 1,
+                      fontSize: "16px", fontFamily: "'Poppins', sans-serif", fontWeight: "bold",
+                      color: "rgba(255, 255, 255, 0.74)", backgroundColor: "rgba(149, 149, 149, 0.21)",
+                      borderRadius: "50%",
+                      "&:hover": {
+                        backgroundColor: "rgba(149, 149, 149, 0.53)",
+                        transitionDuration: "0s"
+                      }
+                    }}
+                  >
+                    +
+                  </Button>
+                </Box>
+              </Box>
+            )
+          })}
+        </Box>
         <Box
           sx={{
             width: "100%", height: "15%",
@@ -414,7 +179,7 @@ const Cart: FC<CartProps> = ({ isOpen, onClose }) => {
           </Button>
         </Box>
       </Card>
-    </div>
+    </div >
   );
 };
 

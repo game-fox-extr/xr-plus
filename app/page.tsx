@@ -12,6 +12,7 @@ import { ProductService } from "../api/shopifyAPIService";
 import { useProductsStore } from "../store/useProductStore";
 import FeatureButton from "../components/Experience/FeatureButton";
 import Cart from "../components/Experience/Cart";
+import { ShopifyProvider, CartProvider } from "@shopify/hydrogen-react";
 
 const ThreeScene = dynamic(
   () => import("../components/Experience/ThreeScene"),
@@ -103,6 +104,11 @@ const Page = () => {
 
   // Cart handling
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const shopifyConfig = {
+    storeDomain: process.env.NEXT_PUBLIC_SHOPIFY_APP_DOMAIN || "",
+    storefrontToken: process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN || "",
+    storefrontApiVersion: "2024-10"
+  };
 
   return (
     <>
@@ -110,12 +116,17 @@ const Page = () => {
       <main ref={mainRef} className="w-full h-screen relative">
         {!(modals.product || isCartOpen) && <CenteredDot />}
         <MemoizedThreeScene onCubeClick={handleProductClick} />
-        <Modal
-          isOpen={modals.product}
-          onClose={handleModalClose}
-          data={selectedProduct}
-          modelUrl={selectedProductGLB}
-        />
+        <ShopifyProvider countryIsoCode="ID" languageIsoCode="ID" {...shopifyConfig}>
+          <CartProvider>
+            <Modal
+              isOpen={modals.product}
+              onClose={handleModalClose}
+              data={selectedProduct}
+              modelUrl={selectedProductGLB}
+            />
+            <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)}></Cart>
+          </CartProvider>
+        </ShopifyProvider>
 
         {/* NOTE: Commenting this part for future implementations
          <img
@@ -134,7 +145,6 @@ const Page = () => {
             removeJoyStick(false);
           }}
         /> */}
-        <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)}></Cart>
         <FeatureButton image_url="Cart.svg" top="min(1vh,1vw)" onClick={() => setIsCartOpen(true)}></FeatureButton>
       </main>
     </>
