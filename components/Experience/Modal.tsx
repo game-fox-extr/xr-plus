@@ -4,7 +4,6 @@ import { Environment, OrbitControls } from "@react-three/drei";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { Suspense, useEffect, useState } from "react";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
-import DOMPurify from "dompurify";
 import {
   Box,
   Button,
@@ -42,10 +41,10 @@ interface ModalProps {
   modelUrl: string;
 }
 
-const Model = ({ modelUrl }: { modelUrl: string }) => {
-  console.log("Function called");
+const ModelColumn = ({ modelUrl }: { modelUrl: string }) => {
+  // console.log("Function called");
   const gltf = useLoader(GLTFLoader, modelUrl, (loader) => {
-    console.log(loader);
+    // console.log(loader);
     const dracoLoader = new DRACOLoader();
     dracoLoader.setDecoderPath("https://www.gstatic.com/draco/v1/decoders/"); // Path to Draco decoder
     loader.setDRACOLoader(dracoLoader);
@@ -159,13 +158,7 @@ const Modal: React.FC<ModalProps> = (props) => {
           left: { xs: "10%", sm: "15%", md: "25%", lg: "25%", xl: "25%" },
           display: "flex",
           flexDirection: "column",
-          maxWidth: {
-            xs: "80vw",
-            sm: "70%",
-            md: "60vw",
-            lg: "50vw",
-            xl: "50vw",
-          },
+          maxWidth: { xs: "80vw", md: "60vw", lg: "50vw", xl: "50vw" },
           gap: "10px",
           backgroundColor: "rgba(255, 255, 255, 0.1)", // Semi-transparent white
           backdropFilter: "blur(10px)", // Blur effect for glass morphism
@@ -315,8 +308,8 @@ const Modal: React.FC<ModalProps> = (props) => {
                     angle={0.15}
                     penumbra={1}
                   />
-                  <Model modelUrl={props.modelUrl} />
-                  <OrbitControls enableZoom={false} />
+                  <ModelColumn modelUrl={props.modelUrl} />
+                  <OrbitControls enableZoom={false} enablePan={false} />
                   <Environment preset="warehouse" blur={2} />
                 </Suspense>
               </Canvas>
