@@ -2,20 +2,29 @@
 import dynamic from "next/dynamic";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import CenteredDot from "../components/Experience/CenteredDot";
-import Loader from "../components/Experience/Loader";
 import Modal from "../components/Experience/Modal";
 import { useModalStore } from "../store/useModalStore";
+import Loader from "../components/Experience/Loader";
 import { usePointerStore } from "../store/usePointerStore";
 import { useSceneStabilityStore } from "../store/useSceneStabilityStore";
 import "./styles/defaults/reset.scss";
 import { ProductService } from "../api/shopifyAPIService";
 import { useProductsStore } from "../store/useProductStore";
+import { ShopifyProvider, CartProvider } from "@shopify/hydrogen-react";
 
 const ThreeScene = dynamic(
   () => import("../components/Experience/ThreeScene"),
   { ssr: false }
 );
+
 const MemoizedThreeScene = React.memo(ThreeScene);
+
+const shopifyConfig = {
+  storeDomain: process.env.NEXT_PUBLIC_SHOPIFY_APP_DOMAIN || "", // Replace with your Shopify store domain
+  storefrontToken:
+    process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN || "",
+  storefrontApiVersion: "2024-10",
+};
 
 const Page = () => {
   const mainRef = useRef(null);
@@ -27,6 +36,28 @@ const Page = () => {
     closeChatbotModal,
     toggleModal,
   } = useModalStore();
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isVisible, setIsVisible] = useState(true); // Tracks loader visibility
+
+  useEffect(() => {
+    const handleLoad = () => {
+      // Delay hiding the loader by 4 seconds after the page loads
+      setTimeout(() => {
+        setIsLoaded(true);
+        setTimeout(() => setIsVisible(false), 5000); // Delay hiding the loader visually
+      }, 0); // Start delay immediately after page load
+    };
+
+    if (document.readyState === "complete") {
+      handleLoad();
+    } else {
+      window.addEventListener("load", handleLoad);
+    }
+
+    return () => {
+      window.removeEventListener("load", handleLoad);
+    };
+  }, []);
   const { setLock, pointerLocked } = usePointerStore();
   const { removeJoyStick } = useSceneStabilityStore();
   const {
@@ -37,7 +68,6 @@ const Page = () => {
     selectedProductGLB,
     setProductGLb,
   } = useProductsStore();
-  const [isVisible, setIsVisible] = useState(true); // Tracks loader visibility
 
   useEffect(() => {
     async function fetchProducts() {
@@ -104,12 +134,18 @@ const Page = () => {
       <main ref={mainRef} className="w-full h-screen relative">
         {!modals.product && <CenteredDot />}
         <MemoizedThreeScene onCubeClick={handleProductClick} />
-        <Modal
-          isOpen={modals.product}
-          onClose={handleModalClose}
-          data={selectedProduct}
-          modelUrl={selectedProductGLB}
-        />
+        <ShopifyProvider countryIsoCode={"ID"}
+          languageIsoCode={"ID"}
+          {...shopifyConfig}>
+          <CartProvider>
+            <Modal
+              isOpen={modals.product}
+              onClose={handleModalClose}
+              data={selectedProduct}
+              modelUrl={selectedProductGLB}
+            />
+          </CartProvider>
+        </ShopifyProvider>
 
         {/* NOTE: Commenting this part for future implementations
          <img
