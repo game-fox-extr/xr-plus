@@ -110,6 +110,18 @@ const Page = () => {
     storefrontApiVersion: "2024-10"
   };
 
+  const handleCartOpen = () => {
+    removeJoyStick(true);
+    setIsCartOpen(true);
+  }
+
+  const handleCartClose = () => {
+    removeJoyStick(false);
+    setIsCartOpen(false);
+  }
+
+
+
   return (
     <>
       {isVisible && <Loader />}
@@ -124,7 +136,7 @@ const Page = () => {
               data={selectedProduct}
               modelUrl={selectedProductGLB}
             />
-            <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)}></Cart>
+            <Cart isOpen={isCartOpen} onClose={handleCartClose}></Cart>
           </CartProvider>
         </ShopifyProvider>
 
@@ -145,7 +157,7 @@ const Page = () => {
             removeJoyStick(false);
           }}
         /> */}
-        <FeatureButton image_url="Cart.svg" top="min(1vh,1vw)" onClick={() => setIsCartOpen(true)}></FeatureButton>
+        {!(modals.product || isCartOpen) && <FeatureButton image_url="Cart.svg" onClick={handleCartOpen}></FeatureButton>}
       </main>
     </>
   );

@@ -19,6 +19,12 @@ const Cart: FC<CartProps> = ({ isOpen, onClose }) => {
     }
   };
 
+  const totalPrice = lines?.reduce((total, line) => {
+    const pricePerQty = parseFloat(line?.merchandise?.price?.amount as string) || 0;
+    const quantity = line?.quantity || 0;
+    return total + pricePerQty * quantity;
+  }, 0)
+
   return (
     <div
       style={{
@@ -86,6 +92,7 @@ const Cart: FC<CartProps> = ({ isOpen, onClose }) => {
               <Box
                 sx={{
                   width: "100%", height: "25%",
+                  padding: {xs: "5%", sm: "2%", md: "2%"}, gap: {xs: "5%", sm: "2%"},
                   display: "flex", flexDirection: "row", justifyContent: "space-evenly", alignItems: "center",
                   borderRadius: "10px",
                   backgroundColor: "rgba(0, 0, 0, 0.26)", boxShadow: "0 0 15px rgba(0, 0, 0, 0.2)",
@@ -99,78 +106,114 @@ const Cart: FC<CartProps> = ({ isOpen, onClose }) => {
                     borderRadius: "50%"
                   }}
                 />
-                <Typography
-                  sx={{
-                    width: "25%",
-                    fontSize: "16px", fontFamily: "'Poppins', sans-serif", fontWeight: "normal",
-                    color: "rgba(255, 255, 255, 0.83)",
-                    textAlign: "Center",
-                    overflow: "hidden",
-                  }}
-                >
-                  {line?.merchandise?.product?.title}
-                </Typography>
-                <Typography
-                  sx={{
-                    width: "10%",
-                    fontSize: "16px", fontFamily: "'Poppins', sans-serif", fontWeight: "bold",
-                    color: "rgba(255, 255, 255, 0.83)",
-                    textAlign: "Center",
-                    overflow: "hidden",
 
-                  }}
-                >
-                  {
-                    (line?.merchandise?.selectedOptions as { name: string, value: string }[]).find((option) => {
-                      return option.name.toLowerCase() === "size";
-                    })?.value.toUpperCase()
-                  }
-                </Typography>
                 <Box
                   sx={{
-                    minWidth: "70px", width: "15%", height: "24px",
-                    display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between"
+                    display: "flex", flexDirection: {xs: "column", sm: "column", md: "row"},
+                    justifyContent: {md: "space-evenly"}, alignItems: {md: "center"},
+                    flexGrow: {md: 0.6}
                   }}
                 >
-                  <Button
+                  <Box
                     sx={{
-                      minWidth: "20px", width: "20px", height: "20px",
-                      padding: 1,
-                      fontSize: "16px", fontFamily: "'Poppins', sans-serif", fontWeight: "bold",
-                      color: "rgba(255, 255, 255, 0.74)", backgroundColor: "rgba(149, 149, 149, 0.21)",
-                      borderRadius: "50%",
-                      "&:hover": {
-                        backgroundColor: "rgba(149, 149, 149, 0.53)",
-                        transitionDuration: "0s"
-                      }
+                      height: "100%", width: {xs: "100%", sm:"100%", md: "30%"}, flexGrow: {xs: 1, sm: 1, md: 0},
+                      display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
                     }}
-                    onClick={decrement}
                   >
-                    -
-                  </Button>
+                    <Typography
+                      sx={{
+                        width: "100%", maxHeight: {xs: "16px", sm: "24px", md: "60%"},
+                        fontSize: {xs: "12px", sm: "16px"}, 
+                        fontFamily: "'Poppins', sans-serif", fontWeight: "normal",
+                        color: "rgba(255, 255, 255, 0.83)",
+                        overflowY: {xs: "hidden", sm: "hidden", md: "scroll"},
+                        scrollbarWidth: 0,
+                        "&::-webkit-scrollbar": {
+                          display: "none"
+                        },
+                        textAlign: "left"
+                      }}
+                    >
+                      {line?.merchandise?.product?.title}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        width: "100%",
+                        fontSize: {xs: "10px", sm: "14px"},
+                        fontFamily: "'Poppins', sans-serif", fontWeight: "normal",
+                        color: "rgba(202, 202, 202, 0.78)",
+                        overflow: "hidden",
+                        textAlign: "left"
+                      }}
+                    >
+                      {line?.merchandise?.price?.currencyCode} {line?.merchandise?.price?.amount}
+                    </Typography>
+                  </Box>
                   <Typography
                     sx={{
-                      color: "rgba(255, 255, 255, 0.83)"
+                      width: "10%",
+                      fontSize: {xs: "14px", sm: "14px", md: "16px"}, fontFamily: "'Poppins', sans-serif", fontWeight: "bold",
+                      color: "rgba(255, 255, 255, 0.83)",
+                      display: "flex", alignItems: "center", justifyContent: {xs: "left", sm: "left", md: "center"},
+                      overflow: "hidden",
                     }}
                   >
-                    {quantity}
+                    {
+                      (line?.merchandise?.selectedOptions as { name: string, value: string }[]).find((option) => {
+                        return option.name.toLowerCase() === "size";
+                      })?.value.toUpperCase()
+                    }
                   </Typography>
-                  <Button
+                  <Box
                     sx={{
-                      minWidth: "20px", width: "20px", height: "20px",
-                      padding: 1,
-                      fontSize: "16px", fontFamily: "'Poppins', sans-serif", fontWeight: "bold",
-                      color: "rgba(255, 255, 255, 0.74)", backgroundColor: "rgba(149, 149, 149, 0.21)",
-                      borderRadius: "50%",
-                      "&:hover": {
-                        backgroundColor: "rgba(149, 149, 149, 0.53)",
-                        transitionDuration: "0s"
-                      }
+                      minWidth: "70px", width: "15%", height: "24px",
+                      display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between"
                     }}
-                    onClick={increment}
                   >
-                    +
-                  </Button>
+                    <Button
+                      sx={{
+                        minWidth: {xs: "16px", sm: "20px", md: "20px"}, 
+                        width: {xs: "16px", sm: "20px", md: "20px"}, 
+                        height: {xs: "16px", sm: "20px", md: "20px"},
+                        padding: 1,
+                        fontSize: "16px", fontFamily: "'Poppins', sans-serif", fontWeight: "bold",
+                        color: "rgba(255, 255, 255, 0.74)", backgroundColor: "rgba(149, 149, 149, 0.21)",
+                        borderRadius: "50%",
+                        "&:hover": {
+                          backgroundColor: "rgba(149, 149, 149, 0.53)",
+                          transitionDuration: "0s"
+                        }
+                      }}
+                      onClick={decrement}
+                    >
+                      -
+                    </Button>
+                    <Typography
+                      sx={{
+                        color: "rgba(255, 255, 255, 0.83)"
+                      }}
+                    >
+                      {quantity}
+                    </Typography>
+                    <Button
+                      sx={{
+                        minWidth: {xs: "16px", sm: "20px"}, 
+                        width: {xs: "16px", sm: "20px"}, 
+                        height: {xs: "16px", sm: "20px"},
+                        padding: 1,
+                        fontSize: {xs: "12px", sm: "16px"}, fontFamily: "'Poppins', sans-serif", fontWeight: "bold",
+                        color: "rgba(255, 255, 255, 0.74)", backgroundColor: "rgba(149, 149, 149, 0.21)",
+                        borderRadius: "50%",
+                        "&:hover": {
+                          backgroundColor: "rgba(149, 149, 149, 0.53)",
+                          transitionDuration: "0s"
+                        }
+                      }}
+                      onClick={increment}
+                    >
+                      +
+                    </Button>
+                  </Box>
                 </Box>
               </Box>
             )
@@ -178,16 +221,16 @@ const Cart: FC<CartProps> = ({ isOpen, onClose }) => {
         </Box>
         <Box
           sx={{
-            width: "100%", height: "15%",
+            width: "90%", height: "15%",
             display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center",
-            gap: 2
+            gap: {xs: "5%", sm: "5%"}
           }}
         >
           <Button
             sx={{
-              minWidth: "30%", height: "40%",
+              minWidth: {xs: "47.5%", sm: "40%", md: "30%", lg: "30%", xl: "30%"} , height: "40%",
               padding: "10px",
-              fontSize: 24, fontFamily: "'Poppins', sans-serif", fontWeight: "bold",
+              fontSize: {xs:16, sm:20, md: 24, lg: 24, xl: 24}, fontFamily: "'Poppins', sans-serif", fontWeight: "bold",
               color: "rgb(255, 255, 255)", backgroundColor: "rgba(0, 0, 0, 0.20)",
               textTransform: "none",
               "&:hover": {
@@ -201,9 +244,9 @@ const Cart: FC<CartProps> = ({ isOpen, onClose }) => {
           </Button>
           <Button
             sx={{
-              minWidth: "30%", height: "40%",
+              minWidth: {xs: "47.5%", sm: "40%", md: "30%", lg: "30%", xl: "30%"} , height: "40%",
               padding: "10px",
-              fontSize: 24, fontFamily: "'Poppins', sans-serif", fontWeight: "bold",
+              fontSize: {xs:16, sm:20, md: 24, lg: 24, xl: 24}, fontFamily: "'Poppins', sans-serif", fontWeight: "bold",
               color: "rgba(255, 255, 255, 1)", backgroundColor: "rgba(255, 255, 255, 0.15)",
               textTransform: "none",
               "&:hover": {
