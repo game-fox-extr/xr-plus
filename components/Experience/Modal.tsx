@@ -14,9 +14,11 @@ import {
   Card,
   MenuItem,
   Select,
+  SelectChangeEvent,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import DOMPurify from "dompurify";
+import { useCart } from "@shopify/hydrogen-react";
 
 const CanvasContainer = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -66,6 +68,7 @@ const Modal: React.FC<ModalProps> = (props) => {
 
   const [view, setView] = useState("3dModel");
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const sanitizedHtml = DOMPurify.sanitize(props.data["body_html"]);
 
@@ -91,6 +94,50 @@ const Modal: React.FC<ModalProps> = (props) => {
 
   const handleSizeClick = (size: string) => {
     setSelectedSize(size);
+  };
+
+  const handleQuantityChange = (event: SelectChangeEvent<number>) => {
+    setQuantity(event.target.value as number);
+  }
+
+  const { linesAdd, checkoutUrl } = useCart();
+  const handleAddToCart = async () => {
+    if (!selectedSize) {
+      alert("Please select a size before adding to cart!");
+      return;
+    }
+
+    const selectedVariant = props.data.variants.find((variant: any) => {
+      return variant.option2.toUpperCase() === selectedSize;
+    });
+
+    if (!selectedVariant) {
+      alert("The selected variant does not exist!");
+      return;
+    }
+
+    try {
+      const result = await linesAdd([
+        {
+          merchandiseId: selectedVariant.admin_graphql_api_id,
+          quantity: quantity
+        }
+      ]);
+      alert("Product added to cart!");
+    }
+    catch (error) {
+      alert("Cannot add product to cart!");
+      console.error(error)
+      return;
+    }
+  };
+
+  const handleCheckout = () => {
+    if (checkoutUrl) {
+      window.open(checkoutUrl, "_blank", "noopener,noreferrer");
+    } else {
+      alert("Checkout session not initialized. Please try again.");
+    }
   };
 
   return (
@@ -305,6 +352,7 @@ const Modal: React.FC<ModalProps> = (props) => {
                   width: { xs: "100%", sm: "100%", md: "100%", lg: "100%" },
                   zIndex: "1000",
                 }}
+                onChange={handleQuantityChange}
               >
                 {[1, 2, 3, 4, 5].map((quantity) => (
                   <MenuItem key={quantity} value={quantity}>
@@ -421,6 +469,7 @@ const Modal: React.FC<ModalProps> = (props) => {
               },
               fontFamily: "'Poppins', sans-serif",
             }}
+            onClick={handleAddToCart}
           >
             ADD TO CART
           </Button>
@@ -438,6 +487,7 @@ const Modal: React.FC<ModalProps> = (props) => {
               },
               fontFamily: "'Poppins', sans-serif",
             }}
+            onClick={handleCheckout}
           >
             CHECKOUT
           </Button>

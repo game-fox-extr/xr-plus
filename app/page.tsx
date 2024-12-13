@@ -10,6 +10,9 @@ import { useSceneStabilityStore } from "../store/useSceneStabilityStore";
 import "./styles/defaults/reset.scss";
 import { ProductService } from "../api/shopifyAPIService";
 import { useProductsStore } from "../store/useProductStore";
+import FeatureButton from "../components/Experience/FeatureButton";
+import Cart from "../components/Experience/Cart";
+import { ShopifyProvider, CartProvider } from "@shopify/hydrogen-react";
 
 const ThreeScene = dynamic(
   () => import("../components/Experience/ThreeScene"),
@@ -98,18 +101,46 @@ const Page = () => {
     removeJoyStick(false);
     setLock(true);
   }, [closeModal]);
+
+  // Cart handling
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const shopifyConfig = {
+    storeDomain: process.env.NEXT_PUBLIC_SHOPIFY_APP_DOMAIN || "",
+    storefrontToken: process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN || "",
+    storefrontApiVersion: "2024-10"
+  };
+
+  const handleCartOpen = () => {
+    removeJoyStick(true);
+    setIsCartOpen(true);
+    setLock(false);
+  }
+
+  const handleCartClose = () => {
+    removeJoyStick(false);
+    setIsCartOpen(false);
+    setLock(true);
+  }
+
+
+
   return (
     <>
       {isVisible && <Loader />}
       <main ref={mainRef} className="w-full h-screen relative">
-        {!modals.product && <CenteredDot />}
+        {!(modals.product || isCartOpen) && <CenteredDot />}
         <MemoizedThreeScene onCubeClick={handleProductClick} />
-        <Modal
-          isOpen={modals.product}
-          onClose={handleModalClose}
-          data={selectedProduct}
-          modelUrl={selectedProductGLB}
-        />
+        <ShopifyProvider countryIsoCode="ID" languageIsoCode="ID" {...shopifyConfig}>
+          <CartProvider>
+            <Modal
+              isOpen={modals.product}
+              onClose={handleModalClose}
+              data={selectedProduct}
+              modelUrl={selectedProductGLB}
+            />
+            <Cart isOpen={isCartOpen} onClose={handleCartClose}></Cart>
+          </CartProvider>
+        </ShopifyProvider>
 
         {/* NOTE: Commenting this part for future implementations
          <img
@@ -128,6 +159,7 @@ const Page = () => {
             removeJoyStick(false);
           }}
         /> */}
+        {!(modals.product || isCartOpen) && <FeatureButton image_url="Cart.svg" onClick={handleCartOpen}></FeatureButton>}
       </main>
     </>
   );
