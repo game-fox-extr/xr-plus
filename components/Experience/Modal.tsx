@@ -14,6 +14,7 @@ import {
   Card,
   MenuItem,
   Select,
+  SelectChangeEvent,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import DOMPurify from "dompurify";
@@ -94,6 +95,10 @@ const Modal: React.FC<ModalProps> = (props) => {
   const handleSizeClick = (size: string) => {
     setSelectedSize(size);
   };
+
+  const handleQuantityChange = (event: SelectChangeEvent<number>) => {
+    setQuantity(event.target.value as number);
+  }
 
   const { linesAdd, checkoutUrl } = useCart();
   const handleAddToCart = async () => {
@@ -347,6 +352,7 @@ const Modal: React.FC<ModalProps> = (props) => {
                   width: { xs: "100%", sm: "100%", md: "100%", lg: "100%" },
                   zIndex: "1000",
                 }}
+                onChange={handleQuantityChange}
               >
                 {[1, 2, 3, 4, 5].map((quantity) => (
                   <MenuItem key={quantity} value={quantity}>
