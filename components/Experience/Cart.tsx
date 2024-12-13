@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Box, Button, Card, Typography } from "@mui/material";
 import { useCart } from "@shopify/hydrogen-react";
 
@@ -9,7 +9,15 @@ interface CartProps {
 
 const Cart: FC<CartProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
-  const { lines } = useCart();
+  const { lines, linesUpdate, checkoutUrl } = useCart();
+
+  const handleCheckout = () => {
+    if (checkoutUrl) {
+      window.open(checkoutUrl, "_blank", "noopener,noreferrer");
+    } else {
+      alert("Checkout session not initialized. Please try again.");
+    }
+  };
 
   return (
     <div
@@ -51,6 +59,29 @@ const Cart: FC<CartProps> = ({ isOpen, onClose }) => {
           }}
         >
           {lines && lines.map((line) => {
+            const [quantity, setQuantity] = useState(line?.quantity);
+            const decrement = () => {
+              if (quantity as number > 0) {
+                linesUpdate([
+                  {
+                    id: line?.id || "",
+                    quantity: (line?.quantity || 0) - 1
+                  }
+                ]);
+                setQuantity(quantity as number - 1);
+              }
+            };
+            const increment = () => {
+              if (quantity as number < 5) {
+                linesUpdate([
+                  {
+                    id: line?.id || "",
+                    quantity: (line?.quantity || 0) + 1
+                  }
+                ]);
+                setQuantity(quantity as number + 1);
+              }
+            };
             return (
               <Box
                 sx={{
@@ -60,14 +91,14 @@ const Cart: FC<CartProps> = ({ isOpen, onClose }) => {
                   backgroundColor: "rgba(0, 0, 0, 0.26)", boxShadow: "0 0 15px rgba(0, 0, 0, 0.2)",
                 }}
               >
-                {/* <img
-                  src={product.images[0].src}
+                <img
+                  src={line?.merchandise?.image?.url}
                   style={{
                     height: "80%", aspectRatio: "1 / 1",
                     backgroundColor: "rgba(255, 255, 255, 0.1)",
                     borderRadius: "50%"
-                  }} 
-                /> */}
+                  }}
+                />
                 <Typography
                   sx={{
                     width: "25%",
@@ -89,10 +120,10 @@ const Cart: FC<CartProps> = ({ isOpen, onClose }) => {
 
                   }}
                 >
-                  {(line?.merchandise as { variant?: { selectedOptions?: { name: string, value: string }[] } })
-                    .variant?.selectedOptions?.find((option) => {
+                  {
+                    (line?.merchandise?.selectedOptions as { name: string, value: string }[]).find((option) => {
                       return option.name.toLowerCase() === "size";
-                    })?.value
+                    })?.value.toUpperCase()
                   }
                 </Typography>
                 <Box
@@ -113,11 +144,16 @@ const Cart: FC<CartProps> = ({ isOpen, onClose }) => {
                         transitionDuration: "0s"
                       }
                     }}
+                    onClick={decrement}
                   >
                     -
                   </Button>
-                  <Typography>
-                    {line?.quantity}
+                  <Typography
+                    sx={{
+                      color: "rgba(255, 255, 255, 0.83)"
+                    }}
+                  >
+                    {quantity}
                   </Typography>
                   <Button
                     sx={{
@@ -131,6 +167,7 @@ const Cart: FC<CartProps> = ({ isOpen, onClose }) => {
                         transitionDuration: "0s"
                       }
                     }}
+                    onClick={increment}
                   >
                     +
                   </Button>
@@ -174,6 +211,7 @@ const Cart: FC<CartProps> = ({ isOpen, onClose }) => {
                 transitionDuration: "0.15s"
               }
             }}
+            onClick={handleCheckout}
           >
             Checkout
           </Button>
