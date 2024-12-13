@@ -65,27 +65,24 @@ const Cart: FC<CartProps> = ({ isOpen, onClose }) => {
           }}
         >
           {lines && lines.map((line) => {
-            const [quantity, setQuantity] = useState(line?.quantity);
             const decrement = () => {
-              if (quantity as number > 0) {
+              if (line?.quantity as number > 0) {
                 linesUpdate([
                   {
                     id: line?.id || "",
                     quantity: (line?.quantity || 0) - 1
                   }
                 ]);
-                setQuantity(quantity as number - 1);
               }
             };
             const increment = () => {
-              if (quantity as number < 5) {
+              if (line?.quantity as number < 5) {
                 linesUpdate([
                   {
                     id: line?.id || "",
                     quantity: (line?.quantity || 0) + 1
                   }
                 ]);
-                setQuantity(quantity as number + 1);
               }
             };
             return (
@@ -193,7 +190,7 @@ const Cart: FC<CartProps> = ({ isOpen, onClose }) => {
                         color: "rgba(255, 255, 255, 0.83)"
                       }}
                     >
-                      {quantity}
+                      {line?.quantity}
                     </Typography>
                     <Button
                       sx={{

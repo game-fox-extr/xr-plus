@@ -113,11 +113,13 @@ const Page = () => {
   const handleCartOpen = () => {
     removeJoyStick(true);
     setIsCartOpen(true);
+    setLock(false);
   }
 
   const handleCartClose = () => {
     removeJoyStick(false);
     setIsCartOpen(false);
+    setLock(true);
   }
 
 
