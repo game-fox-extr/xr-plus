@@ -392,9 +392,8 @@ const Modal: React.FC<ModalProps> = (props) => {
                     fontFamily: "'Poppins', sans-serif",
                     color: "white",
                   }}
-                >
-                  <div dangerouslySetInnerHTML={{ __html: sanitizedHtml }} />
-                </Typography>
+                  dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
+                />
               </Box>
             </CardContent>
           </Box>
