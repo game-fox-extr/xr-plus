@@ -28,7 +28,7 @@ const ThreeScene = ({
 }) => {
   const { isLoading, sceneKey, loadingProgress, isModalOpen } =
     useSceneStabilityStore();
-  const { pointerLocked } = usePointerStore();
+  // const { pointerLocked } = usePointerStore();
 
   return (
     <div
@@ -53,6 +53,7 @@ const ThreeScene = ({
           position: [5, -5, 0],
         }}
         onContextMenu={(e) => e.preventDefault()}
+        frameloop="demand"
       >
         <Suspense fallback={null}>
           <RayCaster />
@@ -77,7 +78,7 @@ const ThreeScene = ({
               rotation={[0, -82.79, 0]}
             />
         </Suspense>
-        <PointerLockControls enabled={pointerLocked} />
+        <PointerLockControls />
       </Canvas>
     </div>
   );

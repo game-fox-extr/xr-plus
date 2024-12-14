@@ -27,7 +27,7 @@ const Page = () => {
     closeChatbotModal,
     toggleModal,
   } = useModalStore();
-  const { setLock, pointerLocked } = usePointerStore();
+  // const { setLock, pointerLocked } = usePointerStore();
   const { removeJoyStick } = useSceneStabilityStore();
   const {
     products,
@@ -38,7 +38,8 @@ const Page = () => {
     setProductGLb,
   } = useProductsStore();
   const [isVisible, setIsVisible] = useState(true); // Tracks loader visibility
-
+  console.log({selectedProduct});
+  
   useEffect(() => {
     async function fetchProducts() {
       try {
@@ -96,7 +97,7 @@ const Page = () => {
   const handleModalClose = useCallback(() => {
     closeModal("product");
     removeJoyStick(false);
-    setLock(true);
+    // setLock(true);
   }, [closeModal]);
   return (
     <>
