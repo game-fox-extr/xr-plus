@@ -1,15 +1,14 @@
 "use client";
 import dynamic from "next/dynamic";
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { ProductService } from "../api/shopifyAPIService";
 import CenteredDot from "../components/Experience/CenteredDot";
 import Loader from "../components/Experience/Loader";
 import Modal from "../components/Experience/Modal";
 import { useModalStore } from "../store/useModalStore";
-import { usePointerStore } from "../store/usePointerStore";
+import { useProductsStore } from "../store/useProductStore";
 import { useSceneStabilityStore } from "../store/useSceneStabilityStore";
 import "./styles/defaults/reset.scss";
-import { ProductService } from "../api/shopifyAPIService";
-import { useProductsStore } from "../store/useProductStore";
 
 const ThreeScene = dynamic(
   () => import("../components/Experience/ThreeScene"),
@@ -23,9 +22,6 @@ const Page = () => {
     modals,
     closeModal,
     openModal,
-    openChatbotModal,
-    closeChatbotModal,
-    toggleModal,
   } = useModalStore();
   // const { setLock, pointerLocked } = usePointerStore();
   const { removeJoyStick } = useSceneStabilityStore();
