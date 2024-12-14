@@ -1,11 +1,16 @@
 import { KeyboardControls } from "@react-three/drei";
 import { Physics, RapierRigidBody } from "@react-three/rapier";
 import Ecctrl, { EcctrlProps } from "ecctrl";
-import React, { forwardRef, Suspense, useEffect, useMemo, useRef } from "react";
+import React, {
+  forwardRef,
+  Suspense,
+  useEffect,
+  useMemo,
+  useRef
+} from "react";
 import { useSceneStabilityStore } from "../../store/useSceneStabilityStore";
 import Light from "./Light";
 import Products from "./Products";
-import Castle from "./Castle";
 
 interface CustomEcctrlProps extends EcctrlProps {
   initialPosition?: [number, number, number];
@@ -35,13 +40,6 @@ const CustomEcctrl = forwardRef<RapierRigidBody, CustomEcctrlProps>(
 
     const combinedRef = (ref || localRef) as React.RefObject<RapierRigidBody>;
 
-    // Store the previous player position to avoid unnecessary updates
-    const prevPositionRef = useRef<[number, number, number]>([
-      initialPosition[0],
-      initialPosition[1],
-      initialPosition[2],
-    ]);
-
     const resetKeys = () => {
       dispatchEvent(new KeyboardEvent("keyup", { code: "KeyW" }));
       dispatchEvent(new KeyboardEvent("keyup", { code: "KeyS" }));
@@ -57,66 +55,47 @@ const CustomEcctrl = forwardRef<RapierRigidBody, CustomEcctrlProps>(
     };
 
     useEffect(() => {
-      let animationFrameId: number;
-      let debounceTimeout: ReturnType<typeof setTimeout> | null = null;
-
+      // console.log('Effect initialized with initialPosition:', initialPosition);
       const handleVisibilityChange = () => {
+        // console.log('Visibility changed, document state:', document.visibilityState);
         if (document.visibilityState === "visible" && combinedRef.current) {
           const currentPos = combinedRef.current.translation();
-          if (
-            currentPos.x !== prevPositionRef.current[0] ||
-            currentPos.y !== prevPositionRef.current[1] ||
-            currentPos.z !== prevPositionRef.current[2]
-          ) {
-            try {
-              combinedRef.current.setTranslation(
-                {
-                  x: currentPos.x,
-                  y: currentPos.y,
-                  z: currentPos.z,
-                },
-                true
-              );
-              combinedRef.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
-              setPlayerPosition([currentPos.x, currentPos.y, currentPos.z]);
-              prevPositionRef.current = [
-                currentPos.x,
-                currentPos.y,
-                currentPos.z,
-              ];
-            } catch (error) {
-              console.error("Failed to reset character position:", error);
-            }
+          try {
+            combinedRef.current.setTranslation(
+              {
+                x: currentPos.x,
+                y: currentPos.y,
+                z: currentPos.z,
+              },
+              true
+            );
+            combinedRef.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
+
+            // resetScene();
+          } catch (error) {
+            console.error("Failed to reset character position:", error);
           }
         }
       };
 
       const handleWindowResize = () => {
+        // console.log('Window resized');
         if (combinedRef.current) {
           const currentPos = combinedRef.current.translation();
-          if (
-            currentPos.x !== prevPositionRef.current[0] ||
-            currentPos.y !== prevPositionRef.current[1] ||
-            currentPos.z !== prevPositionRef.current[2]
-          ) {
-            try {
-              combinedRef.current.setTranslation(
-                { x: currentPos.x, y: currentPos.y, z: currentPos.z },
-                true
-              );
-              combinedRef.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
-              setPlayerPosition([currentPos.x, currentPos.y, currentPos.z]);
-              prevPositionRef.current = [
-                currentPos.x,
-                currentPos.y,
-                currentPos.z,
-              ];
-            } catch (error) {
-              console.error(
-                "Failed to reset character position on resize:",
-                error
-              );
-            }
+          try {
+            combinedRef.current.setTranslation(
+              { x: currentPos.x, y: currentPos.y, z: currentPos.z },
+              true
+            );
+            combinedRef.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
+
+            setPlayerPosition([currentPos.x, currentPos.y, currentPos.z]);
+            // resetScene();
+          } catch (error) {
+            console.error(
+              "Failed to reset character position on resize:",
+              error
+            );
           }
         }
       };
@@ -125,29 +104,27 @@ const CustomEcctrl = forwardRef<RapierRigidBody, CustomEcctrlProps>(
         if (combinedRef.current) {
           const currentPos = combinedRef.current.translation();
           if (currentPos.y < -15) {
-            if (debounceTimeout) {
-              clearTimeout(debounceTimeout);
+            try {
+              combinedRef.current.setTranslation(
+                {
+                  x: initialPosition[0],
+                  y: initialPosition[1],
+                  z: initialPosition[2],
+                },
+                true
+              );
+              combinedRef.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
+
+              setPlayerPosition(initialPosition);
+              // console.log('Player respawned at initial position');
+            } catch (error) {
+              console.error("Failed to respawn player:", error);
             }
-            debounceTimeout = setTimeout(() => {
-              try {
-                combinedRef?.current!.setTranslation(
-                  {
-                    x: initialPosition[0],
-                    y: initialPosition[1],
-                    z: initialPosition[2],
-                  },
-                  true
-                );
-                combinedRef?.current!.setLinvel({ x: 0, y: 0, z: 0 }, true);
-                setPlayerPosition(initialPosition);
-              } catch (error) {
-                console.error("Failed to respawn player:", error);
-              }
-            }, 500); // Debounce the respawn logic
           }
         }
       };
 
+      let animationFrameId: number;
       const checkRespawn = () => {
         respawnPlayer();
         animationFrameId = requestAnimationFrame(checkRespawn);
@@ -158,8 +135,10 @@ const CustomEcctrl = forwardRef<RapierRigidBody, CustomEcctrlProps>(
       document.addEventListener("visibilitychange", resetKeys);
       window.addEventListener("blur", resetKeys);
       window.addEventListener("resize", handleWindowResize);
+      // console.log('Effect setup complete');
 
       return () => {
+        // console.log('Effect cleanup');
         cancelAnimationFrame(animationFrameId);
         document.removeEventListener(
           "visibilitychange",
@@ -168,9 +147,6 @@ const CustomEcctrl = forwardRef<RapierRigidBody, CustomEcctrlProps>(
         document.removeEventListener("visibilitychange", resetKeys);
         window.removeEventListener("blur", resetKeys);
         window.removeEventListener("resize", handleWindowResize);
-        if (debounceTimeout) {
-          clearTimeout(debounceTimeout);
-        }
       };
     }, [initialPosition, resetScene, setPlayerPosition]);
 
@@ -190,7 +166,6 @@ const Environment = React.memo(
       }),
       []
     );
-    
 
     const ecctrlProps = useMemo(
       () => ({
@@ -222,7 +197,7 @@ const Environment = React.memo(
           <Physics key={sceneKey} {...physicsProps}>
             <Light />
             <CustomEcctrl {...ecctrlProps} />
-            <Castle
+            <LazyCastle
               position={[0, -0.55, -5]}
               scale={1}
               castShadow
