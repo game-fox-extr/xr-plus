@@ -1,13 +1,8 @@
 import { KeyboardControls } from "@react-three/drei";
+import { useFrame } from "@react-three/fiber";
 import { Physics, RapierRigidBody } from "@react-three/rapier";
 import Ecctrl, { EcctrlProps } from "ecctrl";
-import React, {
-  forwardRef,
-  Suspense,
-  useEffect,
-  useMemo,
-  useRef
-} from "react";
+import React, { forwardRef, Suspense, useMemo, useRef } from "react";
 import { useSceneStabilityStore } from "../../store/useSceneStabilityStore";
 import Light from "./Light";
 import Products from "./Products";
@@ -40,121 +35,32 @@ const CustomEcctrl = forwardRef<RapierRigidBody, CustomEcctrlProps>(
 
     const combinedRef = (ref || localRef) as React.RefObject<RapierRigidBody>;
 
-    const resetKeys = () => {
-      dispatchEvent(new KeyboardEvent("keyup", { code: "KeyW" }));
-      dispatchEvent(new KeyboardEvent("keyup", { code: "KeyS" }));
-      dispatchEvent(new KeyboardEvent("keyup", { code: "KeyA" }));
-      dispatchEvent(new KeyboardEvent("keyup", { code: "KeyD" }));
-      dispatchEvent(new KeyboardEvent("keyup", { code: "ArrowUp" }));
-      dispatchEvent(new KeyboardEvent("keyup", { code: "ArrowDown" }));
-      dispatchEvent(new KeyboardEvent("keyup", { code: "ArrowLeft" }));
-      dispatchEvent(new KeyboardEvent("keyup", { code: "ArrowRight" }));
-      dispatchEvent(new KeyboardEvent("keyup", { code: "Space" }));
-      dispatchEvent(new KeyboardEvent("keyup", { code: "Shift" }));
-      // console.log("Keys reset");
-    };
-
-    useEffect(() => {
-      // console.log('Effect initialized with initialPosition:', initialPosition);
-      const handleVisibilityChange = () => {
-        // console.log('Visibility changed, document state:', document.visibilityState);
-        if (document.visibilityState === "visible" && combinedRef.current) {
-          const currentPos = combinedRef.current.translation();
+    useFrame(() => {
+      if (combinedRef.current) {     
+        const currentPos = combinedRef.current.translation();
+        if (currentPos.y < -15) {
           try {
             combinedRef.current.setTranslation(
               {
-                x: currentPos.x,
-                y: currentPos.y,
-                z: currentPos.z,
+                x: initialPosition[0],
+                y: initialPosition[1],
+                z: initialPosition[2],
               },
               true
             );
             combinedRef.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
-
-            // resetScene();
+            // setPlayerPosition(initialPosition);
           } catch (error) {
-            console.error("Failed to reset character position:", error);
+            console.error("Failed to respawn player:", error);
           }
         }
-      };
-
-      const handleWindowResize = () => {
-        // console.log('Window resized');
-        if (combinedRef.current) {
-          const currentPos = combinedRef.current.translation();
-          try {
-            combinedRef.current.setTranslation(
-              { x: currentPos.x, y: currentPos.y, z: currentPos.z },
-              true
-            );
-            combinedRef.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
-
-            setPlayerPosition([currentPos.x, currentPos.y, currentPos.z]);
-            // resetScene();
-          } catch (error) {
-            console.error(
-              "Failed to reset character position on resize:",
-              error
-            );
-          }
-        }
-      };
-
-      const respawnPlayer = () => {
-        if (combinedRef.current) {
-          const currentPos = combinedRef.current.translation();
-          if (currentPos.y < -15) {
-            try {
-              combinedRef.current.setTranslation(
-                {
-                  x: initialPosition[0],
-                  y: initialPosition[1],
-                  z: initialPosition[2],
-                },
-                true
-              );
-              combinedRef.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
-
-              setPlayerPosition(initialPosition);
-              // console.log('Player respawned at initial position');
-            } catch (error) {
-              console.error("Failed to respawn player:", error);
-            }
-          }
-        }
-      };
-
-      let animationFrameId: number;
-      const checkRespawn = () => {
-        respawnPlayer();
-        animationFrameId = requestAnimationFrame(checkRespawn);
-      };
-      animationFrameId = requestAnimationFrame(checkRespawn);
-
-      document.addEventListener("visibilitychange", handleVisibilityChange);
-      document.addEventListener("visibilitychange", resetKeys);
-      window.addEventListener("blur", resetKeys);
-      window.addEventListener("resize", handleWindowResize);
-      // console.log('Effect setup complete');
-
-      return () => {
-        // console.log('Effect cleanup');
-        cancelAnimationFrame(animationFrameId);
-        document.removeEventListener(
-          "visibilitychange",
-          handleVisibilityChange
-        );
-        document.removeEventListener("visibilitychange", resetKeys);
-        window.removeEventListener("blur", resetKeys);
-        window.removeEventListener("resize", handleWindowResize);
-      };
-    }, [initialPosition, resetScene, setPlayerPosition]);
-
-    return <Ecctrl ref={combinedRef} position={initialPosition} {...props} />;
+      }
+    });
+    return (
+      <Ecctrl ref={combinedRef} position={initialPosition} {...props} />
+    );
   }
 );
-
-CustomEcctrl.displayName = "CustomEcctrl";
 
 const Environment = React.memo(
   ({ onCubeClick }: { onCubeClick: () => void }) => {
@@ -185,8 +91,22 @@ const Environment = React.memo(
         turnSpeed: 200,
         mode: "CameraBasedMovement",
         wakeUpDelay: 200,
-        accDeltaTime: 8,
+        accDeltaTime: 10,
         followLightPos: { x: 20, y: 30, z: 10 },
+        capsuleRadius: 0.3,
+        rayLength: 5.3, // Ray length
+        rayDir: { x: 0, y: -1, z: 0 },
+        springK: 1.2, // Spring constant
+        rayOrigin: { x: 0, y: 0, z: 0 }, // Center of the screen
+        raycastType: "center", // Custom prop to indicate center screen raycasting
+        raycastOffset: {
+          x: 0, // No horizontal offset
+          y: 0, // No vertical offset from center
+          z: 0  // No depth offset
+        },
+        // Optional: Add more precise raycasting parameters
+        raycastPrecision: 0.1, // Adjust based on your game's scale
+        raycastCollisionMask: -1, // Collide with all layers
       }),
       [playerPosition]
     );

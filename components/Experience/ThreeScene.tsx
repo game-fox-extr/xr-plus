@@ -1,12 +1,8 @@
-import { PivotControls, PointerLockControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { Suspense } from "react";
-import { usePointerStore } from "../../store/usePointerStore";
 import { EcctrlJoystick } from "ecctrl";
-import React from "react";
+import React, { Suspense, useEffect } from "react";
+import { useModalStore } from "../../store/useModalStore";
 import { useSceneStabilityStore } from "../../store/useSceneStabilityStore";
-import Products from "./Products";
-import RayCaster from "./Raycaster";
 import Skybox from "./Skybox";
 
 // Utility function to detect mobile or tablet
@@ -26,9 +22,20 @@ const ThreeScene = ({
   onCubeClick: () => void;
   // isPointerLocked: boolean;
 }) => {
-  const { isLoading, sceneKey, loadingProgress, isModalOpen } =
-    useSceneStabilityStore();
-  // const { pointerLocked } = usePointerStore();
+  const { sceneKey, isModalOpen } = useSceneStabilityStore();
+  const { modals } = useModalStore();
+
+  useEffect(() => {
+    if (modals.product) {
+      document.exitPointerLock();
+    }
+  }, [modals.product]);
+
+  const handlePointerDown = (e: any) => {
+    if (!modals.product) {
+      e.target.requestPointerLock();
+    }
+  };
 
   return (
     <div
@@ -41,8 +48,6 @@ const ThreeScene = ({
     >
       {/* Render joystick only on mobile or tablet */}
       {isMobileOrTablet() && !isModalOpen && <EcctrlJoystick />}
-
-      {/* <LoadingScreen /> */}
       <Canvas
         key={sceneKey}
         shadows
@@ -52,45 +57,34 @@ const ThreeScene = ({
           far: 1000,
           position: [5, -5, 0],
         }}
-        onContextMenu={(e) => e.preventDefault()}
         frameloop="demand"
+        onPointerDown={handlePointerDown}
       >
         <Suspense fallback={null}>
-          <RayCaster />
+          {/* <RayCaster /> */}
           <Skybox />
-          <LazyEnvironment onCubeClick={onCubeClick}/>
+          <LazyEnvironment onCubeClick={onCubeClick} />
           <LazyTelevision
             videoPath="/media/backhome.mp4"
             scale={[0.9, 0.9, 0.9]}
             position={[5, 4.8, -33.5]}
             rotation={[0, -82.79, 0]}
           />
-            <LazyTelevision
-              videoPath="/media/backhome.mp4"
-              scale={[0.3, 0.3, 0.3]}
-              position={[24, -8.42, 42.38]}
-              rotation={[0, 82.79, 0]}
-            />
-            <LazyTelevision
-              videoPath="/media/backhome.mp4"
-              scale={[0.1, 0.9, 0.1]}
-              position={[3.72, -8.57, 9.55]} 
-              rotation={[0, -82.79, 0]}
-            />
+          <LazyTelevision
+            videoPath="/media/backhome.mp4"
+            scale={[0.3, 0.3, 0.3]}
+            position={[24, -8.42, 42.38]}
+            rotation={[0, 82.79, 0]}
+          />
+          <LazyTelevision
+            videoPath="/media/backhome.mp4"
+            scale={[0.1, 0.9, 0.1]}
+            position={[3.72, -8.57, 9.55]}
+            rotation={[0, -82.79, 0]}
+          />
         </Suspense>
-        <PointerLockControls />
       </Canvas>
     </div>
   );
 };
-// {
-//   "x": "30.54",
-//   "y": "-8.07",
-//   "z": "42.56"
-// }
-// {
-//   "x": "24.77",
-//   "y": "-8.42",
-//   "z": "42.38"
-// }
 export default ThreeScene;
