@@ -4,6 +4,7 @@ import React, { Suspense, useEffect } from "react";
 import { useModalStore } from "../../store/useModalStore";
 import { useSceneStabilityStore } from "../../store/useSceneStabilityStore";
 import Skybox from "./Skybox";
+import { Preload } from "@react-three/drei";
 
 // Utility function to detect mobile or tablet
 const isMobileOrTablet = () => {
@@ -62,6 +63,7 @@ const ThreeScene = ({
       >
         <Suspense fallback={null}>
           {/* <RayCaster /> */}
+          <Preload all/>
           <Skybox />
           <LazyEnvironment onCubeClick={onCubeClick} />
           <LazyTelevision
